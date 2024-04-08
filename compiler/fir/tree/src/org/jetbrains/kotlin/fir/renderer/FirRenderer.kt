@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.fir.references.*
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.types.*
 import org.jetbrains.kotlin.fir.visitors.FirVisitorVoid
+import org.jetbrains.kotlin.name.SpecialNames
 import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.types.Variance
 import org.jetbrains.kotlin.util.OperatorNameConventions
@@ -592,7 +593,7 @@ class FirRenderer(
             annotationRenderer?.render(whenExpression)
             print("when (")
             val subjectVariable = whenExpression.subjectVariable
-            if (subjectVariable != null) {
+            if (subjectVariable != null && subjectVariable.name != SpecialNames.WHEN_SUBJECT) {
                 subjectVariable.accept(this)
             } else {
                 whenExpression.subject?.accept(this)

@@ -976,6 +976,7 @@ class ControlFlowGraphBuilder {
     fun exitWhenExpression(
         whenExpression: FirWhenExpression,
         callCompleted: Boolean,
+        subjectVariable: RealVariable?,
     ): Pair<WhenExitNode, WhenSyntheticElseBranchNode?> {
         val whenExitNode = whenExitNodes.pop()
         // exit from last condition node still on stack
@@ -983,7 +984,7 @@ class ControlFlowGraphBuilder {
         notCompletedFunctionCalls.pop().forEach(::completeFunctionCall)
         val lastWhenConditionExit = lastNodes.pop()
         val syntheticElseBranchNode = if (!whenExpression.isProperlyExhaustive) {
-            createWhenSyntheticElseBranchNode(whenExpression).apply {
+            createWhenSyntheticElseBranchNode(whenExpression, subjectVariable).apply {
                 addEdge(lastWhenConditionExit, this)
                 addEdge(this, whenExitNode)
             }

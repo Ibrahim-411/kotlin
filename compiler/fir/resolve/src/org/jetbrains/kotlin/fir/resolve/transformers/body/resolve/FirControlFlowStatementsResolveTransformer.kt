@@ -99,7 +99,9 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirAbstractBodyRes
                         completionNeeded = true
                     }
                 }
-                whenExpression = whenExpression.transformSingle(whenExhaustivenessTransformer, null)
+
+                val typeInformation = dataFlowAnalyzer.getTypeStatementOfCurrentWhen(whenExpression)
+                whenExpression = whenExpression.transformSingle(whenExhaustivenessTransformer, typeInformation)
 
                 // This is necessary to perform outside the place where the synthetic call is created because
                 // exhaustiveness is not yet computed there, but at the same time to compute it properly
