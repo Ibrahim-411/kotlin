@@ -1840,6 +1840,12 @@ public class DiagnosticCompilerTestFirTestdataTestGenerated extends AbstractDiag
       }
 
       @Test
+      @TestMetadata("exclusions.kt")
+      public void testExclusions() {
+        runTest("compiler/fir/analysis-tests/testData/resolve/crv/exclusions.kt");
+      }
+
+      @Test
       @TestMetadata("lambdas.kt")
       public void testLambdas() {
         runTest("compiler/fir/analysis-tests/testData/resolve/crv/lambdas.kt");
