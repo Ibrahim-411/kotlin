@@ -1864,6 +1864,12 @@ public class DiagnosticCompilerTestFirTestdataTestGenerated extends AbstractDiag
       }
 
       @Test
+      @TestMetadata("loops.kt")
+      public void testLoops() {
+        runTest("compiler/fir/analysis-tests/testData/resolve/crv/loops.kt");
+      }
+
+      @Test
       @TestMetadata("scopes.kt")
       public void testScopes() {
         runTest("compiler/fir/analysis-tests/testData/resolve/crv/scopes.kt");
