@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.fir.FirSession
 import org.jetbrains.kotlin.fir.declarations.FirClass
 import org.jetbrains.kotlin.fir.declarations.FirResolvePhase
 import org.jetbrains.kotlin.fir.declarations.utils.delegateFields
+import org.jetbrains.kotlin.fir.declarations.utils.isCompanion
 import org.jetbrains.kotlin.fir.java.JavaScopeProvider
 import org.jetbrains.kotlin.fir.java.declarations.FirJavaClass
 import org.jetbrains.kotlin.fir.resolve.ScopeSession
@@ -51,6 +52,7 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
+import org.jetbrains.kotlin.psi.psiUtil.containingClass
 import org.jetbrains.kotlin.utils.exceptions.errorWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.withPsiEntry
 
@@ -321,7 +323,17 @@ internal class KaFirScopeProvider(
             val availableScopes = towerDataElement
                 .getAvailableScopes { coneType -> withSyntheticPropertiesScopeOrSelf(coneType) }
                 .flatMap { flattenFirScope(it) }
-            availableScopes.map { IndexedValue(index, it) }
+            availableScopes.map {
+                val implicitReceiver = towerDataElement.implicitReceiver?.boundSymbol
+                if ((implicitReceiver as? FirClassSymbol<*>)?.isCompanion == true &&
+                    implicitReceiver.classId.parentClassId != position.containingClass()?.getClassId() &&
+                    it is FirContainingNamesAwareScope
+                ) {
+                    IndexedValue(index, FirNoClassifiersScope(it))
+                } else {
+                    IndexedValue(index, it)
+                }
+            }
         }
         val ktScopesWithKinds = createScopesWithKind(firScopes)
 
@@ -353,6 +365,7 @@ internal class KaFirScopeProvider(
 
     private fun getScopeKind(firScope: FirScope, indexInTower: Int): KaScopeKind = when (firScope) {
         is FirNameAwareOnlyCallablesScope -> getScopeKind(firScope.delegate, indexInTower)
+        is FirNoClassifiersScope -> getScopeKind(firScope.delegate, indexInTower)
 
         is FirLocalScope -> KaScopeKinds.LocalScope(indexInTower)
         is FirTypeScope -> KaScopeKinds.TypeScope(indexInTower)
