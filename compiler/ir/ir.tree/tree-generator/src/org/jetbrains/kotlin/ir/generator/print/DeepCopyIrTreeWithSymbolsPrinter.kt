@@ -233,9 +233,6 @@ internal class DeepCopyIrTreeWithSymbolsPrinter(
                     }
                 }
             }
-            if (element.isSubclassOf(IrTree.attributeContainer)) {
-                println("processAttributes(", element.visitorParameterName, ")")
-            }
             if (element.isSubclassOf(IrTree.memberAccessExpression) && !element.isSubclassOf(IrTree.localDelegatedPropertyReference)) {
                 println("copyRemappedTypeArgumentsFrom(", element.visitorParameterName, ")")
                 println("transformValueArguments(", element.visitorParameterName, ")")
@@ -255,6 +252,8 @@ internal class DeepCopyIrTreeWithSymbolsPrinter(
             if (element.isSubclassOf(IrTree.moduleFragment)) {
                 println("this@DeepCopyIrTreeWithSymbols.transformedModule = null")
             }
+
+            println("processAttributes(", element.visitorParameterName, ")")
         }
     }
 
