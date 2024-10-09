@@ -32,6 +32,7 @@ import org.jetbrains.kotlin.backend.jvm.codegen.anyTypeArgument
 import org.jetbrains.kotlin.backend.jvm.ir.isInPublicInlineScope
 import org.jetbrains.kotlin.descriptors.ClassKind
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
+import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.builders.*
@@ -1126,7 +1127,7 @@ class ComposerLambdaMemoization(
         return this
     }
 
-    private fun <T : IrAttributeContainer> T.markAsComposableSingleton(): T {
+    private fun <T : IrElement> T.markAsComposableSingleton(): T {
         // Mark it so the ComposableCallTransformer can insert the correct source information
         // around this call
         context.irTrace.record(
@@ -1137,7 +1138,7 @@ class ComposerLambdaMemoization(
         return this
     }
 
-    private fun <T : IrAttributeContainer> T.markAsComposableSingletonClass(): T {
+    private fun <T : IrElement> T.markAsComposableSingletonClass(): T {
         // Mark it so the ComposableCallTransformer can insert the correct source information
         // around this call
         context.irTrace.record(
@@ -1148,7 +1149,7 @@ class ComposerLambdaMemoization(
         return this
     }
 
-    private fun <T : IrAttributeContainer> T.markHasTransformedLambda(): T {
+    private fun <T : IrElement> T.markHasTransformedLambda(): T {
         // Mark so that the target annotation transformer can find the original lambda
         context.irTrace.record(
             ComposeWritableSlices.HAS_TRANSFORMED_LAMBDA,
@@ -1158,7 +1159,7 @@ class ComposerLambdaMemoization(
         return this
     }
 
-    private fun <T : IrAttributeContainer> T.markIsTransformedLambda(): T {
+    private fun <T : IrElement> T.markIsTransformedLambda(): T {
         context.irTrace.record(
             ComposeWritableSlices.IS_TRANSFORMED_LAMBDA,
             this,

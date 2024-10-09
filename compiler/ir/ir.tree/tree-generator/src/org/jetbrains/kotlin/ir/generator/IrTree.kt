@@ -284,7 +284,6 @@ object IrTree : AbstractTreeBuilder() {
         parent(declarationWithVisibility)
         parent(typeParametersContainer)
         parent(declarationContainer)
-        parent(attributeContainer)
         parent(metadataSourceOwner)
 
         +descriptor("ClassDescriptor")
@@ -323,7 +322,6 @@ object IrTree : AbstractTreeBuilder() {
             """.trimIndent()
         }
     }
-    val attributeContainer: Element by element(Declaration)
     val mutableAnnotationContainer: Element by element(Declaration) {
         parent(type(Packages.declarations, "IrAnnotationContainer"))
 
@@ -477,7 +475,6 @@ object IrTree : AbstractTreeBuilder() {
         parent(possiblyExternalDeclaration)
         parent(overridableDeclaration.withArgs("S" to propertySymbol))
         parent(metadataSourceOwner)
-        parent(attributeContainer)
         parent(memberWithContainerSource)
 
         +descriptor("PropertyDescriptor")
@@ -528,7 +525,6 @@ object IrTree : AbstractTreeBuilder() {
     val simpleFunction: Element by element(Declaration) {
         parent(function)
         parent(overridableDeclaration.withArgs("S" to simpleFunctionSymbol))
-        parent(attributeContainer)
 
         +descriptor("FunctionDescriptor")
         +declaredSymbol(simpleFunctionSymbol)
@@ -617,7 +613,6 @@ object IrTree : AbstractTreeBuilder() {
 
         parent(statement)
         parent(varargElement)
-        parent(attributeContainer)
 
         +field("type", irTypeType)
     }
