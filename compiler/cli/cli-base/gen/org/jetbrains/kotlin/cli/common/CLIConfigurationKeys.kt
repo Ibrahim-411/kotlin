@@ -17,9 +17,11 @@ import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfigurationService
 import org.jetbrains.kotlin.cli.common.config.ContentRoot
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.cli.common.modules.ModuleChunk
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
+import org.jetbrains.kotlin.utils.KotlinPaths
 
 object CLIConfigurationKeys {
     // Roots, including dependencies and own sources
@@ -65,6 +67,18 @@ object CLIConfigurationKeys {
     // used in FIR IDE uast tests
     @JvmField
     val PATH_TO_KOTLIN_COMPILER_JAR = CompilerConfigurationKey.create<File>("jar of Kotlin compiler in Kotlin plugin")
+
+    @JvmField
+    val ALLOW_NO_SOURCE_FILES = CompilerConfigurationKey.create<Boolean>("allow no source files compilation")
+
+    @JvmField
+    val KOTLIN_PATHS = CompilerConfigurationKey.create<KotlinPaths>("Kotlin paths")
+
+    @JvmField
+    val MODULE_CHUNK = CompilerConfigurationKey.create<ModuleChunk>("Module chunk")
+
+    @JvmField
+    val BUILD_FILE = CompilerConfigurationKey.create<File>("Build file")
 
 }
 
@@ -114,4 +128,20 @@ var CompilerConfiguration.flexiblePhaseConfig: PhaseConfigurationService?
 var CompilerConfiguration.pathToKotlinCompilerJar: File?
     get() = get(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR)
     set(value) { putIfNotNull(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR, value) }
+
+var CompilerConfiguration.allowNoSourceFiles: Boolean
+    get() = getBoolean(CLIConfigurationKeys.ALLOW_NO_SOURCE_FILES)
+    set(value) { putIfNotNull(CLIConfigurationKeys.ALLOW_NO_SOURCE_FILES, value) }
+
+var CompilerConfiguration.kotlinPaths: KotlinPaths?
+    get() = get(CLIConfigurationKeys.KOTLIN_PATHS)
+    set(value) { putIfNotNull(CLIConfigurationKeys.KOTLIN_PATHS, value) }
+
+var CompilerConfiguration.moduleChunk: ModuleChunk?
+    get() = get(CLIConfigurationKeys.MODULE_CHUNK)
+    set(value) { putIfNotNull(CLIConfigurationKeys.MODULE_CHUNK, value) }
+
+var CompilerConfiguration.buildFile: File?
+    get() = get(CLIConfigurationKeys.BUILD_FILE)
+    set(value) { putIfNotNull(CLIConfigurationKeys.BUILD_FILE, value) }
 
