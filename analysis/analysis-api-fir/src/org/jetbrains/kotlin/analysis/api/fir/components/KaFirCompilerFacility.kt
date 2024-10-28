@@ -18,8 +18,10 @@ import org.jetbrains.kotlin.analysis.api.fir.KaFirSession
 import org.jetbrains.kotlin.analysis.api.impl.base.components.KaSessionComponent
 import org.jetbrains.kotlin.analysis.api.impl.base.util.KaBaseCompiledFileForOutputFile
 import org.jetbrains.kotlin.analysis.api.lifetime.withValidityAssertion
+import org.jetbrains.kotlin.analysis.api.platform.projectStructure.KotlinProjectStructureProvider
 import org.jetbrains.kotlin.analysis.api.projectStructure.KaDanglingFileModule
 import org.jetbrains.kotlin.analysis.api.projectStructure.KaModule
+import org.jetbrains.kotlin.analysis.api.projectStructure.contextModule
 import org.jetbrains.kotlin.analysis.low.level.api.fir.LLFirInternals
 import org.jetbrains.kotlin.analysis.low.level.api.fir.api.*
 import org.jetbrains.kotlin.analysis.low.level.api.fir.compile.CodeFragmentCapturedId
@@ -93,6 +95,8 @@ import org.jetbrains.kotlin.load.kotlin.toSourceElement
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
+import org.jetbrains.kotlin.platform.isCommon
+import org.jetbrains.kotlin.platform.jvm.isJvm
 import org.jetbrains.kotlin.psi.*
 import org.jetbrains.kotlin.psi2ir.generators.fragments.EvaluatorFragmentInfo
 import org.jetbrains.kotlin.resolve.source.PsiSourceFile
@@ -113,7 +117,20 @@ internal class KaFirCompilerFacility(
         allowedErrorFilter: (KaDiagnostic) -> Boolean
     ): KaCompilationResult = withValidityAssertion {
         try {
-            compileUnsafe(file, configuration, target, allowedErrorFilter)
+            val fileModule = firResolveSession.getModule(file)
+            if (fileModule.targetPlatform.isCommon() && target is KaCompilerTarget.Jvm) {
+                val implementingJvmModule = KotlinProjectStructureProvider.getInstance(project)
+                    .getImplementingModules(fileModule)
+                    .find { it.targetPlatform.isJvm() }
+                    ?: throw RuntimeException("Cannot compile a common source without a JVM counterpart")
+
+                val fileCopy = KtPsiFactory(project).createFile(file.name, file.text)
+                fileCopy.contextModule = implementingJvmModule
+
+                return compileUnsafe(fileCopy, configuration, target, allowedErrorFilter)
+            }
+
+            return compileUnsafe(file, configuration, target, allowedErrorFilter)
         } catch (e: Throwable) {
             rethrowIntellijPlatformExceptionIfNeeded(e)
             throw KaCodeCompilationException(e)

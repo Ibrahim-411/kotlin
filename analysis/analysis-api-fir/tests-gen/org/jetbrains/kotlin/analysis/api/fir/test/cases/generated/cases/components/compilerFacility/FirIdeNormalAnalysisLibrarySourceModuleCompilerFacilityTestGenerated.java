@@ -59,6 +59,12 @@ public class FirIdeNormalAnalysisLibrarySourceModuleCompilerFacilityTestGenerate
   }
 
   @Test
+  @TestMetadata("commonSimple.kt")
+  public void testCommonSimple() {
+    runTest("analysis/analysis-api/testData/components/compilerFacility/compilation/commonSimple.kt");
+  }
+
+  @Test
   @TestMetadata("commonUsage.kt")
   public void testCommonUsage() {
     runTest("analysis/analysis-api/testData/components/compilerFacility/compilation/commonUsage.kt");
