@@ -6,6 +6,8 @@
 package org.jetbrains.kotlin.analysis.api.projectStructure
 
 import com.intellij.openapi.util.Key
+import com.intellij.testFramework.LightVirtualFile
+import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.KaImplementationDetail
 import org.jetbrains.kotlin.psi.KtCodeFragment
 import org.jetbrains.kotlin.psi.KtFile
@@ -24,10 +26,32 @@ public enum class KaDanglingFileResolutionMode {
     IGNORE_SELF
 }
 
-@OptIn(KaImplementationDetail::class)
+private val CONTEXT_MODULE_KEY = Key.create<KaModule>("CONTEXT_MODULE")
+
+/**
+ * A context module, against which analysis of this in-memory file should be performed.
+ *
+ * The [ contextModule] can only be specified for an in-memory file.
+ * [KtCodeFragment]s are not supported as they require a context element, not just a context module.
+ */
+@KaExperimentalApi
+public var KtFile.contextModule: KaModule?
+    get() = getUserData(CONTEXT_MODULE_KEY)
+    set(value) {
+        require(this !is KtCodeFragment) { "'contextModule' is not available for code fragments" }
+
+        val virtualFile = this.virtualFile
+        if (virtualFile != null) {
+            require(virtualFile is LightVirtualFile) { "'contextModule' is only available for in-memory files" }
+        }
+        putUserData(CONTEXT_MODULE_KEY, value)
+    }
+
+@OptIn(KaImplementationDetail::class, KaExperimentalApi::class)
 public val KtFile.isDangling: Boolean
     get() = when {
         this is KtCodeFragment -> true
+        contextModule != null -> true
         virtualFile?.analysisContextModule != null -> false
         !isPhysical -> true
         analysisContext != null -> true
