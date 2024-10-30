@@ -3,6 +3,8 @@
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 @file:Suppress("NEWER_VERSION_IN_SINCE_KOTLIN")
+@file:kotlin.internal.BuiltinWithoutBytecode
+
 package kotlin.concurrent
 
 /**
@@ -11,23 +13,26 @@ package kotlin.concurrent
  * Instances of [AtomicIntArray] are represented by [java.util.concurrent.atomic.AtomicIntegerArray] and provide the the same atomicity guarantees.
  */
 @SinceKotlin("2.2")
-public actual class AtomicIntArray {
+@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
+public class AtomicIntArray {
+    private val array: IntArray
+
     /**
      * Creates a new [AtomicIntArray] of the given [size], with all elements initialized to zero.
      *
      * @throws RuntimeException if the specified [size] is negative.
      */
-    public actual constructor(size: Int)
+    public constructor(size: Int)
 
     /**
      * Creates a new [AtomicIntArray] filled with elements of the given [array].
      */
-    public actual constructor(array: IntArray)
+    public constructor(array: IntArray)
 
     /**
      * Returns the number of elements in the array.
      */
-    public actual val size: Int get() = array.size
+    public val size: Int get() = array.size
 
     /**
      * Atomically gets the value of the element at the given [index].
@@ -36,7 +41,7 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun loadAt(index: Int): Int
+    public fun loadAt(index: Int): Int
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue].
@@ -45,7 +50,7 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun storeAt(index: Int, newValue: Int)
+    public fun storeAt(index: Int, newValue: Int)
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -55,7 +60,7 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun exchangeAt(index: Int, newValue: Int): Int
+    public fun exchangeAt(index: Int, newValue: Int): Int
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -68,7 +73,7 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun compareAndSetAt(index: Int, expectedValue: Int, newValue: Int): Boolean
+    public fun compareAndSetAt(index: Int, expectedValue: Int, newValue: Int): Boolean
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -84,7 +89,7 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun compareAndExchangeAt(index: Int, expectedValue: Int, newValue: Int): Int
+    public fun compareAndExchangeAt(index: Int, expectedValue: Int, newValue: Int): Int
 
     /**
      * Atomically adds the given [delta] to the element at the given [index] and returns the old value of the element.
@@ -93,7 +98,7 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun fetchAndAddAt(index: Int, delta: Int): Int
+    public fun fetchAndAddAt(index: Int, delta: Int): Int
 
     /**
      * Atomically adds the given [delta] to the element at the given [index] and returns the new value of the element.
@@ -102,14 +107,14 @@ public actual class AtomicIntArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun addAndFetchAt(index: Int, delta: Int): Int
+    public fun addAndFetchAt(index: Int, delta: Int): Int
 
     /**
      * Returns the string representation of the underlying array of ints.
      *
      * This operation does not provide any atomicity guarantees.
      */
-    public actual override fun toString(): String
+    public override fun toString(): String
 }
 
 /**
@@ -118,23 +123,26 @@ public actual class AtomicIntArray {
  * Instances of [AtomicLongArray] are represented by [java.util.concurrent.atomic.AtomicLongArray] and provide the the same atomicity guarantees.
  */
 @SinceKotlin("2.2")
-public actual class AtomicLongArray {
+@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
+public class AtomicLongArray {
+    private val array: LongArray
+
     /**
      * Creates a new [AtomicLongArray] of the given [size], with all elements initialized to zero.
      *
      * @throws RuntimeException if the specified [size] is negative.
      */
-    public actual constructor(size: Int)
+    public constructor(size: Int)
 
     /**
      * Creates a new [AtomicLongArray] filled with elements of the given [array].
      */
-    public actual constructor(array: LongArray)
+    public constructor(array: LongArray)
 
     /**
      * Returns the number of elements in the array.
      */
-    public actual val size: Int get() = array.size
+    public val size: Int get() = array.size
 
     /**
      * Atomically gets the value of the element at the given [index].
@@ -143,7 +151,7 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun loadAt(index: Int): Long
+    public fun loadAt(index: Int): Long
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue].
@@ -152,7 +160,7 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun storeAt(index: Int, newValue: Long)
+    public fun storeAt(index: Int, newValue: Long)
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -162,7 +170,7 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun exchangeAt(index: Int, newValue: Long): Long
+    public fun exchangeAt(index: Int, newValue: Long): Long
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -175,7 +183,7 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun compareAndSetAt(index: Int, expectedValue: Long, newValue: Long): Boolean
+    public fun compareAndSetAt(index: Int, expectedValue: Long, newValue: Long): Boolean
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -191,7 +199,7 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun compareAndExchangeAt(index: Int, expectedValue: Long, newValue: Long): Long
+    public fun compareAndExchangeAt(index: Int, expectedValue: Long, newValue: Long): Long
 
     /**
      * Atomically adds the given [delta] to the element at the given [index] and returns the old value of the element.
@@ -200,7 +208,7 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun fetchAndAddAt(index: Int, delta: Long): Long
+    public fun fetchAndAddAt(index: Int, delta: Long): Long
 
     /**
      * Atomically adds the given [delta] to the element at the given [index] and returns the new value of the element.
@@ -209,14 +217,14 @@ public actual class AtomicLongArray {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun addAndFetchAt(index: Int, delta: Long): Long
+    public fun addAndFetchAt(index: Int, delta: Long): Long
 
     /**
      * Returns the string representation of the underlying array of longs.
      *
      * This operation does not provide any atomicity guarantees.
      */
-    public actual override fun toString(): String
+    public override fun toString(): String
 }
 
 /**
@@ -225,16 +233,19 @@ public actual class AtomicLongArray {
  * Instances of [AtomicArray] are represented by [java.util.concurrent.atomic.AtomicReferenceArray] and provide the the same atomicity guarantees.
  */
 @SinceKotlin("2.2")
-public actual class AtomicArray<T> {
+@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
+public class AtomicArray<T> {
+    private val array: Array<T>
+
     /**
      * Creates a new [AtomicArray]<T> filled with elements of the given [array].
      */
-    public actual constructor (array: Array<T>)
+    public constructor (array: Array<T>)
 
     /**
      * Returns the number of elements in the array.
      */
-    public actual val size: Int
+    public val size: Int
 
     /**
      * Atomically gets the value of the element at the given [index].
@@ -243,7 +254,7 @@ public actual class AtomicArray<T> {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun loadAt(index: Int): T
+    public fun loadAt(index: Int): T
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue].
@@ -252,7 +263,7 @@ public actual class AtomicArray<T> {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun storeAt(index: Int, newValue: T)
+    public fun storeAt(index: Int, newValue: T)
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -262,7 +273,7 @@ public actual class AtomicArray<T> {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun exchangeAt(index: Int, newValue: T): T
+    public fun exchangeAt(index: Int, newValue: T): T
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -275,7 +286,7 @@ public actual class AtomicArray<T> {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun compareAndSetAt(index: Int, expectedValue: T, newValue: T): Boolean
+    public fun compareAndSetAt(index: Int, expectedValue: T, newValue: T): Boolean
 
     /**
      * Atomically sets the value of the element at the given [index] to the [new value][newValue]
@@ -291,12 +302,12 @@ public actual class AtomicArray<T> {
      *
      * @throws IndexOutOfBoundsException if the [index] is out of bounds of this array.
      */
-    public actual fun compareAndExchangeAt(index: Int, expectedValue: T, newValue: T): T
+    public fun compareAndExchangeAt(index: Int, expectedValue: T, newValue: T): T
 
     /**
      * Returns the string representation of the underlying array of objects.
      *
      * This operation does not provide any atomicity guarantees.
      */
-    public actual override fun toString(): String
+    public override fun toString(): String
 }
