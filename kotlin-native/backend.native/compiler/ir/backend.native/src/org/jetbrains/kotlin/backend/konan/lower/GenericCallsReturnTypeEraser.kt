@@ -18,6 +18,8 @@ import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 
 internal class GenericCallsReturnTypeEraser(val context: Context) : BodyLoweringPass {
+    private val reinterpret = context.ir.symbols.reinterpret.owner
+
     override fun lower(irBody: IrBody, container: IrDeclaration) {
         irBody.acceptChildrenVoid(object : IrElementVisitorVoid {
             override fun visitElement(element: IrElement) {
@@ -28,7 +30,7 @@ internal class GenericCallsReturnTypeEraser(val context: Context) : BodyLowering
                 expression.acceptChildrenVoid(this)
 
                 val callee = expression.target
-                if (callee.returnType.classifierOrNull is IrTypeParameterSymbol) {
+                if (callee != reinterpret && callee.returnType.classifierOrNull is IrTypeParameterSymbol) {
                     expression.type = callee.returnType.erasure()
                 }
             }
