@@ -13,6 +13,7 @@ import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrCall
 import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.types.classifierOrNull
+import org.jetbrains.kotlin.ir.util.target
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.acceptChildrenVoid
 
@@ -26,7 +27,7 @@ internal class GenericCallsReturnTypeEraser(val context: Context) : BodyLowering
             override fun visitCall(expression: IrCall) {
                 expression.acceptChildrenVoid(this)
 
-                val callee = expression.symbol.owner
+                val callee = expression.target
                 if (callee.returnType.classifierOrNull is IrTypeParameterSymbol) {
                     expression.type = callee.returnType.erasure()
                 }
