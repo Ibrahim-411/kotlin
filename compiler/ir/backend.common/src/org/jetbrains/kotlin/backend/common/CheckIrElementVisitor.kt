@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.ir.symbols.IrSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.isNullable
 import org.jetbrains.kotlin.ir.util.render
+import org.jetbrains.kotlin.ir.util.target
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 
 typealias ReportError = (element: IrElement, message: String) -> Unit
@@ -166,7 +167,7 @@ internal class CheckIrElementVisitor(
 
         // TODO: Why don't we check parameters as well?
 
-        val returnType = expression.symbol.owner.returnType
+        val returnType = expression.symbol.owner.target.returnType
         // TODO: We don't have the proper type substitution yet, so skip generics for now.
         if (returnType is IrSimpleType &&
             returnType.classifier is IrClassSymbol &&
