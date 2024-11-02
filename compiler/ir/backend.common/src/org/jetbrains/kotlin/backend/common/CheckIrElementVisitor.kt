@@ -12,6 +12,7 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.symbols.IrClassSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSymbol
+import org.jetbrains.kotlin.ir.symbols.IrTypeParameterSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.isNullable
 import org.jetbrains.kotlin.ir.util.render
@@ -167,13 +168,15 @@ internal class CheckIrElementVisitor(
 
         // TODO: Why don't we check parameters as well?
 
-        val returnType = expression.symbol.owner.let { it.resolveFakeOverrideMaybeAbstract() ?: it }.returnType
+        val callee = expression.symbol.owner
         // TODO: We don't have the proper type substitution yet, so skip generics for now.
+        val actualCallee = callee.resolveFakeOverrideMaybeAbstract { it.returnType.classifierOrNull !is IrTypeParameterSymbol } ?: callee
+        val returnType = actualCallee.returnType
         if (returnType is IrSimpleType &&
             returnType.classifier is IrClassSymbol &&
             returnType.arguments.isEmpty()
         ) {
-            expression.ensureTypeIs(returnType)
+            expression.ensureTypeIs(callee.returnType)
         }
 
         expression.superQualifierSymbol?.ensureBound(expression)
