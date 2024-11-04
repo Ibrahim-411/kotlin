@@ -7,11 +7,16 @@ package org.jetbrains.kotlin.interop
 
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import javax.inject.Inject
 
-abstract class NativeInteropExtension {
+abstract class NativeInteropExtension @Inject constructor(
+        /**
+         * Initialize native library building.
+         */
+        val finalizePlugin: () -> Unit,
+) {
     abstract val defFileName: Property<String>
     abstract val usePrebuiltSources: Property<Boolean>
-    abstract val implementationDependencies: ListProperty<String>
     abstract val commonCompilerArgs: ListProperty<String>
     abstract val cCompilerArgs: ListProperty<String>
     abstract val cppCompilerArgs: ListProperty<String>
