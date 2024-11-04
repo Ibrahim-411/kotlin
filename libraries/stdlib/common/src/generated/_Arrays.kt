@@ -14215,6 +14215,8 @@ public inline fun <R : Comparable<R>> CharArray.maxByOrNull(selector: (Char) -> 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14237,6 +14239,8 @@ public inline fun <T> Array<out T>.maxOf(selector: (T) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14259,6 +14263,8 @@ public inline fun ByteArray.maxOf(selector: (Byte) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14281,6 +14287,8 @@ public inline fun ShortArray.maxOf(selector: (Short) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14303,6 +14311,8 @@ public inline fun IntArray.maxOf(selector: (Int) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14325,6 +14335,8 @@ public inline fun LongArray.maxOf(selector: (Long) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14347,6 +14359,8 @@ public inline fun FloatArray.maxOf(selector: (Float) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14369,6 +14383,8 @@ public inline fun DoubleArray.maxOf(selector: (Double) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14391,6 +14407,8 @@ public inline fun BooleanArray.maxOf(selector: (Boolean) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14413,6 +14431,8 @@ public inline fun CharArray.maxOf(selector: (Char) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14435,6 +14455,8 @@ public inline fun <T> Array<out T>.maxOf(selector: (T) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14457,6 +14479,8 @@ public inline fun ByteArray.maxOf(selector: (Byte) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14479,6 +14503,8 @@ public inline fun ShortArray.maxOf(selector: (Short) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14501,6 +14527,8 @@ public inline fun IntArray.maxOf(selector: (Int) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14523,6 +14551,8 @@ public inline fun LongArray.maxOf(selector: (Long) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14545,6 +14575,8 @@ public inline fun FloatArray.maxOf(selector: (Float) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14567,6 +14599,8 @@ public inline fun DoubleArray.maxOf(selector: (Double) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14589,6 +14623,8 @@ public inline fun BooleanArray.maxOf(selector: (Boolean) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14608,7 +14644,11 @@ public inline fun CharArray.maxOf(selector: (Char) -> Float): Float {
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14630,7 +14670,11 @@ public inline fun <T, R : Comparable<R>> Array<out T>.maxOf(selector: (T) -> R):
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14652,7 +14696,11 @@ public inline fun <R : Comparable<R>> ByteArray.maxOf(selector: (Byte) -> R): R 
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14674,7 +14722,11 @@ public inline fun <R : Comparable<R>> ShortArray.maxOf(selector: (Short) -> R): 
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14696,7 +14748,11 @@ public inline fun <R : Comparable<R>> IntArray.maxOf(selector: (Int) -> R): R {
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14718,7 +14774,11 @@ public inline fun <R : Comparable<R>> LongArray.maxOf(selector: (Long) -> R): R 
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14740,7 +14800,11 @@ public inline fun <R : Comparable<R>> FloatArray.maxOf(selector: (Float) -> R): 
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14762,7 +14826,11 @@ public inline fun <R : Comparable<R>> DoubleArray.maxOf(selector: (Double) -> R)
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14784,7 +14852,11 @@ public inline fun <R : Comparable<R>> BooleanArray.maxOf(selector: (Boolean) -> 
  * Returns the largest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14804,9 +14876,11 @@ public inline fun <R : Comparable<R>> CharArray.maxOf(selector: (Char) -> R): R 
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14824,9 +14898,11 @@ public inline fun <T> Array<out T>.maxOfOrNull(selector: (T) -> Double): Double?
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14844,9 +14920,11 @@ public inline fun ByteArray.maxOfOrNull(selector: (Byte) -> Double): Double? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14864,9 +14942,11 @@ public inline fun ShortArray.maxOfOrNull(selector: (Short) -> Double): Double? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14884,9 +14964,11 @@ public inline fun IntArray.maxOfOrNull(selector: (Int) -> Double): Double? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14904,9 +14986,11 @@ public inline fun LongArray.maxOfOrNull(selector: (Long) -> Double): Double? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14924,9 +15008,11 @@ public inline fun FloatArray.maxOfOrNull(selector: (Float) -> Double): Double? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14944,9 +15030,11 @@ public inline fun DoubleArray.maxOfOrNull(selector: (Double) -> Double): Double?
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14964,9 +15052,11 @@ public inline fun BooleanArray.maxOfOrNull(selector: (Boolean) -> Double): Doubl
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -14984,9 +15074,11 @@ public inline fun CharArray.maxOfOrNull(selector: (Char) -> Double): Double? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15004,9 +15096,11 @@ public inline fun <T> Array<out T>.maxOfOrNull(selector: (T) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15024,9 +15118,11 @@ public inline fun ByteArray.maxOfOrNull(selector: (Byte) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15044,9 +15140,11 @@ public inline fun ShortArray.maxOfOrNull(selector: (Short) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15064,9 +15162,11 @@ public inline fun IntArray.maxOfOrNull(selector: (Int) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15084,9 +15184,11 @@ public inline fun LongArray.maxOfOrNull(selector: (Long) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15104,9 +15206,11 @@ public inline fun FloatArray.maxOfOrNull(selector: (Float) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15124,9 +15228,11 @@ public inline fun DoubleArray.maxOfOrNull(selector: (Double) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15144,9 +15250,11 @@ public inline fun BooleanArray.maxOfOrNull(selector: (Boolean) -> Float): Float?
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15164,7 +15272,11 @@ public inline fun CharArray.maxOfOrNull(selector: (Char) -> Float): Float? {
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15184,7 +15296,11 @@ public inline fun <T, R : Comparable<R>> Array<out T>.maxOfOrNull(selector: (T) 
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15204,7 +15320,11 @@ public inline fun <R : Comparable<R>> ByteArray.maxOfOrNull(selector: (Byte) -> 
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15224,7 +15344,11 @@ public inline fun <R : Comparable<R>> ShortArray.maxOfOrNull(selector: (Short) -
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15244,7 +15368,11 @@ public inline fun <R : Comparable<R>> IntArray.maxOfOrNull(selector: (Int) -> R)
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15264,7 +15392,11 @@ public inline fun <R : Comparable<R>> LongArray.maxOfOrNull(selector: (Long) -> 
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15284,7 +15416,11 @@ public inline fun <R : Comparable<R>> FloatArray.maxOfOrNull(selector: (Float) -
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15304,7 +15440,11 @@ public inline fun <R : Comparable<R>> DoubleArray.maxOfOrNull(selector: (Double)
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -15324,7 +15464,11 @@ public inline fun <R : Comparable<R>> BooleanArray.maxOfOrNull(selector: (Boolea
 
 /**
  * Returns the largest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16845,6 +16989,8 @@ public inline fun <R : Comparable<R>> CharArray.minByOrNull(selector: (Char) -> 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16867,6 +17013,8 @@ public inline fun <T> Array<out T>.minOf(selector: (T) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16889,6 +17037,8 @@ public inline fun ByteArray.minOf(selector: (Byte) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16911,6 +17061,8 @@ public inline fun ShortArray.minOf(selector: (Short) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16933,6 +17085,8 @@ public inline fun IntArray.minOf(selector: (Int) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16955,6 +17109,8 @@ public inline fun LongArray.minOf(selector: (Long) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16977,6 +17133,8 @@ public inline fun FloatArray.minOf(selector: (Float) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -16999,6 +17157,8 @@ public inline fun DoubleArray.minOf(selector: (Double) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17021,6 +17181,8 @@ public inline fun BooleanArray.minOf(selector: (Boolean) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17043,6 +17205,8 @@ public inline fun CharArray.minOf(selector: (Char) -> Double): Double {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17065,6 +17229,8 @@ public inline fun <T> Array<out T>.minOf(selector: (T) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17087,6 +17253,8 @@ public inline fun ByteArray.minOf(selector: (Byte) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17109,6 +17277,8 @@ public inline fun ShortArray.minOf(selector: (Short) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17131,6 +17301,8 @@ public inline fun IntArray.minOf(selector: (Int) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17153,6 +17325,8 @@ public inline fun LongArray.minOf(selector: (Long) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17175,6 +17349,8 @@ public inline fun FloatArray.minOf(selector: (Float) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17197,6 +17373,8 @@ public inline fun DoubleArray.minOf(selector: (Double) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17219,6 +17397,8 @@ public inline fun BooleanArray.minOf(selector: (Boolean) -> Float): Float {
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17238,7 +17418,11 @@ public inline fun CharArray.minOf(selector: (Char) -> Float): Float {
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17260,7 +17444,11 @@ public inline fun <T, R : Comparable<R>> Array<out T>.minOf(selector: (T) -> R):
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17282,7 +17470,11 @@ public inline fun <R : Comparable<R>> ByteArray.minOf(selector: (Byte) -> R): R 
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17304,7 +17496,11 @@ public inline fun <R : Comparable<R>> ShortArray.minOf(selector: (Short) -> R): 
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17326,7 +17522,11 @@ public inline fun <R : Comparable<R>> IntArray.minOf(selector: (Int) -> R): R {
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17348,7 +17548,11 @@ public inline fun <R : Comparable<R>> LongArray.minOf(selector: (Long) -> R): R 
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17370,7 +17574,11 @@ public inline fun <R : Comparable<R>> FloatArray.minOf(selector: (Float) -> R): 
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17392,7 +17600,11 @@ public inline fun <R : Comparable<R>> DoubleArray.minOf(selector: (Double) -> R)
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17414,7 +17626,11 @@ public inline fun <R : Comparable<R>> BooleanArray.minOf(selector: (Boolean) -> 
  * Returns the smallest value among all values produced by [selector] function
  * applied to each element in the array.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17434,9 +17650,11 @@ public inline fun <R : Comparable<R>> CharArray.minOf(selector: (Char) -> R): R 
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17454,9 +17672,11 @@ public inline fun <T> Array<out T>.minOfOrNull(selector: (T) -> Double): Double?
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17474,9 +17694,11 @@ public inline fun ByteArray.minOfOrNull(selector: (Byte) -> Double): Double? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17494,9 +17716,11 @@ public inline fun ShortArray.minOfOrNull(selector: (Short) -> Double): Double? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17514,9 +17738,11 @@ public inline fun IntArray.minOfOrNull(selector: (Int) -> Double): Double? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17534,9 +17760,11 @@ public inline fun LongArray.minOfOrNull(selector: (Long) -> Double): Double? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17554,9 +17782,11 @@ public inline fun FloatArray.minOfOrNull(selector: (Float) -> Double): Double? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17574,9 +17804,11 @@ public inline fun DoubleArray.minOfOrNull(selector: (Double) -> Double): Double?
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17594,9 +17826,11 @@ public inline fun BooleanArray.minOfOrNull(selector: (Boolean) -> Double): Doubl
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17614,9 +17848,11 @@ public inline fun CharArray.minOfOrNull(selector: (Char) -> Double): Double? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17634,9 +17870,11 @@ public inline fun <T> Array<out T>.minOfOrNull(selector: (T) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17654,9 +17892,11 @@ public inline fun ByteArray.minOfOrNull(selector: (Byte) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17674,9 +17914,11 @@ public inline fun ShortArray.minOfOrNull(selector: (Short) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17694,9 +17936,11 @@ public inline fun IntArray.minOfOrNull(selector: (Int) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17714,9 +17958,11 @@ public inline fun LongArray.minOfOrNull(selector: (Long) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17734,9 +17980,11 @@ public inline fun FloatArray.minOfOrNull(selector: (Float) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17754,9 +18002,11 @@ public inline fun DoubleArray.minOfOrNull(selector: (Double) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17774,9 +18024,11 @@ public inline fun BooleanArray.minOfOrNull(selector: (Boolean) -> Float): Float?
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
  * 
  * If any of values produced by [selector] function is `NaN`, the returned result is `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullFloatingResult
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17794,7 +18046,11 @@ public inline fun CharArray.minOfOrNull(selector: (Char) -> Float): Float? {
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17814,7 +18070,11 @@ public inline fun <T, R : Comparable<R>> Array<out T>.minOfOrNull(selector: (T) 
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17834,7 +18094,11 @@ public inline fun <R : Comparable<R>> ByteArray.minOfOrNull(selector: (Byte) -> 
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17854,7 +18118,11 @@ public inline fun <R : Comparable<R>> ShortArray.minOfOrNull(selector: (Short) -
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17874,7 +18142,11 @@ public inline fun <R : Comparable<R>> IntArray.minOfOrNull(selector: (Int) -> R)
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17894,7 +18166,11 @@ public inline fun <R : Comparable<R>> LongArray.minOfOrNull(selector: (Long) -> 
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17914,7 +18190,11 @@ public inline fun <R : Comparable<R>> FloatArray.minOfOrNull(selector: (Float) -
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17934,7 +18214,11 @@ public inline fun <R : Comparable<R>> DoubleArray.minOfOrNull(selector: (Double)
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -17954,7 +18238,11 @@ public inline fun <R : Comparable<R>> BooleanArray.minOfOrNull(selector: (Boolea
 
 /**
  * Returns the smallest value among all values produced by [selector] function
- * applied to each element in the array or `null` if there are no elements.
+ * applied to each element in the array or `null` if the array is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)

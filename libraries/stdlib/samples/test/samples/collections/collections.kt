@@ -819,6 +819,178 @@ class Collections {
         }
 
         @Sample
+        fun maxOfPrimitive() {
+            val numbers = intArrayOf(13, 7, 2, 64)
+            // The largest String representation
+            assertPrints(numbers.maxOf { it.toString() }, "7")
+
+            val emptyArray = intArrayOf()
+            assertFailsWith<NoSuchElementException> { emptyArray.maxOf { it.toString() } }
+        }
+
+        @Sample
+        fun minOfPrimitive() {
+            val numbers = intArrayOf(13, 7, 2, 64)
+            // The smallest String representation
+            assertPrints(numbers.minOf { it.toString() }, "13")
+
+            val emptyArray = intArrayOf()
+            assertFailsWith<NoSuchElementException> { emptyArray.minOf { it.toString() } }
+        }
+
+        @Sample
+        fun maxOfGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The length of the longest name
+            assertPrints(names.maxOf { it.length }, "5")
+
+            val emptyList = emptyList<String>()
+            assertFailsWith<NoSuchElementException> { emptyList.maxOf { it.length } }
+        }
+
+        @Sample
+        fun minOfGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The length of the shortest name
+            assertPrints(names.minOf { it.length }, "3")
+
+            val emptyList = emptyList<String>()
+            assertFailsWith<NoSuchElementException> { emptyList.minOf { it.length } }
+        }
+
+        @Sample
+        fun maxOfFloatingResult() {
+            data class Rectangle(val width: Double, val height: Double) {
+                val aspectRatio: Double get() = if (height != 0.0) width / height else Double.NaN
+            }
+
+            val rectangles = listOf(
+                Rectangle(15.0, 10.0),
+                Rectangle(25.0, 20.0),
+                Rectangle(40.0, 30.0),
+            )
+            // The largest width-to-height ratio
+            val largestAspectRatio = rectangles.maxOf { it.aspectRatio }
+            assertPrints(largestAspectRatio, "1.5")
+
+            val rectanglesAndPoint = rectangles + Rectangle(0.0, 0.0)
+            // Aspect ratio of a point (0.0 by 0.0) is NaN, hence the result is NaN
+            assertPrints(rectanglesAndPoint.maxOf { it.aspectRatio }, "NaN")
+
+            val emptyList = emptyList<Rectangle>()
+            assertFailsWith<NoSuchElementException> { emptyList.maxOf { it.aspectRatio } }
+        }
+
+        @Sample
+        fun minOfFloatingResult() {
+            data class Rectangle(val width: Double, val height: Double) {
+                val aspectRatio: Double get() = if (height != 0.0) width / height else Double.NaN
+            }
+
+            val rectangles = listOf(
+                Rectangle(15.0, 10.0),
+                Rectangle(25.0, 20.0),
+                Rectangle(40.0, 30.0),
+            )
+            // The smallest width-to-height ratio
+            val smallestAspectRatio = rectangles.minOf { it.aspectRatio }
+            assertPrints(smallestAspectRatio, "1.25")
+
+            val rectanglesAndPoint = rectangles + Rectangle(0.0, 0.0)
+            // Aspect ratio of a point (0.0 by 0.0) is NaN, hence the result is NaN
+            assertPrints(rectanglesAndPoint.minOf { it.aspectRatio }, "NaN")
+
+            val emptyList = emptyList<Rectangle>()
+            assertFailsWith<NoSuchElementException> { emptyList.minOf { it.aspectRatio } }
+        }
+
+        @Sample
+        fun maxOfOrNullPrimitive() {
+            val numbers = intArrayOf(13, 7, 2, 64)
+            // The largest String representation
+            assertPrints(numbers.maxOfOrNull { it.toString() }, "7")
+
+            val emptyArray = intArrayOf()
+            assertPrints(emptyArray.maxOfOrNull { it.toString() }, "null")
+        }
+
+        @Sample
+        fun minOfOrNullPrimitive() {
+            val numbers = intArrayOf(13, 7, 2, 64)
+            // The smallest String representation
+            assertPrints(numbers.minOfOrNull { it.toString() }, "13")
+
+            val emptyArray = intArrayOf()
+            assertPrints(emptyArray.minOfOrNull { it.toString() }, "null")
+        }
+
+        @Sample
+        fun maxOfOrNullGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The length of the longest name
+            assertPrints(names.maxOfOrNull { it.length }, "5")
+
+            val emptyList = emptyList<String>()
+            assertPrints(emptyList.maxOfOrNull { it.length }, "null")
+        }
+
+        @Sample
+        fun minOfOrNullGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The length of the shortest name
+            assertPrints(names.minOfOrNull { it.length }, "3")
+
+            val emptyList = emptyList<String>()
+            assertPrints(emptyList.minOfOrNull { it.length }, "null")
+        }
+
+        @Sample
+        fun maxOfOrNullFloatingResult() {
+            data class Rectangle(val width: Double, val height: Double) {
+                val aspectRatio: Double get() = if (height != 0.0) width / height else Double.NaN
+            }
+
+            val rectangles = listOf(
+                Rectangle(15.0, 10.0),
+                Rectangle(25.0, 20.0),
+                Rectangle(40.0, 30.0),
+            )
+            // The largest width-to-height ratio
+            val largestAspectRatio = rectangles.maxOfOrNull { it.aspectRatio }
+            assertPrints(largestAspectRatio, "1.5")
+
+            val rectanglesAndPoint = rectangles + Rectangle(0.0, 0.0)
+            // Aspect ratio of a point (0.0 by 0.0) is NaN, hence the result is NaN
+            assertPrints(rectanglesAndPoint.maxOfOrNull { it.aspectRatio }, "NaN")
+
+            val emptyList = emptyList<Rectangle>()
+            assertPrints(emptyList.maxOfOrNull { it.aspectRatio }, "null")
+        }
+
+        @Sample
+        fun minOfOrNullFloatingResult() {
+            data class Rectangle(val width: Double, val height: Double) {
+                val aspectRatio: Double get() = if (height != 0.0) width / height else Double.NaN
+            }
+
+            val rectangles = listOf(
+                Rectangle(15.0, 10.0),
+                Rectangle(25.0, 20.0),
+                Rectangle(40.0, 30.0),
+            )
+            // The smallest width-to-height ratio
+            val smallestAspectRatio = rectangles.minOfOrNull { it.aspectRatio }
+            assertPrints(smallestAspectRatio, "1.25")
+
+            val rectanglesAndPoint = rectangles + Rectangle(0.0, 0.0)
+            // Aspect ratio of a point (0.0 by 0.0) is NaN, hence the result is NaN
+            assertPrints(rectanglesAndPoint.minOfOrNull { it.aspectRatio }, "NaN")
+
+            val emptyList = emptyList<Rectangle>()
+            assertPrints(emptyList.minOfOrNull { it.aspectRatio }, "null")
+        }
+
+        @Sample
         fun maxByOrNull() {
             val nameToAge = listOf("Alice" to 42, "Bob" to 28, "Carol" to 51)
             val oldestPerson = nameToAge.maxByOrNull { it.second }
