@@ -1876,9 +1876,11 @@ public inline fun <T> Iterable<T>.forEachIndexed(action: (index: Int, T) -> Unit
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -1897,9 +1899,11 @@ public fun Iterable<Double>.max(): Double {
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -1918,7 +1922,11 @@ public fun Iterable<Float>.max(): Float {
 /**
  * Returns the largest element.
  * 
+ * If there are multiple equal maximal elements, this function returns the first of those elements.
+ * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxGeneric
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -2161,9 +2169,11 @@ public inline fun <T, R> Iterable<T>.maxOfWithOrNull(comparator: Comparator<in R
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the collection is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Iterable<Double>.maxOrNull(): Double? {
@@ -2178,9 +2188,11 @@ public fun Iterable<Double>.maxOrNull(): Double? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the collection is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Iterable<Float>.maxOrNull(): Float? {
@@ -2195,7 +2207,11 @@ public fun Iterable<Float>.maxOrNull(): Float? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the collection is empty.
+ * 
+ * If there are multiple equal maximal elements, this function returns the first of those elements.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullGeneric
  */
 @SinceKotlin("1.4")
 public fun <T : Comparable<T>> Iterable<T>.maxOrNull(): T? {
@@ -2246,9 +2262,11 @@ public fun <T> Iterable<T>.maxWithOrNull(comparator: Comparator<in T>): T? {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -2267,9 +2285,11 @@ public fun Iterable<Double>.min(): Double {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -2288,7 +2308,11 @@ public fun Iterable<Float>.min(): Float {
 /**
  * Returns the smallest element.
  * 
+ * If there are multiple equal minimal elements, this function returns the first of those elements.
+ * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minGeneric
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -2531,9 +2555,11 @@ public inline fun <T, R> Iterable<T>.minOfWithOrNull(comparator: Comparator<in R
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the collection is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Iterable<Double>.minOrNull(): Double? {
@@ -2548,9 +2574,11 @@ public fun Iterable<Double>.minOrNull(): Double? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the collection is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Iterable<Float>.minOrNull(): Float? {
@@ -2565,7 +2593,11 @@ public fun Iterable<Float>.minOrNull(): Float? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the collection is empty.
+ * 
+ * If there are multiple equal minimal elements, this function returns the first of those elements.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullGeneric
  */
 @SinceKotlin("1.4")
 public fun <T : Comparable<T>> Iterable<T>.minOrNull(): T? {

@@ -5871,6 +5871,8 @@ public inline fun UShortArray.forEachIndexed(action: (index: Int, UShort) -> Uni
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow-U")
@@ -5890,6 +5892,8 @@ public fun UIntArray.max(): UInt {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow-U")
@@ -5909,6 +5913,8 @@ public fun ULongArray.max(): ULong {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow-U")
@@ -5928,6 +5934,8 @@ public fun UByteArray.max(): UByte {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow-U")
@@ -6864,7 +6872,9 @@ public inline fun <R> UShortArray.maxOfWithOrNull(comparator: Comparator<in R>, 
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -6879,7 +6889,9 @@ public fun UIntArray.maxOrNull(): UInt? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -6894,7 +6906,9 @@ public fun ULongArray.maxOrNull(): ULong? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -6909,7 +6923,9 @@ public fun UByteArray.maxOrNull(): UByte? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -7063,6 +7079,8 @@ public fun UShortArray.maxWithOrNull(comparator: Comparator<in UShort>): UShort?
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow-U")
@@ -7082,6 +7100,8 @@ public fun UIntArray.min(): UInt {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow-U")
@@ -7101,6 +7121,8 @@ public fun ULongArray.min(): ULong {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow-U")
@@ -7120,6 +7142,8 @@ public fun UByteArray.min(): UByte {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow-U")
@@ -8056,7 +8080,9 @@ public inline fun <R> UShortArray.minOfWithOrNull(comparator: Comparator<in R>, 
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -8071,7 +8097,9 @@ public fun UIntArray.minOrNull(): UInt? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -8086,7 +8114,9 @@ public fun ULongArray.minOrNull(): ULong? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes
@@ -8101,7 +8131,9 @@ public fun UByteArray.minOrNull(): UByte? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 @ExperimentalUnsignedTypes

@@ -695,6 +695,130 @@ class Collections {
         }
 
         @Sample
+        fun maxPrimitive() {
+            val numbers = intArrayOf(3, 7, 2, 6)
+            assertPrints(numbers.max(), "7")
+
+            val emptyArray = intArrayOf()
+            assertFailsWith<NoSuchElementException> { emptyArray.max() }
+        }
+
+        @Sample
+        fun minPrimitive() {
+            val numbers = intArrayOf(3, 7, 2, 6)
+            assertPrints(numbers.min(), "2")
+
+            val emptyArray = intArrayOf()
+            assertFailsWith<NoSuchElementException> { emptyArray.min() }
+        }
+
+        @Sample
+        fun maxFloating() {
+            val numbers = doubleArrayOf(3.0, 7.2, 2.4, 6.5)
+            assertPrints(numbers.max(), "7.2")
+
+            val numbersWithNaN = doubleArrayOf(3.0, Double.NaN, 7.2, 2.4, 6.5)
+            assertPrints(numbersWithNaN.max(), "NaN")
+
+            val emptyArray = doubleArrayOf()
+            assertFailsWith<NoSuchElementException> { emptyArray.max() }
+        }
+
+        @Sample
+        fun minFloating() {
+            val numbers = doubleArrayOf(3.0, 7.2, 2.4, 6.5)
+            assertPrints(numbers.min(), "2.4")
+
+            val numbersWithNaN = doubleArrayOf(3.0, Double.NaN, 7.2, 2.4, 6.5)
+            assertPrints(numbersWithNaN.min(), "NaN")
+
+            val emptyArray = doubleArrayOf()
+            assertFailsWith<NoSuchElementException> { emptyArray.min() }
+        }
+
+        @Sample
+        fun maxGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The largest element according to String.compareTo
+            assertPrints(names.max(), "Carol")
+
+            val emptyList = emptyList<Int>()
+            assertFailsWith<NoSuchElementException> { emptyList.max() }
+        }
+
+        @Sample
+        fun minGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The smallest element according to String.compareTo
+            assertPrints(names.min(), "Alice")
+
+            val emptyList = emptyList<Int>()
+            assertFailsWith<NoSuchElementException> { emptyList.min() }
+        }
+
+        @Sample
+        fun maxOrNullPrimitive() {
+            val numbers = intArrayOf(3, 7, 2, 6)
+            assertPrints(numbers.maxOrNull(), "7")
+
+            val emptyArray = intArrayOf()
+            assertPrints(emptyArray.maxOrNull(), "null")
+        }
+
+        @Sample
+        fun minOrNullPrimitive() {
+            val numbers = intArrayOf(3, 7, 2, 6)
+            assertPrints(numbers.minOrNull(), "2")
+
+            val emptyArray = intArrayOf()
+            assertPrints(emptyArray.minOrNull(), "null")
+        }
+
+        @Sample
+        fun maxOrNullFloating() {
+            val numbers = doubleArrayOf(3.0, 7.2, 2.4, 6.5)
+            assertPrints(numbers.maxOrNull(), "7.2")
+
+            val numbersWithNaN = doubleArrayOf(3.0, Double.NaN, 7.2, 2.4, 6.5)
+            assertPrints(numbersWithNaN.maxOrNull(), "NaN")
+
+            val emptyArray = doubleArrayOf()
+            assertPrints(emptyArray.maxOrNull(), "null")
+        }
+
+        @Sample
+        fun minOrNullFloating() {
+            val numbers = doubleArrayOf(3.0, 7.2, 2.4, 6.5)
+            assertPrints(numbers.minOrNull(), "2.4")
+
+            val numbersWithNaN = doubleArrayOf(3.0, Double.NaN, 7.2, 2.4, 6.5)
+            assertPrints(numbersWithNaN.minOrNull(), "NaN")
+
+            val emptyArray = doubleArrayOf()
+            assertPrints(emptyArray.minOrNull(), "null")
+        }
+
+        @Sample
+        fun maxOrNullGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The largest element according to String.compareTo
+            assertPrints(names.maxOrNull(), "Carol")
+
+            val emptyList = emptyList<Int>()
+            assertPrints(emptyList.maxOrNull(), "null")
+        }
+
+        @Sample
+        fun minOrNullGeneric() {
+            val names = listOf("Alice", "Bob", "Carol")
+            // The smallest element according to String.compareTo
+            assertPrints(names.minOrNull(), "Alice")
+
+            val emptyList = emptyList<Int>()
+            assertPrints(emptyList.minOrNull(), "null")
+        }
+
+        @Sample
         fun maxByOrNull() {
             val nameToAge = listOf("Alice" to 42, "Bob" to 28, "Carol" to 51)
             val oldestPerson = nameToAge.maxByOrNull { it.second }

@@ -13551,9 +13551,11 @@ public inline fun CharArray.forEachIndexed(action: (index: Int, Char) -> Unit): 
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13571,9 +13573,11 @@ public fun Array<out Double>.max(): Double {
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13591,7 +13595,11 @@ public fun Array<out Float>.max(): Float {
 /**
  * Returns the largest element.
  * 
+ * If there are multiple equal maximal elements, this function returns the first of those elements.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxGeneric
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13610,6 +13618,8 @@ public fun <T : Comparable<T>> Array<out T>.max(): T {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13628,6 +13638,8 @@ public fun ByteArray.max(): Byte {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13646,6 +13658,8 @@ public fun ShortArray.max(): Short {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13664,6 +13678,8 @@ public fun IntArray.max(): Int {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13681,9 +13697,11 @@ public fun LongArray.max(): Long {
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13701,9 +13719,11 @@ public fun FloatArray.max(): Float {
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -13722,6 +13742,8 @@ public fun DoubleArray.max(): Double {
  * Returns the largest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -15699,9 +15721,11 @@ public inline fun <R> CharArray.maxOfWithOrNull(comparator: Comparator<in R>, se
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Array<out Double>.maxOrNull(): Double? {
@@ -15715,9 +15739,11 @@ public fun Array<out Double>.maxOrNull(): Double? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Array<out Float>.maxOrNull(): Float? {
@@ -15731,7 +15757,11 @@ public fun Array<out Float>.maxOrNull(): Float? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * If there are multiple equal maximal elements, this function returns the first of those elements.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullGeneric
  */
 @SinceKotlin("1.4")
 public fun <T : Comparable<T>> Array<out T>.maxOrNull(): T? {
@@ -15745,7 +15775,9 @@ public fun <T : Comparable<T>> Array<out T>.maxOrNull(): T? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun ByteArray.maxOrNull(): Byte? {
@@ -15759,7 +15791,9 @@ public fun ByteArray.maxOrNull(): Byte? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun ShortArray.maxOrNull(): Short? {
@@ -15773,7 +15807,9 @@ public fun ShortArray.maxOrNull(): Short? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun IntArray.maxOrNull(): Int? {
@@ -15787,7 +15823,9 @@ public fun IntArray.maxOrNull(): Int? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun LongArray.maxOrNull(): Long? {
@@ -15801,9 +15839,11 @@ public fun LongArray.maxOrNull(): Long? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun FloatArray.maxOrNull(): Float? {
@@ -15817,9 +15857,11 @@ public fun FloatArray.maxOrNull(): Float? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun DoubleArray.maxOrNull(): Double? {
@@ -15833,7 +15875,9 @@ public fun DoubleArray.maxOrNull(): Double? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun CharArray.maxOrNull(): Char? {
@@ -16137,9 +16181,11 @@ public fun CharArray.maxWithOrNull(comparator: Comparator<in Char>): Char? {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16157,9 +16203,11 @@ public fun Array<out Double>.min(): Double {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16177,7 +16225,11 @@ public fun Array<out Float>.min(): Float {
 /**
  * Returns the smallest element.
  * 
+ * If there are multiple equal minimal elements, this function returns the first of those elements.
+ * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minGeneric
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16196,6 +16248,8 @@ public fun <T : Comparable<T>> Array<out T>.min(): T {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16214,6 +16268,8 @@ public fun ByteArray.min(): Byte {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16232,6 +16288,8 @@ public fun ShortArray.min(): Short {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16250,6 +16308,8 @@ public fun IntArray.min(): Int {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16267,9 +16327,11 @@ public fun LongArray.min(): Long {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16287,9 +16349,11 @@ public fun FloatArray.min(): Float {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -16308,6 +16372,8 @@ public fun DoubleArray.min(): Double {
  * Returns the smallest element.
  * 
  * @throws NoSuchElementException if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -18285,9 +18351,11 @@ public inline fun <R> CharArray.minOfWithOrNull(comparator: Comparator<in R>, se
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Array<out Double>.minOrNull(): Double? {
@@ -18301,9 +18369,11 @@ public fun Array<out Double>.minOrNull(): Double? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Array<out Float>.minOrNull(): Float? {
@@ -18317,7 +18387,11 @@ public fun Array<out Float>.minOrNull(): Float? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * If there are multiple equal minimal elements, this function returns the first of those elements.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullGeneric
  */
 @SinceKotlin("1.4")
 public fun <T : Comparable<T>> Array<out T>.minOrNull(): T? {
@@ -18331,7 +18405,9 @@ public fun <T : Comparable<T>> Array<out T>.minOrNull(): T? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun ByteArray.minOrNull(): Byte? {
@@ -18345,7 +18421,9 @@ public fun ByteArray.minOrNull(): Byte? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun ShortArray.minOrNull(): Short? {
@@ -18359,7 +18437,9 @@ public fun ShortArray.minOrNull(): Short? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun IntArray.minOrNull(): Int? {
@@ -18373,7 +18453,9 @@ public fun IntArray.minOrNull(): Int? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun LongArray.minOrNull(): Long? {
@@ -18387,9 +18469,11 @@ public fun LongArray.minOrNull(): Long? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun FloatArray.minOrNull(): Float? {
@@ -18403,9 +18487,11 @@ public fun FloatArray.minOrNull(): Float? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun DoubleArray.minOrNull(): Double? {
@@ -18419,7 +18505,9 @@ public fun DoubleArray.minOrNull(): Double? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the array is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun CharArray.minOrNull(): Char? {

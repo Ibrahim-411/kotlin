@@ -1332,11 +1332,13 @@ public inline fun <T> Sequence<T>.forEachIndexed(action: (index: Int, T) -> Unit
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
  * 
  * @throws NoSuchElementException if the sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -1355,11 +1357,13 @@ public fun Sequence<Double>.max(): Double {
 /**
  * Returns the largest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
  * 
  * @throws NoSuchElementException if the sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -1377,10 +1381,14 @@ public fun Sequence<Float>.max(): Float {
 
 /**
  * Returns the largest element.
+ * 
+ * If there are multiple equal maximal elements, this function returns the first of those elements.
  *
  * The operation is _terminal_.
  * 
  * @throws NoSuchElementException if the sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxGeneric
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -1643,11 +1651,13 @@ public inline fun <T, R> Sequence<T>.maxOfWithOrNull(comparator: Comparator<in R
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the sequence is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Sequence<Double>.maxOrNull(): Double? {
@@ -1662,11 +1672,13 @@ public fun Sequence<Double>.maxOrNull(): Double? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the sequence is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Sequence<Float>.maxOrNull(): Float? {
@@ -1681,9 +1693,13 @@ public fun Sequence<Float>.maxOrNull(): Float? {
 }
 
 /**
- * Returns the largest element or `null` if there are no elements.
+ * Returns the largest element or `null` if the sequence is empty.
+ * 
+ * If there are multiple equal maximal elements, this function returns the first of those elements.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullGeneric
  */
 @SinceKotlin("1.4")
 public fun <T : Comparable<T>> Sequence<T>.maxOrNull(): T? {
@@ -1738,11 +1754,13 @@ public fun <T> Sequence<T>.maxWithOrNull(comparator: Comparator<in T>): T? {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
  * 
  * @throws NoSuchElementException if the sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -1761,11 +1779,13 @@ public fun Sequence<Double>.min(): Double {
 /**
  * Returns the smallest element.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
  * 
  * @throws NoSuchElementException if the sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minFloating
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -1783,10 +1803,14 @@ public fun Sequence<Float>.min(): Float {
 
 /**
  * Returns the smallest element.
+ * 
+ * If there are multiple equal minimal elements, this function returns the first of those elements.
  *
  * The operation is _terminal_.
  * 
  * @throws NoSuchElementException if the sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minGeneric
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -2049,11 +2073,13 @@ public inline fun <T, R> Sequence<T>.minOfWithOrNull(comparator: Comparator<in R
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the sequence is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Sequence<Double>.minOrNull(): Double? {
@@ -2068,11 +2094,13 @@ public fun Sequence<Double>.minOrNull(): Double? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the sequence is empty.
  * 
- * If any of elements is `NaN` returns `NaN`.
+ * If any of elements is `NaN`, this function returns `NaN`.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullFloating
  */
 @SinceKotlin("1.4")
 public fun Sequence<Float>.minOrNull(): Float? {
@@ -2087,9 +2115,13 @@ public fun Sequence<Float>.minOrNull(): Float? {
 }
 
 /**
- * Returns the smallest element or `null` if there are no elements.
+ * Returns the smallest element or `null` if the sequence is empty.
+ * 
+ * If there are multiple equal minimal elements, this function returns the first of those elements.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullGeneric
  */
 @SinceKotlin("1.4")
 public fun <T : Comparable<T>> Sequence<T>.minOrNull(): T? {

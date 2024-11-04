@@ -1193,6 +1193,8 @@ public inline fun CharSequence.forEachIndexed(action: (index: Int, Char) -> Unit
  * Returns the largest character.
  * 
  * @throws NoSuchElementException if the char sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("maxOrThrow")
@@ -1426,7 +1428,9 @@ public inline fun <R> CharSequence.maxOfWithOrNull(comparator: Comparator<in R>,
 }
 
 /**
- * Returns the largest character or `null` if there are no characters.
+ * Returns the largest character or `null` if the char sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun CharSequence.maxOrNull(): Char? {
@@ -1475,6 +1479,8 @@ public fun CharSequence.maxWithOrNull(comparator: Comparator<in Char>): Char? {
  * Returns the smallest character.
  * 
  * @throws NoSuchElementException if the char sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minPrimitive
  */
 @SinceKotlin("1.7")
 @kotlin.jvm.JvmName("minOrThrow")
@@ -1708,7 +1714,9 @@ public inline fun <R> CharSequence.minOfWithOrNull(comparator: Comparator<in R>,
 }
 
 /**
- * Returns the smallest character or `null` if there are no characters.
+ * Returns the smallest character or `null` if the char sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOrNullPrimitive
  */
 @SinceKotlin("1.4")
 public fun CharSequence.minOrNull(): Char? {
