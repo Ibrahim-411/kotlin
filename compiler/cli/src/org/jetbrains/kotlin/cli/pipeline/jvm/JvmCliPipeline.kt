@@ -29,6 +29,29 @@ import java.io.File
 
 
 object JvmCliPipeline {
+    private fun runPipeline(argumentsInput: ArgumentsPipelineArtifact<K2JVMCompilerArguments>): ExitCode {
+        val configurationOutput = JvmConfigurationStep.execute(argumentsInput).unwrap { return it.code }
+        val frontendOutput = JvmFrontendPipelineStep.execute(configurationOutput).unwrap { return it.code }
+
+        fun checkDiagnostics(): ExitCode? {
+            val diagnosticCollector = frontendOutput.diagnosticCollector
+
+            if (diagnosticCollector.hasErrors) {
+                FirDiagnosticsCompilerResultsReporter.reportToMessageCollector(
+                    diagnosticCollector, configurationOutput.configuration.messageCollector,
+                    configurationOutput.configuration.getBoolean(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME)
+                )
+                return COMPILATION_ERROR
+            }
+            return null
+        }
+        checkDiagnostics()?.let { return it }
+        val fir2irOutput = JvmFir2IrPipelineStep.execute(frontendOutput).unwrap { return it.code }
+        checkDiagnostics()?.let { return it }
+        JvmBackendPipelineStep.execute(fir2irOutput).unwrap { return it.code }
+        return OK
+    }
+
     fun execute(
         arguments: K2JVMCompilerArguments,
         services: Services,
@@ -38,7 +61,7 @@ object JvmCliPipeline {
         ProgressIndicatorAndCompilationCanceledStatus.setCompilationCanceledStatus(canceledStatus)
         val rootDisposable = Disposer.newDisposable("Disposable for ${CLICompiler::class.simpleName}.execImpl")
         setIdeaIoUseFallback()
-        val performanceManager = createPerformanceManager(arguments, services)
+        val performanceManager = createPerformanceManager()
         if (arguments.reportPerf || arguments.dumpPerf != null) {
             performanceManager.enableCollectingPerformanceStatistics()
         }
@@ -96,30 +119,7 @@ object JvmCliPipeline {
         }
     }
 
-    private fun runPipeline(argumentsInput: ArgumentsPipelineArtifact<K2JVMCompilerArguments>): ExitCode {
-        val configurationOutput = JvmConfigurationStep.execute(argumentsInput).unwrap { return it.code }
-        val frontendOutput = JvmFrontendPipelineStep.execute(configurationOutput).unwrap { return it.code }
-
-        fun checkDiagnostics(): ExitCode? {
-            val diagnosticCollector = frontendOutput.diagnosticCollector
-
-            if (diagnosticCollector.hasErrors) {
-                FirDiagnosticsCompilerResultsReporter.reportToMessageCollector(
-                    diagnosticCollector, configurationOutput.configuration.messageCollector,
-                    configurationOutput.configuration.getBoolean(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME)
-                )
-                return COMPILATION_ERROR
-            }
-            return null
-        }
-        checkDiagnostics()?.let { return it }
-        val fir2irOutput = JvmFir2IrPipelineStep.execute(frontendOutput).unwrap { return it.code }
-        checkDiagnostics()?.let { return it }
-        JvmBackendPipelineStep.execute(fir2irOutput).unwrap { return it.code }
-        return OK
-    }
-
-    private fun createPerformanceManager(arguments: K2JVMCompilerArguments, services: Services): CommonCompilerPerformanceManager {
+    private fun createPerformanceManager(): CommonCompilerPerformanceManager {
         return K2JVMCompilerPerformanceManager()
     }
 }
