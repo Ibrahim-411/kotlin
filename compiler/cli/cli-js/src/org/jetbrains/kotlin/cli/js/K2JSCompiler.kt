@@ -782,7 +782,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
                 JsICContext(
                     mainCallArguments,
                     arguments.granularity,
-                    PhaseConfig(getJsPhases(configurationJs)),
+                    PhaseConfig(),
                 )
             }
 

@@ -121,12 +121,11 @@ class JsIrLoweringFacade(
                 JsEnvironmentConfigurator.getKlibArtifactSimpleName(testServices, module.name) + "-irdump"
             )
             PhaseConfig(
-                jsPhases,
                 toDumpStateAfter = jsPhases.toPhaseMap().values.toSet(),
                 dumpToDirectory = dumpOutputDir.path
             )
         } else {
-            PhaseConfig(jsPhases)
+            PhaseConfig()
         }
 
         val mainArguments = JsEnvironmentConfigurator.getMainCallParametersForModule(module)

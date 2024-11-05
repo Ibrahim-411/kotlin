@@ -347,7 +347,6 @@ open class JvmEnvironmentConfigurator(testServices: TestServices) : EnvironmentC
         val phases = module.directives[CodegenTestDirectives.DUMP_IR_FOR_GIVEN_PHASES].toSet()
         if (phases.isNotEmpty()) {
             val phaseConfig = PhaseConfig(
-                jvmPhases,
                 toDumpStateBefore = phases,
                 toDumpStateAfter = phases,
                 dumpToDirectory = dumpDirectory.absolutePath

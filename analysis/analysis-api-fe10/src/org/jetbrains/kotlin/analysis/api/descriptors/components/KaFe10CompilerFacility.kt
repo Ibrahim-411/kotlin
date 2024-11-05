@@ -199,7 +199,7 @@ internal class KaFe10CompilerFacility(
 
         return JvmIrCodegenFactory(
             configuration,
-            PhaseConfig(jvmPhases),
+            PhaseConfig(),
             jvmGeneratorExtensions = jvmGeneratorExtensions,
             ideCodegenSettings = ideCodegenSettings,
         )
