@@ -16,7 +16,6 @@ import org.jetbrains.kotlin.analyzer.CompilationErrorException
 import org.jetbrains.kotlin.asJava.finder.JavaElementFinder
 import org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory
 import org.jetbrains.kotlin.backend.jvm.JvmIrDeserializerImpl
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.messages.getLogger
 import org.jetbrains.kotlin.cli.common.output.writeAllTo
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
@@ -136,10 +135,7 @@ object GenerationUtils {
 
         val dummyBindingContext = NoScopeRecordCliBindingTrace(project).bindingContext
 
-        val codegenFactory = JvmIrCodegenFactory(
-            configuration,
-            configuration.get(CLIConfigurationKeys.PHASE_CONFIG),
-        )
+        val codegenFactory = JvmIrCodegenFactory(configuration)
 
         val generationState = GenerationState.Builder(
             project, classBuilderFactory, moduleFragment.descriptor, dummyBindingContext, configuration
@@ -198,7 +194,7 @@ object GenerationUtils {
             KotlinCodegenFacade.compileCorrectFiles(
                 files,
                 generationState,
-                JvmIrCodegenFactory(configuration, configuration.get(CLIConfigurationKeys.PHASE_CONFIG)),
+                JvmIrCodegenFactory(configuration),
             )
         }
         return generationState
