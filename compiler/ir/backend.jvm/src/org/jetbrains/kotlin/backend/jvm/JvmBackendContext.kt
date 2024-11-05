@@ -46,7 +46,6 @@ class JvmBackendContext(
     val state: GenerationState,
     override val irBuiltIns: IrBuiltIns,
     val symbolTable: SymbolTable,
-    val phaseConfig: PhaseConfig,
     val generatorExtensions: JvmGeneratorExtensions,
     val backendExtension: JvmBackendExtension,
     val irSerializer: JvmIrSerializer?,
