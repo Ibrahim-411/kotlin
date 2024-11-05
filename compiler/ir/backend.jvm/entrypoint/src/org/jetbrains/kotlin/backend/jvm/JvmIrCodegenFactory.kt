@@ -67,7 +67,7 @@ open class JvmIrCodegenFactory(
     private val evaluatorFragmentInfoForPsi2Ir: EvaluatorFragmentInfo? = null,
     private val ideCodegenSettings: IdeCodegenSettings = IdeCodegenSettings(),
 ) : CodegenFactory {
-    val phaseConfig: PhaseConfig = configuration.get(CLIConfigurationKeys.PHASE_CONFIG, PhaseConfig())
+    private val phaseConfig: PhaseConfig = configuration.get(CLIConfigurationKeys.PHASE_CONFIG, PhaseConfig())
 
     /**
      * @param shouldStubAndNotLinkUnboundSymbols
@@ -102,7 +102,6 @@ open class JvmIrCodegenFactory(
         val irModuleFragment: IrModuleFragment,
         val irBuiltIns: IrBuiltIns,
         val symbolTable: SymbolTable,
-        val phaseConfig: PhaseConfig,
         val irProviders: List<IrProvider>,
         val extensions: JvmGeneratorExtensions,
         val backendExtension: JvmBackendExtension,
@@ -271,7 +270,6 @@ open class JvmIrCodegenFactory(
             irModuleFragment,
             psi2irContext.irBuiltIns,
             symbolTable,
-            phaseConfig,
             irProviders,
             jvmGeneratorExtensions,
             JvmBackendExtension.Default,
@@ -305,7 +303,7 @@ open class JvmIrCodegenFactory(
     }
 
     override fun invokeLowerings(state: GenerationState, input: CodegenFactory.BackendInput): CodegenFactory.CodegenInput {
-        val (irModuleFragment, irBuiltIns, symbolTable, customPhaseConfig, irProviders, extensions, backendExtension, irPluginContext, notifyCodegenStart) =
+        val (irModuleFragment, irBuiltIns, symbolTable, irProviders, extensions, backendExtension, irPluginContext, notifyCodegenStart) =
             input as JvmIrBackendInput
         val irSerializer = if (
             state.configuration.get(JVMConfigurationKeys.SERIALIZE_IR, JvmSerializeIrMode.NONE) != JvmSerializeIrMode.NONE
@@ -333,7 +331,7 @@ open class JvmIrCodegenFactory(
 
         context.state.factory.registerSourceFiles(irModuleFragment.files.map(IrFile::getIoFile))
 
-        jvmLoweringPhases.invokeToplevel(customPhaseConfig, context, irModuleFragment)
+        jvmLoweringPhases.invokeToplevel(phaseConfig, context, irModuleFragment)
 
         return JvmIrCodegenInput(state, context, irModuleFragment, notifyCodegenStart)
     }
@@ -414,7 +412,6 @@ open class JvmIrCodegenFactory(
                 irModuleFragment,
                 irPluginContext.irBuiltIns,
                 symbolTable,
-                phaseConfig,
                 irProviders,
                 extensions,
                 backendExtension,
