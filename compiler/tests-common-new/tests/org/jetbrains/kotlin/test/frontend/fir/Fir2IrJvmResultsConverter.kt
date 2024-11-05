@@ -96,7 +96,6 @@ internal class Fir2IrJvmResultsConverter(testServices: TestServices) : AbstractF
             fir2IrResult.irModuleFragment,
             fir2IrResult.irBuiltIns,
             fir2IrResult.symbolTable,
-            codegenFactory.phaseConfig,
             fir2IrResult.components.irProviders,
             createFir2IrExtensions(compilerConfiguration),
             FirJvmBackendExtension(
