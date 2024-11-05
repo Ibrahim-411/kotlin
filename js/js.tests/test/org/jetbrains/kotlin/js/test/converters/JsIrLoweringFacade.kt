@@ -122,8 +122,8 @@ class JsIrLoweringFacade(
             )
             PhaseConfig(
                 jsPhases,
-                dumpToDirectory = dumpOutputDir.path,
-                toDumpStateAfter = jsPhases.toPhaseMap().values.toSet()
+                toDumpStateAfter = jsPhases.toPhaseMap().values.toSet(),
+                dumpToDirectory = dumpOutputDir.path
             )
         } else {
             PhaseConfig(jsPhases)
