@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.incremental
 
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
+import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinCoreEnvironment
 import org.jetbrains.kotlin.codegen.*
@@ -106,10 +107,10 @@ abstract class JsAbstractInvalidationTest(
                     else -> projStep.dirtyJsModules
                 }
 
+                configuration.put(CLIConfigurationKeys.PHASE_CONFIG, getPhaseConfig(configuration, projStep.id))
                 val icContext = JsICContext(
                     mainArguments,
                     granularity,
-                    getPhaseConfig(configuration, projStep.id),
                     setOf(FqName(BOX_FUNCTION_NAME)),
                 )
 

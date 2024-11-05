@@ -30,11 +30,10 @@ fun optimizeProgramByIr(
     val dceDumpNameCache = DceDumpNameCache() // in JS mode only DCE Graph could be dumped
     eliminateDeadDeclarations(modules, context, moduleKind, removeUnusedAssociatedObjects, dceDumpNameCache)
 
-    val phaseConfig = PhaseConfig()
     val phaserState = PhaserState<IrModuleFragment>()
     optimizationLoweringList.forEachIndexed { _, lowering ->
         modules.forEach { module ->
-            lowering.invoke(phaseConfig, phaserState, context, module)
+            lowering.invoke(context.phaseConfig, phaserState, context, module)
         }
     }
 }

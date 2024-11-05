@@ -61,6 +61,7 @@ class WasmLoweringFacade(
 
         val mainModule = MainModule.Klib(inputArtifact.klib.absolutePath)
         val configuration = testServices.compilerConfigurationProvider.getCompilerConfiguration(module)
+        configuration.put(CLIConfigurationKeys.PHASE_CONFIG, phaseConfig)
 
         val testPackage = extractTestPackage(testServices)
         val performanceManager = configuration[CLIConfigurationKeys.PERF_MANAGER]
@@ -71,7 +72,6 @@ class WasmLoweringFacade(
             mainModule,
             configuration,
             performanceManager,
-            phaseConfig = phaseConfig,
             exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, "box"))),
             propertyLazyInitialization = true,
             generateTypeScriptFragment = generateDts

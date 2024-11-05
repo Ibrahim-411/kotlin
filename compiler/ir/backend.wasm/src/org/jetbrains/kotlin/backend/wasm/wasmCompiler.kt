@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.backend.wasm
 
 import org.jetbrains.kotlin.backend.common.linkage.issues.checkNoUnboundSymbols
-import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.phaser.PhaserState
 import org.jetbrains.kotlin.backend.wasm.export.ExportModelGenerator
 import org.jetbrains.kotlin.backend.wasm.ir2wasm.*
@@ -64,7 +63,6 @@ fun compileToLoweredIr(
     mainModule: MainModule,
     configuration: CompilerConfiguration,
     performanceManager: CommonCompilerPerformanceManager?,
-    phaseConfig: PhaseConfig,
     exportedDeclarations: Set<FqName> = emptySet(),
     generateTypeScriptFragment: Boolean,
     propertyLazyInitialization: Boolean,
@@ -105,7 +103,6 @@ fun compileToLoweredIr(
     lowerPreservingTags(
         allModules,
         context,
-        phaseConfig,
         context.irFactory.stageController as WholeWorldStageController,
         isIncremental = false
     )
@@ -118,7 +115,6 @@ fun compileToLoweredIr(
 fun lowerPreservingTags(
     modules: Iterable<IrModuleFragment>,
     context: WasmBackendContext,
-    phaseConfig: PhaseConfig,
     controller: WholeWorldStageController,
     isIncremental: Boolean
 ) {
@@ -131,7 +127,7 @@ fun lowerPreservingTags(
     wasmLowerings.forEachIndexed { i, lowering ->
         controller.currentStage = i + 1
         modules.forEach { module ->
-            lowering.invoke(phaseConfig, phaserState, context, module)
+            lowering.invoke(context.phaseConfig, phaserState, context, module)
         }
     }
 

@@ -11,7 +11,6 @@ import com.intellij.openapi.util.text.StringUtil
 import com.intellij.util.ExceptionUtil
 import org.jetbrains.kotlin.analyzer.CompilationErrorException
 import org.jetbrains.kotlin.backend.common.CompilationException
-import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.wasm.compileToLoweredIr
 import org.jetbrains.kotlin.backend.wasm.compileWasm
 import org.jetbrains.kotlin.backend.wasm.dce.eliminateDeadDeclarations
@@ -114,7 +113,6 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
     private class Ir2JsTransformer(
         val arguments: K2JSCompilerArguments,
         val module: ModulesStructure,
-        val phaseConfig: PhaseConfig,
         val messageCollector: MessageCollector,
         val mainCallArguments: List<String>?,
     ) {
@@ -124,7 +122,6 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
             return compile(
                 mainCallArguments,
                 module,
-                phaseConfig,
                 IrFactoryImplForJsIC(WholeWorldStageController()),
                 keep = arguments.irKeep?.split(",")
                     ?.filterNot { it.isEmpty() }
@@ -423,6 +420,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
         }
 
         val phaseConfig = createPhaseConfig(getJsPhases(configuration), arguments, messageCollector)
+        configuration.put(CLIConfigurationKeys.PHASE_CONFIG, phaseConfig)
 
         val module = if (includes != null) {
             if (sourcesFiles.isNotEmpty()) {
@@ -459,12 +457,16 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
                 loadFunctionInterfacesIntoStdlib = true,
             )
 
+            configuration.put(
+                CLIConfigurationKeys.PHASE_CONFIG,
+                createPhaseConfig(getWasmPhases(isIncremental = false), arguments, messageCollector)
+            )
+
             val (allModules, backendContext, typeScriptFragment) = compileToLoweredIr(
                 irModuleInfo,
                 module.mainModule,
                 configuration,
                 performanceManager,
-                phaseConfig = createPhaseConfig(getWasmPhases(isIncremental = false), arguments, messageCollector),
                 exportedDeclarations = setOf(FqName("main")),
                 generateTypeScriptFragment = generateDts,
                 propertyLazyInitialization = arguments.irPropertyLazyInitialization,
@@ -522,7 +524,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
         val start = System.currentTimeMillis()
 
         try {
-            val ir2JsTransformer = Ir2JsTransformer(arguments, module, phaseConfig, messageCollector, mainCallArguments)
+            val ir2JsTransformer = Ir2JsTransformer(arguments, module, messageCollector, mainCallArguments)
             val outputs = ir2JsTransformer.compileAndTransformIrNew()
 
             messageCollector.report(INFO, "Executable production duration: ${System.currentTimeMillis() - start}ms")
@@ -782,7 +784,6 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
                 JsICContext(
                     mainCallArguments,
                     arguments.granularity,
-                    PhaseConfig(),
                 )
             }
 

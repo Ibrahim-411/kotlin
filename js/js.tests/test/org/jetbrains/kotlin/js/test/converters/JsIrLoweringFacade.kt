@@ -8,6 +8,7 @@ package org.jetbrains.kotlin.js.test.converters
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
 import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.backend.common.serialization.cityHash64
+import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.isWindows
 import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
@@ -127,6 +128,7 @@ class JsIrLoweringFacade(
         } else {
             PhaseConfig()
         }
+        configuration.put(CLIConfigurationKeys.PHASE_CONFIG, phaseConfig)
 
         val mainArguments = JsEnvironmentConfigurator.getMainCallParametersForModule(module)
             .run { if (shouldBeGenerated()) arguments() else null }
@@ -141,7 +143,6 @@ class JsIrLoweringFacade(
             irBuiltIns,
             symbolTable,
             deserializer,
-            phaseConfig,
             exportedDeclarations = setOf(FqName.fromSegments(listOfNotNull(testPackage, JsBoxRunner.TEST_FUNCTION))),
             keep = keep,
             dceRuntimeDiagnostic = null,

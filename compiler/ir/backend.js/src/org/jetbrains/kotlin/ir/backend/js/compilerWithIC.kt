@@ -27,7 +27,6 @@ import java.io.File
 class JsICContext(
     private val mainArguments: List<String>?,
     private val granularity: JsGenerationGranularity,
-    private val phaseConfig: PhaseConfig,
     private val exportedDeclarations: Set<FqName> = emptySet(),
 ) : PlatformDependentICContext {
 
@@ -39,7 +38,7 @@ class JsICContext(
         irBuiltIns: IrBuiltIns,
         configuration: CompilerConfiguration
     ): IrCompilerICInterface =
-        JsIrCompilerWithIC(mainModule, irBuiltIns, mainArguments, configuration, granularity, phaseConfig, exportedDeclarations)
+        JsIrCompilerWithIC(mainModule, irBuiltIns, mainArguments, configuration, granularity, exportedDeclarations)
 
     override fun createSrcFileArtifact(srcFilePath: String, fragments: IrICProgramFragments?, astArtifact: File?): SrcFileArtifact =
         JsSrcFileArtifact(srcFilePath, fragments as? JsIrProgramFragments, astArtifact)
@@ -61,7 +60,6 @@ class JsIrCompilerWithIC(
     private val mainArguments: List<String>?,
     configuration: CompilerConfiguration,
     granularity: JsGenerationGranularity,
-    private val phaseConfig: PhaseConfig,
     exportedDeclarations: Set<FqName> = emptySet(),
 ) : IrCompilerICInterface {
     private val context: JsIrBackendContext
@@ -94,7 +92,7 @@ class JsIrCompilerWithIC(
 
         generateJsTests(context, mainModule, groupByPackage = false)
 
-        lowerPreservingTags(allModules, context, phaseConfig, context.irFactory.stageController as WholeWorldStageController)
+        lowerPreservingTags(allModules, context, context.irFactory.stageController as WholeWorldStageController)
 
         val transformer = IrModuleToJsTransformer(context, shouldReferMainFunction = mainArguments != null)
         return transformer.makeIrFragmentsGenerators(dirtyFiles, allModules)
@@ -104,7 +102,6 @@ class JsIrCompilerWithIC(
 fun lowerPreservingTags(
     modules: Iterable<IrModuleFragment>,
     context: JsIrBackendContext,
-    phaseConfig: PhaseConfig,
     controller: WholeWorldStageController
 ) {
     // Lower all the things
@@ -116,7 +113,7 @@ fun lowerPreservingTags(
     jsLowerings.forEachIndexed { i, lowering ->
         controller.currentStage = i + 1
         modules.forEach { module ->
-            lowering.invoke(phaseConfig, phaserState, context, module)
+            lowering.invoke(context.phaseConfig, phaserState, context, module)
         }
     }
 
