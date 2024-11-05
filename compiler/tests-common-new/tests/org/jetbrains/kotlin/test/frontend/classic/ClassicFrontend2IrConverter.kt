@@ -6,7 +6,6 @@
 package org.jetbrains.kotlin.test.frontend.classic
 
 import org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.js.klib.TopDownAnalyzerFacadeForJSIR
 import org.jetbrains.kotlin.cli.js.klib.TopDownAnalyzerFacadeForWasm
 import org.jetbrains.kotlin.cli.js.klib.generateIrForKlibSerialization
@@ -61,8 +60,7 @@ class ClassicFrontend2IrConverter(
 
         val configuration = testServices.compilerConfigurationProvider.getCompilerConfiguration(module)
 
-        val phaseConfig = configuration.get(CLIConfigurationKeys.PHASE_CONFIG)
-        val codegenFactory = JvmIrCodegenFactory(configuration, phaseConfig)
+        val codegenFactory = JvmIrCodegenFactory(configuration)
         val messageCollector = configuration.getNotNull(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY)
         val state = GenerationState.Builder(
             project, ClassBuilderFactories.TEST, analysisResult.moduleDescriptor, analysisResult.bindingContext,

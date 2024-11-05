@@ -4,6 +4,7 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":compiler:cli-base"))
     api(project(":compiler:ir.psi2ir"))
     api(project(":compiler:backend.jvm"))
     api(project(":compiler:ir.tree"))

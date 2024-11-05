@@ -24,7 +24,6 @@ import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
 import org.jetbrains.kotlin.backend.jvm.JvmGeneratorExtensions
 import org.jetbrains.kotlin.backend.jvm.JvmIrCodegenFactory
 import org.jetbrains.kotlin.backend.jvm.JvmIrDeserializerImpl
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.fir.FirDiagnosticsCompilerResultsReporter
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
 import org.jetbrains.kotlin.cli.jvm.compiler.*
@@ -239,10 +238,7 @@ class K2CompilerFacade(environment: KotlinCoreEnvironment) : KotlinCompilerFacad
         ).build()
 
         generationState.beforeCompile()
-        val codegenFactory = JvmIrCodegenFactory(
-            configuration,
-            configuration.get(CLIConfigurationKeys.PHASE_CONFIG)
-        )
+        val codegenFactory = JvmIrCodegenFactory(configuration)
         codegenFactory.generateModuleInFrontendIRMode(
             generationState,
             irModuleFragment,

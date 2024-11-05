@@ -151,10 +151,7 @@ fun generateCodeFromIr(
     environment: ModuleCompilerEnvironment
 ): ModuleCompilerOutput {
     // IR
-    val codegenFactory = JvmIrCodegenFactory(
-        input.configuration,
-        input.configuration.get(CLIConfigurationKeys.PHASE_CONFIG),
-    )
+    val codegenFactory = JvmIrCodegenFactory(input.configuration)
     val project = environment.projectEnvironment.project
 
     val dummyBindingContext = NoScopeRecordCliBindingTrace(project).bindingContext
