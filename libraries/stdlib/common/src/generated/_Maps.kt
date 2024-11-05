@@ -348,7 +348,11 @@ public inline fun <K, V, R : Comparable<R>> Map<out K, V>.maxOfOrNull(selector: 
  * Returns the largest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each entry in the map.
  * 
+ * If multiple entries produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the map is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -360,7 +364,11 @@ public inline fun <K, V, R> Map<out K, V>.maxOfWith(comparator: Comparator<in R>
 
 /**
  * Returns the largest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each entry in the map or `null` if there are no entries.
+ * among all values produced by [selector] function applied to each entry in the map or `null` if the map is empty.
+ * 
+ * If multiple entries produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -524,7 +532,11 @@ public inline fun <K, V, R : Comparable<R>> Map<out K, V>.minOfOrNull(selector: 
  * Returns the smallest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each entry in the map.
  * 
+ * If multiple entries produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the map is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -536,7 +548,11 @@ public inline fun <K, V, R> Map<out K, V>.minOfWith(comparator: Comparator<in R>
 
 /**
  * Returns the smallest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each entry in the map or `null` if there are no entries.
+ * among all values produced by [selector] function applied to each entry in the map or `null` if the map is empty.
+ * 
+ * If multiple entries produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)

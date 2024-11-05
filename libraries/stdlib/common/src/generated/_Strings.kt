@@ -1405,7 +1405,11 @@ public inline fun <R : Comparable<R>> CharSequence.maxOfOrNull(selector: (Char) 
  * Returns the largest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each character in the char sequence.
  * 
+ * If multiple characters produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the char sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -1425,7 +1429,11 @@ public inline fun <R> CharSequence.maxOfWith(comparator: Comparator<in R>, selec
 
 /**
  * Returns the largest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each character in the char sequence or `null` if there are no characters.
+ * among all values produced by [selector] function applied to each character in the char sequence or `null` if the char sequence is empty.
+ * 
+ * If multiple characters produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -1707,7 +1715,11 @@ public inline fun <R : Comparable<R>> CharSequence.minOfOrNull(selector: (Char) 
  * Returns the smallest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each character in the char sequence.
  * 
+ * If multiple characters produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the char sequence is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -1727,7 +1739,11 @@ public inline fun <R> CharSequence.minOfWith(comparator: Comparator<in R>, selec
 
 /**
  * Returns the smallest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each character in the char sequence or `null` if there are no characters.
+ * among all values produced by [selector] function applied to each character in the char sequence or `null` if the char sequence is empty.
+ * 
+ * If multiple characters produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)

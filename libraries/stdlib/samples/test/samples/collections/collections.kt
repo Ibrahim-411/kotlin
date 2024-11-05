@@ -991,6 +991,234 @@ class Collections {
         }
 
         @Sample
+        fun maxOfWithPrimitive() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 4.4),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders books by rating
+            val ratingComparator = Comparator { a: Book, b: Book ->
+                a.rating.compareTo(b.rating)
+            }
+
+            // Finding the book with the highest rating among those published in specified years
+            val relevantYears = intArrayOf(2004, 2018, 2023)
+            val highestRatingBook = relevantYears.maxOfWith(ratingComparator) { year ->
+                books.first { it.publishYear == year }
+            }
+            assertPrints(highestRatingBook, "Book(title=Clear Water, publishYear=2018, rating=4.1)")
+
+            // Throws if the array is empty
+            val emptyArray = intArrayOf()
+            assertFailsWith<NoSuchElementException> {
+                emptyArray.maxOfWith(ratingComparator) { year -> books.first { it.publishYear == year } }
+            }
+        }
+
+        @Sample
+        fun maxOfWithGeneric() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 4.4),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders strings by length
+            val lengthComparator = Comparator { a: String, b: String ->
+                a.length.compareTo(b.length)
+            }
+
+            // Finding the book with the longest title
+            val longestBookTitle = books.maxOfWith(lengthComparator) { it.title }
+            assertPrints(longestBookTitle, "Silver Bullet")
+
+            // Throws if the collection is empty
+            val emptyList = listOf<Book>()
+            assertFailsWith<NoSuchElementException> {
+                emptyList.maxOfWith(lengthComparator) { it.title }
+            }
+        }
+
+        @Sample
+        fun minOfWithPrimitive() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 3.3),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders books by rating
+            val ratingComparator = Comparator { a: Book, b: Book ->
+                a.rating.compareTo(b.rating)
+            }
+
+            // Finding the book with the lowest rating among those published in specified years
+            val relevantYears = intArrayOf(2004, 2018, 2023)
+            val lowestRatingBook = relevantYears.minOfWith(ratingComparator) { year ->
+                books.first { it.publishYear == year }
+            }
+            assertPrints(lowestRatingBook, "Book(title=Red Sand, publishYear=2004, rating=3.5)")
+
+            // Throws if the array is empty
+            val emptyArray = intArrayOf()
+            assertFailsWith<NoSuchElementException> {
+                emptyArray.minOfWith(ratingComparator) { year -> books.first { it.publishYear == year } }
+            }
+        }
+
+        @Sample
+        fun minOfWithGeneric() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 4.4),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders strings by length
+            val lengthComparator = Comparator { a: String, b: String ->
+                a.length.compareTo(b.length)
+            }
+
+            // Finding the book with the shortest title
+            val shortestBookTitle = books.minOfWith(lengthComparator) { it.title }
+            assertPrints(shortestBookTitle, "Red Sand")
+
+            // Throws if the collection is empty
+            val emptyList = listOf<Book>()
+            assertFailsWith<NoSuchElementException> {
+                emptyList.minOfWith(lengthComparator) { it.title }
+            }
+        }
+
+        @Sample
+        fun maxOfWithOrNullPrimitive() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 4.4),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders books by rating
+            val ratingComparator = Comparator { a: Book, b: Book ->
+                a.rating.compareTo(b.rating)
+            }
+
+            // Finding the book with the highest rating among those published in specified years
+            val relevantYears = intArrayOf(2004, 2018, 2023)
+            val highestRatingBook = relevantYears.maxOfWithOrNull(ratingComparator) { year ->
+                books.first { it.publishYear == year }
+            }
+            assertPrints(highestRatingBook, "Book(title=Clear Water, publishYear=2018, rating=4.1)")
+
+            // Returns null if the array is empty
+            val emptyArray = intArrayOf()
+            val maxInEmptyArray = emptyArray.maxOfWithOrNull(ratingComparator) { year ->
+                books.first { it.publishYear == year }
+            }
+            assertPrints(maxInEmptyArray, "null")
+        }
+
+        @Sample
+        fun maxOfWithOrNullGeneric() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 4.4),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders strings by length
+            val lengthComparator = Comparator { a: String, b: String ->
+                a.length.compareTo(b.length)
+            }
+
+            // Finding the book with the longest title
+            val longestBookTitle = books.maxOfWithOrNull(lengthComparator) { it.title }
+            assertPrints(longestBookTitle, "Silver Bullet")
+
+            // Returns null if the collection is empty
+            val emptyList = listOf<Book>()
+            val maxInEmptyList = emptyList.maxOfWithOrNull(lengthComparator) { it.title }
+            assertPrints(maxInEmptyList, "null")
+        }
+
+        @Sample
+        fun minOfWithOrNullPrimitive() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 3.3),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders books by rating
+            val ratingComparator = Comparator { a: Book, b: Book ->
+                a.rating.compareTo(b.rating)
+            }
+
+            // Finding the book with the lowest rating among those published in specified years
+            val relevantYears = intArrayOf(2004, 2018, 2023)
+            val lowestRatingBook = relevantYears.minOfWithOrNull(ratingComparator) { year ->
+                books.first { it.publishYear == year }
+            }
+            assertPrints(lowestRatingBook, "Book(title=Red Sand, publishYear=2004, rating=3.5)")
+
+            // Returns null if the array is empty
+            val emptyArray = intArrayOf()
+            val minInEmptyArray = emptyArray.minOfWithOrNull(ratingComparator) { year ->
+                books.first { it.publishYear == year }
+            }
+            assertPrints(minInEmptyArray, "null")
+        }
+
+        @Sample
+        fun minOfWithOrNullGeneric() {
+            data class Book(val title: String, val publishYear: Int, val rating: Double)
+
+            val books = listOf(
+                Book("Red Sand", 2004, 3.5),
+                Book("Silver Bullet", 2009, 4.4),
+                Book("Clear Water", 2018, 4.1),
+                Book("Night Sky", 2023, 3.8)
+            )
+
+            // Orders strings by length
+            val lengthComparator = Comparator { a: String, b: String ->
+                a.length.compareTo(b.length)
+            }
+
+            // Finding the book with the shortest title
+            val shortestBookTitle = books.minOfWithOrNull(lengthComparator) { it.title }
+            assertPrints(shortestBookTitle, "Red Sand")
+
+            // Returns null if the collection is empty
+            val emptyList = listOf<Book>()
+            val minInEmptyList = emptyList.minOfWithOrNull(lengthComparator) { it.title }
+            assertPrints(minInEmptyList, "null")
+        }
+
+        @Sample
         fun maxByOrNull() {
             val nameToAge = listOf("Alice" to 42, "Bob" to 28, "Carol" to 51)
             val oldestPerson = nameToAge.maxByOrNull { it.second }

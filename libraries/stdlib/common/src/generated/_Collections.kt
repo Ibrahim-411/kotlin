@@ -2144,7 +2144,11 @@ public inline fun <T, R : Comparable<R>> Iterable<T>.maxOfOrNull(selector: (T) -
  * Returns the largest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each element in the collection.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -2165,7 +2169,11 @@ public inline fun <T, R> Iterable<T>.maxOfWith(comparator: Comparator<in R>, sel
 
 /**
  * Returns the largest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each element in the collection or `null` if there are no elements.
+ * among all values produced by [selector] function applied to each element in the collection or `null` if the collection is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -2546,7 +2554,11 @@ public inline fun <T, R : Comparable<R>> Iterable<T>.minOfOrNull(selector: (T) -
  * Returns the smallest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each element in the collection.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the collection is empty.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -2567,7 +2579,11 @@ public inline fun <T, R> Iterable<T>.minOfWith(comparator: Comparator<in R>, sel
 
 /**
  * Returns the smallest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each element in the collection or `null` if there are no elements.
+ * among all values produced by [selector] function applied to each element in the collection or `null` if the collection is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)

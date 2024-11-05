@@ -1622,9 +1622,13 @@ public inline fun <T, R : Comparable<R>> Sequence<T>.maxOfOrNull(selector: (T) -
  * Returns the largest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each element in the sequence.
  * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the sequence is empty.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -1645,9 +1649,13 @@ public inline fun <T, R> Sequence<T>.maxOfWith(comparator: Comparator<in R>, sel
 
 /**
  * Returns the largest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each element in the sequence or `null` if there are no elements.
+ * among all values produced by [selector] function applied to each element in the sequence or `null` if the sequence is empty.
+ * 
+ * If multiple elements produce the maximal value, this function returns the first of those values.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.maxOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -2060,9 +2068,13 @@ public inline fun <T, R : Comparable<R>> Sequence<T>.minOfOrNull(selector: (T) -
  * Returns the smallest value according to the provided [comparator]
  * among all values produced by [selector] function applied to each element in the sequence.
  * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
+ * 
  * @throws NoSuchElementException if the sequence is empty.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)
@@ -2083,9 +2095,13 @@ public inline fun <T, R> Sequence<T>.minOfWith(comparator: Comparator<in R>, sel
 
 /**
  * Returns the smallest value according to the provided [comparator]
- * among all values produced by [selector] function applied to each element in the sequence or `null` if there are no elements.
+ * among all values produced by [selector] function applied to each element in the sequence or `null` if the sequence is empty.
+ * 
+ * If multiple elements produce the minimal value, this function returns the first of those values.
  *
  * The operation is _terminal_.
+ * 
+ * @sample samples.collections.Collections.Aggregates.minOfWithOrNullGeneric
  */
 @SinceKotlin("1.4")
 @OptIn(kotlin.experimental.ExperimentalTypeInference::class)

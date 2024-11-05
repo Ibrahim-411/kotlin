@@ -658,14 +658,20 @@ object Aggregates : TemplateGroupBase() {
                 annotation("@OverloadResolutionByLambdaReturnType")
 
                 doc {
+                    val isMax = op == "max"
+                    val elements = f.element.pluralize()
                     """
-                    Returns the ${if (op == "max") "largest" else "smallest"} value according to the provided [comparator] 
-                    among all values produced by [selector] function applied to each ${f.element} in the ${f.collection}${" or `null` if there are no ${f.element.pluralize()}".ifOrEmpty(nullable)}.
+                    Returns the ${if (isMax) "largest" else "smallest"} value according to the provided [comparator] 
+                    among all values produced by [selector] function applied to each ${f.element} in the ${f.collection}${" or `null` if the ${f.collection} is empty".ifOrEmpty(nullable)}.
+
+                    If multiple $elements produce the ${if (isMax) "maximal" else "minimal"} value, this function returns the first of those values.
                     """ +
                     """
                     @throws NoSuchElementException if the ${f.collection} is empty.
                     """.ifOrEmpty(!nullable)
                 }
+                val sampleFun = "${op}OfWith$orNull" + if (primitive != null) "Primitive" else "Generic"
+                sample("samples.collections.Collections.Aggregates.$sampleFun")
 
                 typeParam(selectorType)
                 returns(selectorType + "?".ifOrEmpty(nullable))
