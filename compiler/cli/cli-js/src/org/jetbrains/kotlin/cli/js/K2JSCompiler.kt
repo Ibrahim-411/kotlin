@@ -419,7 +419,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
             return OK
         }
 
-        val phaseConfig = createPhaseConfig(getJsPhases(configuration), arguments, messageCollector)
+        val phaseConfig = createPhaseConfig(getJsPhases(configuration), arguments)
         configuration.put(CLIConfigurationKeys.PHASE_CONFIG, phaseConfig)
 
         val module = if (includes != null) {
@@ -459,7 +459,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
 
             configuration.put(
                 CLIConfigurationKeys.PHASE_CONFIG,
-                createPhaseConfig(getWasmPhases(isIncremental = false), arguments, messageCollector)
+                createPhaseConfig(getWasmPhases(isIncremental = false), arguments)
             )
 
             val (allModules, backendContext, typeScriptFragment) = compileToLoweredIr(
