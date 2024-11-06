@@ -24,6 +24,11 @@ val coreJsIrRuntimeForTests: Configuration by configurations.creating {
 }
 
 dependencies {
+    testImplementation(projectTests(":analysis:analysis-api-fir"))
+    testImplementation(projectTests(":analysis:analysis-api-impl-base"))
+    testImplementation(projectTests(":analysis:analysis-test-framework"))
+    testImplementation(projectTests(":analysis:low-level-api-fir"))
+
     embedded(project(":kotlinx-serialization-compiler-plugin.common")) { isTransitive = false }
     embedded(project(":kotlinx-serialization-compiler-plugin.k1")) { isTransitive = false }
     embedded(project(":kotlinx-serialization-compiler-plugin.k2")) { isTransitive = false }

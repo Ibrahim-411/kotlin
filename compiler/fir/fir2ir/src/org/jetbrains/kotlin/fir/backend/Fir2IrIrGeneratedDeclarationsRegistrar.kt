@@ -155,6 +155,7 @@ class Fir2IrIrGeneratedDeclarationsRegistrar(private val components: Fir2IrCompo
                 isTailRec = irFunction.isTailrec
                 isSuspend = irFunction.isSuspend
             }
+            resolvePhase = FirResolvePhase.BODY_RESOLVE
             returnTypeRef = implicitType
             dispatchReceiverType = irFunction.parent.toFirClass()?.defaultType()
             // contextReceivers
@@ -171,6 +172,7 @@ class Fir2IrIrGeneratedDeclarationsRegistrar(private val components: Fir2IrCompo
                     containingDeclarationSymbol = this@buildSimpleFunction.symbol
                     variance = it.variance
                     isReified = it.isReified
+                    resolvePhase = FirResolvePhase.BODY_RESOLVE
                     // bounds
                     // annotations
                 }
@@ -197,6 +199,7 @@ class Fir2IrIrGeneratedDeclarationsRegistrar(private val components: Fir2IrCompo
                         isNoinline = it.isNoinline
                         isVararg = it.isVararg
                         annotations.addAll(it.convertAnnotations())
+                        resolvePhase = FirResolvePhase.BODY_RESOLVE
                     }
                 }
                 replaceValueParameters(valueParameters)
@@ -231,6 +234,7 @@ class Fir2IrIrGeneratedDeclarationsRegistrar(private val components: Fir2IrCompo
                 isExpect = irConstructor.isExpect
                 isActual = false
             }
+            resolvePhase = FirResolvePhase.BODY_RESOLVE
             returnTypeRef = implicitType
 
             // contextReceivers
@@ -260,6 +264,7 @@ class Fir2IrIrGeneratedDeclarationsRegistrar(private val components: Fir2IrCompo
                         isNoinline = it.isNoinline
                         isVararg = it.isVararg
                         annotations.addAll(it.convertAnnotations())
+                        resolvePhase = FirResolvePhase.BODY_RESOLVE
                     }
                 }
                 replaceValueParameters(valueParameters)
