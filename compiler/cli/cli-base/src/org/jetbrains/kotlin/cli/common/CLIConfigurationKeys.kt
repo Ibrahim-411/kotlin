@@ -63,10 +63,6 @@ object CLIConfigurationKeys {
     @JvmField
     val PHASE_CONFIG: CompilerConfigurationKey<PhaseConfig> = CompilerConfigurationKey.create("phase configuration")
 
-    @JvmField
-    val FLEXIBLE_PHASE_CONFIG: CompilerConfigurationKey<PhaseConfigurationService> =
-        CompilerConfigurationKey.create("flexible phase configuration")
-
     // used in FIR IDE uast tests
     @JvmField
     val PATH_TO_KOTLIN_COMPILER_JAR: CompilerConfigurationKey<File> =

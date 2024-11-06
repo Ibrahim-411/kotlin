@@ -13,8 +13,8 @@ fun CompilerPhase<*, *, *>.toPhaseMap(): MutableMap<String, AnyNamedPhase> =
     }
 
 /**
- * Phase configuration that defines and configures [CompilerPhase]s that the compiler should execute.
- * It is defined before compilation and can't be modified in the process.
+ * Phase configuration that does not know anything
+ * about actual compiler pipeline upfront.
  */
 class PhaseConfig(
     disabled: Set<String> = emptySet(),

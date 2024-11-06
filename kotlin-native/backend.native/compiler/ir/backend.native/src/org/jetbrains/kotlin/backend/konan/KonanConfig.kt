@@ -50,7 +50,7 @@ class KonanConfig(val project: Project, val configuration: CompilerConfiguration
     private val platformManager = PlatformManager(distribution)
     internal val targetManager = platformManager.targetManager(configuration.get(KonanConfigKeys.TARGET))
     internal val target = targetManager.target
-    internal val flexiblePhaseConfig = configuration.get(CLIConfigurationKeys.FLEXIBLE_PHASE_CONFIG)!!
+    internal val phaseConfig = configuration.get(CLIConfigurationKeys.PHASE_CONFIG)!!
 
     // See https://youtrack.jetbrains.com/issue/KT-67692.
     val useLlvmOpaquePointers = true
