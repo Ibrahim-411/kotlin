@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.IrConstImpl
+import org.jetbrains.kotlin.ir.symbols.IrPropertySymbol
 import org.jetbrains.kotlin.ir.types.isPrimitiveType
 import org.jetbrains.kotlin.ir.types.makeNullable
 import org.jetbrains.kotlin.ir.util.dump
@@ -32,6 +33,7 @@ import org.jetbrains.kotlin.ir.util.render
 import org.jetbrains.kotlin.ir.util.resolveFakeOverride
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
+import org.jetbrains.kotlin.utils.atMostOne
 
 @PhaseDescription(
     name = "LateinitLowering",
@@ -118,19 +120,20 @@ open class LateinitLowering(private val backendContext: CommonBackendContext) : 
         if (!Symbols.isLateinitIsInitializedPropertyGetter(expression.symbol)) return expression
 
         return expression.extensionReceiver!!.replaceTailExpression {
-            val irPropertyRef = it as? IrPropertyReference
-                ?: throw AssertionError("Property reference expected: ${it.render()}")
-            val property = irPropertyRef.getter?.owner?.resolveFakeOverride()?.correspondingPropertySymbol?.owner
-                ?: throw AssertionError("isInitialized cannot be invoked on ${it.render()}")
-            require(property.isLateinit) {
-                "isInitialized invoked on non-lateinit property ${property.render()}"
+            val (property, dispatchReceiver) = when (it) {
+                is IrPropertyReference -> it.getter?.owner?.resolveFakeOverride()?.correspondingPropertySymbol?.owner to it.dispatchReceiver
+                is IrBoundPropertyReference -> (it.reflectionTargetSymbol as? IrPropertySymbol)?.owner?.resolveFakeOverride() to it.boundValues.atMostOne()
+                else -> error("Unsupported argument for KProperty::isInitialized call: ${it.render()}")
+            }
+            require(property?.isLateinit == true) {
+                "isInitialized invoked on non-lateinit property ${property?.render()}"
             }
             val backingField = property.backingField
                 ?: throw AssertionError("Lateinit property is supposed to have a backing field")
             transformLateinitBackingField(backingField, property)
-            backendContext.createIrBuilder(it.symbol, expression.startOffset, expression.endOffset).run {
+            backendContext.createIrBuilder(property.symbol, expression.startOffset, expression.endOffset).run {
                 irNotEquals(
-                    irGetField(it.dispatchReceiver, backingField),
+                    irGetField(dispatchReceiver, backingField),
                     irNull()
                 )
             }
