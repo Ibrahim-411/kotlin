@@ -143,11 +143,6 @@ private val annotationImplementationPhase = createFileLoweringPhase(
 )
 
 
-private val inlineCallableReferenceToLambdaPhase = createFileLoweringPhase(
-        lowering = { context: NativeGenerationState -> NativeInlineCallableReferenceToLambdaPhase(context) },
-        name = "NativeInlineCallableReferenceToLambdaPhase",
-)
-
 private val upgradeCallableReferencesPhase = createFileLoweringPhase(
         ::UpgradeCallableReferences,
         name = "UpgradeCallableReferences",
@@ -156,7 +151,7 @@ private val upgradeCallableReferencesPhase = createFileLoweringPhase(
 private val arrayConstructorPhase = createFileLoweringPhase(
         ::ArrayConstructorLowering,
         name = "ArrayConstructor",
-        prerequisite = setOf(inlineCallableReferenceToLambdaPhase)
+        prerequisite = setOf(upgradeCallableReferencesPhase)
 )
 
 private val lateinitPhase = createFileLoweringPhase(
@@ -189,11 +184,6 @@ private val extractLocalClassesFromInlineBodies = createFileLoweringPhase(
         },
         name = "ExtractLocalClassesFromInlineBodies",
         prerequisite = setOf(sharedVariablesPhase),
-)
-
-private val wrapInlineDeclarationsWithReifiedTypeParametersLowering = createFileLoweringPhase(
-        ::WrapInlineDeclarationsWithReifiedTypeParametersLowering,
-        name = "WrapInlineDeclarationsWithReifiedTypeParameters",
 )
 
 private val postInlinePhase = createFileLoweringPhase(
@@ -556,15 +546,13 @@ internal fun KonanConfig.getLoweringsUpToAndIncludingSyntheticAccessors(): Lower
     sharedVariablesPhase,
     outerThisSpecialAccessorInInlineFunctionsPhase,
     extractLocalClassesFromInlineBodies,
-    inlineCallableReferenceToLambdaPhase,
+    upgradeCallableReferencesPhase,
     arrayConstructorPhase,
-    wrapInlineDeclarationsWithReifiedTypeParametersLowering,
     inlineOnlyPrivateFunctionsPhase.takeUnless { this.configuration.getBoolean(KlibConfigurationKeys.NO_DOUBLE_INLINING) },
     syntheticAccessorGenerationPhase.takeUnless { this.configuration.getBoolean(KlibConfigurationKeys.NO_DOUBLE_INLINING) },
 )
 
 internal fun KonanConfig.getLoweringsAfterInlining(): LoweringList = listOfNotNull(
-        upgradeCallableReferencesPhase,
         removeExpectDeclarationsPhase,
         stripTypeAliasDeclarationsPhase,
         assertionRemoverPhase,
