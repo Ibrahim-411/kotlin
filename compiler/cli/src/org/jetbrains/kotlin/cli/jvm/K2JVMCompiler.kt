@@ -50,7 +50,10 @@ class K2JVMCompiler : CLICompiler<K2JVMCompilerArguments>() {
     ): ExitCode {
         val messageCollector = configuration.getNotNull(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY)
 
-        configuration.put(CLIConfigurationKeys.PHASE_CONFIG, createPhaseConfig(jvmPhases, arguments))
+        val phaseConfig = createPhaseConfig(arguments).also {
+            if (arguments.listPhases) it.list(jvmPhases)
+        }
+        configuration.put(CLIConfigurationKeys.PHASE_CONFIG, phaseConfig)
 
         if (!configuration.configureJdkHome(arguments)) return COMPILATION_ERROR
 
