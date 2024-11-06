@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.wasm.test.converters
 
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
+import org.jetbrains.kotlin.backend.common.phaser.PhaseSet
 import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.backend.wasm.*
 import org.jetbrains.kotlin.backend.wasm.dce.eliminateDeadDeclarations
@@ -46,13 +47,12 @@ class WasmLoweringFacade(
 
         val moduleInfo = inputArtifact.moduleInfo
         val debugMode = DebugMode.fromSystemProperty("kotlin.wasm.debugMode")
-        val wasmPhases = getWasmPhases(isIncremental = false)
         val phaseConfig = if (debugMode >= DebugMode.SUPER_DEBUG) {
             val outputDirBase = testServices.getWasmTestOutputDirectory()
             val dumpOutputDir = File(outputDirBase, "irdump")
             println("\n ------ Dumping phases to file://${dumpOutputDir.absolutePath}")
             PhaseConfig(
-                toDumpStateAfter = wasmPhases.toPhaseMap().values.toSet(),
+                toDumpStateAfter = PhaseSet.ALL,
                 dumpToDirectory = dumpOutputDir.path,
             )
         } else {

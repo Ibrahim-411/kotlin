@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.js.test.converters
 
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
+import org.jetbrains.kotlin.backend.common.phaser.PhaseSet
 import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.backend.common.serialization.cityHash64
 import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
@@ -115,14 +116,13 @@ class JsIrLoweringFacade(
         }
 
         val debugMode = DebugMode.fromSystemProperty("kotlin.js.debugMode")
-        val jsPhases = getJsPhases(configuration)
         val phaseConfig = if (debugMode >= DebugMode.SUPER_DEBUG) {
             val dumpOutputDir = File(
                 JsEnvironmentConfigurator.getJsArtifactsOutputDir(testServices),
                 JsEnvironmentConfigurator.getKlibArtifactSimpleName(testServices, module.name) + "-irdump"
             )
             PhaseConfig(
-                toDumpStateAfter = jsPhases.toPhaseMap().values.toSet(),
+                toDumpStateAfter = PhaseSet.ALL,
                 dumpToDirectory = dumpOutputDir.path
             )
         } else {

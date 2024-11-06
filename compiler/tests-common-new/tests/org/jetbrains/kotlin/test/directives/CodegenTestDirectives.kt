@@ -185,9 +185,8 @@ object CodegenTestDirectives : SimpleDirectivesContainer() {
         """
     )
 
-    val DUMP_IR_FOR_GIVEN_PHASES by valueDirective<AnyNamedPhase>(
+    val DUMP_IR_FOR_GIVEN_PHASES by stringDirective(
         description = "Dumps backend IR after given lowerings (enables ${PhasedIrDumpHandler::class})",
-        parser = { error("Cannot parse value $it for \"DUMP_IR_FOR_GIVEN_PHASES\" directive. All arguments must be specified via code in test system") }
     )
 
     val TREAT_AS_ONE_FILE by directive(
