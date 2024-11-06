@@ -39,7 +39,7 @@ object JvmCliPipeline {
             if (diagnosticCollector.hasErrors) {
                 FirDiagnosticsCompilerResultsReporter.reportToMessageCollector(
                     diagnosticCollector, configurationOutput.configuration.messageCollector,
-                    configurationOutput.configuration.getBoolean(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME)
+                    configurationOutput.configuration.renderDiagnosticInternalName
                 )
                 return COMPILATION_ERROR
             }

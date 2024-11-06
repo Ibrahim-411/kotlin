@@ -6,41 +6,16 @@
 package org.jetbrains.kotlin.cli.pipeline.jvm
 
 import org.jetbrains.kotlin.backend.jvm.jvmPhases
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
-import org.jetbrains.kotlin.cli.common.ExitCode
+import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
-import org.jetbrains.kotlin.cli.common.createPhaseConfig
-import org.jetbrains.kotlin.cli.common.incrementalCompilationIsEnabled
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
-import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
+import org.jetbrains.kotlin.cli.jvm.*
 import org.jetbrains.kotlin.cli.jvm.compiler.configureSourceRoots
 import org.jetbrains.kotlin.cli.jvm.config.ClassicFrontendSpecificJvmConfigurationKeys
 import org.jetbrains.kotlin.cli.jvm.config.configureJdkClasspathRoots
-import org.jetbrains.kotlin.cli.jvm.configureAdvancedJvmOptions
-import org.jetbrains.kotlin.cli.jvm.configureJavaModulesContentRoots
-import org.jetbrains.kotlin.cli.jvm.configureJdkHome
-import org.jetbrains.kotlin.cli.jvm.configureKlibPaths
-import org.jetbrains.kotlin.cli.jvm.configureModuleChunk
-import org.jetbrains.kotlin.cli.jvm.configureStandardLibs
-import org.jetbrains.kotlin.cli.jvm.setupJvmSpecificArguments
-import org.jetbrains.kotlin.cli.pipeline.ArgumentsPipelineArtifact
-import org.jetbrains.kotlin.cli.pipeline.CommonConfigurationFiller
-import org.jetbrains.kotlin.cli.pipeline.CompilerPipelineStep
-import org.jetbrains.kotlin.cli.pipeline.ConfigurationFiller
-import org.jetbrains.kotlin.cli.pipeline.ConfigurationPipelineArtifact
-import org.jetbrains.kotlin.cli.pipeline.StepStatus
-import org.jetbrains.kotlin.cli.pipeline.toErrorStatus
-import org.jetbrains.kotlin.cli.pipeline.toOkStatus
-import org.jetbrains.kotlin.config.CommonConfigurationKeys
-import org.jetbrains.kotlin.config.CompilerConfiguration
-import org.jetbrains.kotlin.config.JVMConfigurationKeys
-import org.jetbrains.kotlin.config.Services
-import org.jetbrains.kotlin.config.messageCollector
-import org.jetbrains.kotlin.incremental.components.EnumWhenTracker
-import org.jetbrains.kotlin.incremental.components.ExpectActualTracker
-import org.jetbrains.kotlin.incremental.components.ImportTracker
-import org.jetbrains.kotlin.incremental.components.InlineConstTracker
-import org.jetbrains.kotlin.incremental.components.LookupTracker
+import org.jetbrains.kotlin.cli.pipeline.*
+import org.jetbrains.kotlin.config.*
+import org.jetbrains.kotlin.incremental.components.*
 import org.jetbrains.kotlin.load.java.JavaClassesTracker
 import org.jetbrains.kotlin.load.kotlin.incremental.components.IncrementalCompilationComponents
 import org.jetbrains.kotlin.metadata.deserialization.MetadataVersion
@@ -83,23 +58,22 @@ object JvmConfigurationFiller : ConfigurationFiller<K2JVMCompilerArguments, JvmC
     data class Context(val services: Services)
 
     override fun fillConfiguration(arguments: K2JVMCompilerArguments, configuration: CompilerConfiguration, context: Context): ExitCode {
-        configuration.put(CLIConfigurationKeys.ALLOW_NO_SOURCE_FILES, arguments.allowNoSourceFiles)
+        configuration.allowNoSourceFiles = arguments.allowNoSourceFiles
         configuration.setupJvmSpecificArguments(arguments)
         configuration.setupIncrementalCompilationServices(arguments, context.services)
 
         val messageCollector = configuration.messageCollector
-        configuration.put(CLIConfigurationKeys.PHASE_CONFIG, createPhaseConfig(jvmPhases, arguments, messageCollector))
+        configuration.phaseConfig = createPhaseConfig(jvmPhases, arguments, messageCollector)
         if (!configuration.configureJdkHome(arguments)) return ExitCode.COMPILATION_ERROR
-        configuration.put(JVMConfigurationKeys.DISABLE_STANDARD_SCRIPT_DEFINITION, arguments.disableStandardScript)
+        configuration.disableStandardScriptDefinition = arguments.disableStandardScript
         val moduleName = arguments.moduleName ?: JvmProtoBufUtil.DEFAULT_MODULE_NAME
-        configuration.put(CommonConfigurationKeys.MODULE_NAME, moduleName)
-
+        configuration.moduleName = moduleName
         configuration.configureJavaModulesContentRoots(arguments)
-        configuration.configureStandardLibs(configuration.get(CLIConfigurationKeys.KOTLIN_PATHS), arguments)
+        configuration.configureStandardLibs(configuration.kotlinPaths, arguments)
         configuration.configureAdvancedJvmOptions(arguments)
         configuration.configureKlibPaths(arguments)
         configuration.setupModuleChunk(arguments)
-        arguments.buildFile?.let { configuration.put(CLIConfigurationKeys.BUILD_FILE, File(it)) }
+        arguments.buildFile?.let { configuration.buildFile = File(it) }
 
         // TODO: consider moving it into separate entity
         if (arguments.useOldBackend) {
@@ -113,22 +87,19 @@ object JvmConfigurationFiller : ConfigurationFiller<K2JVMCompilerArguments, JvmC
 
     private fun CompilerConfiguration.setupIncrementalCompilationServices(arguments: K2JVMCompilerArguments, services: Services) {
         if (!incrementalCompilationIsEnabled(arguments)) return
-        putIfNotNull(CommonConfigurationKeys.LOOKUP_TRACKER, services[LookupTracker::class.java])
-        putIfNotNull(CommonConfigurationKeys.EXPECT_ACTUAL_TRACKER, services[ExpectActualTracker::class.java])
-        putIfNotNull(CommonConfigurationKeys.INLINE_CONST_TRACKER, services[InlineConstTracker::class.java])
-        putIfNotNull(CommonConfigurationKeys.ENUM_WHEN_TRACKER, services[EnumWhenTracker::class.java])
-        putIfNotNull(CommonConfigurationKeys.IMPORT_TRACKER, services[ImportTracker::class.java])
-        putIfNotNull(
-            JVMConfigurationKeys.INCREMENTAL_COMPILATION_COMPONENTS,
-            services[IncrementalCompilationComponents::class.java]
-        )
+        lookupTracker = services[LookupTracker::class.java]
+        expectActualTracker = services[ExpectActualTracker::class.java]
+        inlineConstTracker = services[InlineConstTracker::class.java]
+        enumWhenTracker = services[EnumWhenTracker::class.java]
+        importTracker = services[ImportTracker::class.java]
+        incrementalCompilationComponents = services[IncrementalCompilationComponents::class.java]
         putIfNotNull(ClassicFrontendSpecificJvmConfigurationKeys.JAVA_CLASSES_TRACKER, services[JavaClassesTracker::class.java])
     }
 
     private fun CompilerConfiguration.setupModuleChunk(arguments: K2JVMCompilerArguments) {
         val buildFile = arguments.buildFile?.let { File(it) }
         val moduleChunk = configureModuleChunk(arguments, buildFile)
-        put(CLIConfigurationKeys.MODULE_CHUNK, moduleChunk)
+        this.moduleChunk = moduleChunk
         configureSourceRoots(moduleChunk.modules, buildFile)
         // should be called after configuring jdk home from build file
         configureJdkClasspathRoots()

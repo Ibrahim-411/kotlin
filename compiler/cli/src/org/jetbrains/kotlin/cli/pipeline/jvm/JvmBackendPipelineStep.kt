@@ -7,14 +7,11 @@ package org.jetbrains.kotlin.cli.pipeline.jvm
 
 import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFileManager
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
 import org.jetbrains.kotlin.cli.common.ExitCode
-import org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler
+import org.jetbrains.kotlin.cli.common.buildFile
+import org.jetbrains.kotlin.cli.common.moduleChunk
+import org.jetbrains.kotlin.cli.jvm.compiler.*
 import org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.codegenFactoryWithJvmIrBackendInput
-import org.jetbrains.kotlin.cli.jvm.compiler.NoScopeRecordCliBindingTrace
-import org.jetbrains.kotlin.cli.jvm.compiler.applyModuleProperties
-import org.jetbrains.kotlin.cli.jvm.compiler.getSourceFiles
-import org.jetbrains.kotlin.cli.jvm.compiler.writeOutputsIfNeeded
 import org.jetbrains.kotlin.cli.pipeline.CompilerPipelineStep
 import org.jetbrains.kotlin.cli.pipeline.StepStatus
 import org.jetbrains.kotlin.cli.pipeline.toErrorStatus
@@ -22,12 +19,12 @@ import org.jetbrains.kotlin.cli.pipeline.toOkStatus
 import org.jetbrains.kotlin.codegen.CodegenFactory
 import org.jetbrains.kotlin.codegen.state.GenerationState
 import org.jetbrains.kotlin.config.messageCollector
+import org.jetbrains.kotlin.config.useLightTree
 import org.jetbrains.kotlin.fir.backend.jvm.FirJvmBackendClassResolver
 import org.jetbrains.kotlin.fir.backend.jvm.FirJvmBackendExtension
 import org.jetbrains.kotlin.fir.backend.utils.extractFirDeclarations
 import org.jetbrains.kotlin.ir.declarations.impl.IrModuleFragmentImpl
 import org.jetbrains.kotlin.progress.ProgressIndicatorAndCompilationCanceledStatus
-import kotlin.collections.plusAssign
 
 object JvmBackendPipelineStep : CompilerPipelineStep<JvmFir2IrPipelineArtifact, JvmBinaryPipelineArtifact>() {
     override fun execute(input: JvmFir2IrPipelineArtifact): StepStatus<JvmBinaryPipelineArtifact> {
@@ -43,11 +40,11 @@ object JvmBackendPipelineStep : CompilerPipelineStep<JvmFir2IrPipelineArtifact, 
         )
         val (codegenFactory, baseBackendInput) = fir2IrResult.codegenFactoryWithJvmIrBackendInput(configuration, jvmBackendExtension)
 
-        val chunk = configuration.getNotNull(CLIConfigurationKeys.MODULE_CHUNK).modules
+        val chunk = configuration.moduleChunk!!.modules
         val localFileSystem = VirtualFileManager.getInstance().getFileSystem(StandardFileSystems.FILE_PROTOCOL)
         val codegenInputs = ArrayList<CodegenFactory.CodegenInput>(chunk.size)
 
-        val buildFile = configuration.get(CLIConfigurationKeys.BUILD_FILE)
+        val buildFile = configuration.buildFile
         for (module in chunk) {
             ProgressIndicatorAndCompilationCanceledStatus.checkCanceled()
             val moduleConfiguration = configuration.applyModuleProperties(module, buildFile)

@@ -7,36 +7,26 @@
 
 package org.jetbrains.kotlin.cli.pipeline
 
+import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.CLICompiler.Companion.SCRIPT_PLUGIN_COMMANDLINE_PROCESSOR_NAME
 import org.jetbrains.kotlin.cli.common.CLICompiler.Companion.SCRIPT_PLUGIN_K2_REGISTRAR_NAME
 import org.jetbrains.kotlin.cli.common.CLICompiler.Companion.SCRIPT_PLUGIN_REGISTRAR_NAME
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
-import org.jetbrains.kotlin.cli.common.CommonCompilerPerformanceManager
-import org.jetbrains.kotlin.cli.common.ExitCode
 import org.jetbrains.kotlin.cli.common.ExitCode.INTERNAL_ERROR
 import org.jetbrains.kotlin.cli.common.arguments.CommonCompilerArguments
-import org.jetbrains.kotlin.cli.common.checkPluginsArguments
-import org.jetbrains.kotlin.cli.common.computeKotlinPaths
-import org.jetbrains.kotlin.cli.common.createPhaseConfig
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.LOGGING
 import org.jetbrains.kotlin.cli.common.messages.GroupingMessageCollector
-import org.jetbrains.kotlin.cli.common.messages.MessageCollector
-import org.jetbrains.kotlin.cli.common.setupCommonArguments
 import org.jetbrains.kotlin.cli.jvm.plugins.PluginCliParser
 import org.jetbrains.kotlin.cli.plugins.extractPluginClasspathAndOptions
 import org.jetbrains.kotlin.cli.plugins.processCompilerPluginsOptions
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
 import org.jetbrains.kotlin.compiler.plugin.CompilerPluginRegistrar
 import org.jetbrains.kotlin.compiler.plugin.ComponentRegistrar
-import org.jetbrains.kotlin.config.CommonConfigurationKeys
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.messageCollector
 import org.jetbrains.kotlin.metadata.deserialization.BinaryVersion
 import org.jetbrains.kotlin.utils.KotlinPaths
 import org.jetbrains.kotlin.utils.PathUtil
 import java.io.File
-import kotlin.collections.orEmpty
-import kotlin.collections.toMutableList
 
 // from CLICompiler
 class CommonConfigurationFiller<A : CommonCompilerArguments> : ConfigurationFiller<A, CommonConfigurationFiller.Context<A>>() {
@@ -50,10 +40,10 @@ class CommonConfigurationFiller<A : CommonCompilerArguments> : ConfigurationFill
     override fun fillConfiguration(arguments: A, configuration: CompilerConfiguration, context: Context<A>): ExitCode {
         val (messageCollector, performanceManager) = context
         configuration.messageCollector = messageCollector
-        configuration.put(CLIConfigurationKeys.PERF_MANAGER, performanceManager)
+        configuration.perfManager = performanceManager
         configuration.setupCommonArguments(arguments, context.createMetadataVersion)
         val paths = computeKotlinPaths(messageCollector, arguments)?.also {
-            configuration.put(CLIConfigurationKeys.KOTLIN_PATHS, it)
+            configuration.kotlinPaths = it
         }
         if (messageCollector.hasErrors()) return ExitCode.COMPILATION_ERROR
 
@@ -71,7 +61,7 @@ class CommonConfigurationFiller<A : CommonCompilerArguments> : ConfigurationFill
         val pluginClasspaths = arguments.pluginClasspaths.orEmpty().toMutableList()
         val pluginOptions = arguments.pluginOptions.orEmpty().toMutableList()
         val pluginConfigurations = arguments.pluginConfigurations.orEmpty().toMutableList()
-        val messageCollector = configuration.getNotNull(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY)
+        val messageCollector = configuration.messageCollector
 
         val scriptingPluginClasspath = mutableListOf<String>()
         val scriptingPluginOptions = mutableListOf<String>()
@@ -130,8 +120,7 @@ class CommonConfigurationFiller<A : CommonCompilerArguments> : ConfigurationFill
                 true
             } else false
         } catch (e: Throwable) {
-            val messageCollector = configuration.getNotNull(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY)
-            messageCollector.report(LOGGING, "Exception on loading scripting plugin: $e")
+            configuration.messageCollector.report(LOGGING, "Exception on loading scripting plugin: $e")
             false
         }
     }

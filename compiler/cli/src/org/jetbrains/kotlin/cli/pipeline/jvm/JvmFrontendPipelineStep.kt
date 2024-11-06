@@ -10,19 +10,10 @@ import com.intellij.openapi.vfs.StandardFileSystems
 import com.intellij.openapi.vfs.VirtualFileManager
 import org.jetbrains.kotlin.KtPsiSourceFile
 import org.jetbrains.kotlin.KtSourceFile
-import org.jetbrains.kotlin.cli.common.CLIConfigurationKeys
-import org.jetbrains.kotlin.cli.common.ExitCode
-import org.jetbrains.kotlin.cli.common.GroupedKtSources
-import org.jetbrains.kotlin.cli.common.allFiles
+import org.jetbrains.kotlin.cli.common.*
 import org.jetbrains.kotlin.cli.common.arguments.K2JVMCompilerArguments
-import org.jetbrains.kotlin.cli.common.checkKotlinPackageUsageForLightTree
-import org.jetbrains.kotlin.cli.common.checkKotlinPackageUsageForPsi
-import org.jetbrains.kotlin.cli.common.collectSources
-import org.jetbrains.kotlin.cli.common.fileBelongsToModuleForLt
 import org.jetbrains.kotlin.cli.common.fir.FirDiagnosticsCompilerResultsReporter
-import org.jetbrains.kotlin.cli.common.isCommonSourceForLt
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
-import org.jetbrains.kotlin.cli.common.prepareJvmSessions
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import org.jetbrains.kotlin.cli.jvm.compiler.EnvironmentConfigFiles
 import org.jetbrains.kotlin.cli.jvm.compiler.FirKotlinToJvmBytecodeCompiler
@@ -32,22 +23,13 @@ import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.createContextForIncrementa
 import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.createIncrementalCompilationScope
 import org.jetbrains.kotlin.cli.jvm.compiler.pipeline.createProjectEnvironment
 import org.jetbrains.kotlin.cli.jvm.targetDescription
-import org.jetbrains.kotlin.cli.pipeline.CompilerPipelineStep
-import org.jetbrains.kotlin.cli.pipeline.ConfigurationPipelineArtifact
-import org.jetbrains.kotlin.cli.pipeline.StepStatus
-import org.jetbrains.kotlin.cli.pipeline.toErrorStatus
-import org.jetbrains.kotlin.cli.pipeline.toOkStatus
-import org.jetbrains.kotlin.config.CommonConfigurationKeys
+import org.jetbrains.kotlin.cli.pipeline.*
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.messageCollector
 import org.jetbrains.kotlin.config.moduleName
 import org.jetbrains.kotlin.config.useLightTree
 import org.jetbrains.kotlin.diagnostics.DiagnosticReporterFactory
-import org.jetbrains.kotlin.fir.pipeline.FirResult
-import org.jetbrains.kotlin.fir.pipeline.buildFirFromKtFiles
-import org.jetbrains.kotlin.fir.pipeline.buildFirViaLightTree
-import org.jetbrains.kotlin.fir.pipeline.resolveAndCheckFir
-import org.jetbrains.kotlin.fir.pipeline.runPlatformCheckers
+import org.jetbrains.kotlin.fir.pipeline.*
 import org.jetbrains.kotlin.fir.session.environment.AbstractProjectFileSearchScope
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtFile
@@ -63,22 +45,23 @@ object JvmFrontendPipelineStep : CompilerPipelineStep<ConfigurationPipelineArtif
             return ExitCode.COMPILATION_ERROR.toErrorStatus()
         }
 
-        val targetDescription = configuration.getNotNull(CLIConfigurationKeys.MODULE_CHUNK).targetDescription()
+        val chunk = configuration.moduleChunk!!
+        val targetDescription = chunk.targetDescription()
         val (environment, sources) = createEnvironmentAndSources(
             configuration,
             rootDisposable,
             targetDescription
         ) ?: return ExitCode.COMPILATION_ERROR.toErrorStatus()
 
-        val performanceManager = configuration.get(CLIConfigurationKeys.PERF_MANAGER)
+        val performanceManager = configuration.perfManager
         performanceManager?.notifyAnalysisStarted()
 
         val allSources = sources.allFiles
 
         if (
             allSources.isEmpty() &&
-            !configuration.getBoolean(CLIConfigurationKeys.ALLOW_NO_SOURCE_FILES) &&
-            configuration.get(CLIConfigurationKeys.BUILD_FILE) == null
+            !configuration.allowNoSourceFiles &&
+            configuration.buildFile == null
         ) {
             return when (arguments.version) {
                 true -> ExitCode.OK.toErrorStatus()
@@ -107,10 +90,9 @@ object JvmFrontendPipelineStep : CompilerPipelineStep<ConfigurationPipelineArtif
             incrementalExcludesScope = sourceScope
         )?.also { librariesScope -= it }
 
-        val chunk = configuration.getNotNull(CLIConfigurationKeys.MODULE_CHUNK)
         val moduleName = when {
             chunk.modules.size > 1 -> chunk.modules.joinToString(separator = "+") { it.getModuleName() }
-            else -> configuration.getNotNull(CommonConfigurationKeys.MODULE_NAME)
+            else -> configuration.moduleName!!
         }
 
         val libraryList = createLibraryListForJvm(
@@ -156,7 +138,7 @@ object JvmFrontendPipelineStep : CompilerPipelineStep<ConfigurationPipelineArtif
         if (diagnosticsCollector.hasErrors) {
             FirDiagnosticsCompilerResultsReporter.reportToMessageCollector(
                 diagnosticsCollector, messageCollector,
-                configuration.getBoolean(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME)
+                configuration.renderDiagnosticInternalName
             )
             return ExitCode.COMPILATION_ERROR.toErrorStatus()
         }
