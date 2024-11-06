@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.ir.generator.IrSymbolTree.anonymousInitializerSymbol
 import org.jetbrains.kotlin.ir.generator.IrSymbolTree.classSymbol
 import org.jetbrains.kotlin.ir.generator.IrSymbolTree.classifierSymbol
 import org.jetbrains.kotlin.ir.generator.IrSymbolTree.constructorSymbol
+import org.jetbrains.kotlin.ir.generator.IrSymbolTree.declarationWithAccessorsSymbol
 import org.jetbrains.kotlin.ir.generator.IrSymbolTree.enumEntrySymbol
 import org.jetbrains.kotlin.ir.generator.IrSymbolTree.externalPackageFragmentSymbol
 import org.jetbrains.kotlin.ir.generator.IrSymbolTree.fieldSymbol
@@ -36,6 +37,7 @@ import org.jetbrains.kotlin.ir.generator.IrSymbolTree.variableSymbol
 import org.jetbrains.kotlin.ir.generator.config.AbstractTreeBuilder
 import org.jetbrains.kotlin.ir.generator.model.Element
 import org.jetbrains.kotlin.ir.generator.model.Element.Category.*
+import org.jetbrains.kotlin.ir.generator.model.ListField
 import org.jetbrains.kotlin.ir.generator.model.ListField.Mutability.*
 import org.jetbrains.kotlin.ir.generator.model.ListField.Mutability.Array
 import org.jetbrains.kotlin.ir.generator.model.ListField.Mutability.MutableList
@@ -817,6 +819,106 @@ object IrTree : AbstractTreeBuilder() {
         +referencedSymbol("getter", simpleFunctionSymbol)
         +referencedSymbol("setter", simpleFunctionSymbol, nullable = true)
     }
+
+    // TODO: extract common part of function/property reference to common supertype - KT-73206
+    val boundFunctionReference: Element by element(Expression) {
+        parent(expression)
+
+        +referencedSymbol("reflectionTargetSymbol", functionSymbol, nullable = true)
+        +referencedSymbol("overriddenFunctionSymbol", simpleFunctionSymbol, nullable)
+        +listField("boundValues", expression, nullable = false, mutability = ListField.Mutability.MutableList)
+        +field("invokeFunction", simpleFunction)
+        +field("origin", statementOriginType, nullable = true)
+        +field("hasUnitConversion", boolean)
+        +field("hasSuspendConversion", boolean)
+        +field("hasVarargConversion", boolean)
+        +field("isRestrictedSuspension", boolean)
+
+        kDoc = """
+            This node is intended to unify way of handling function reference-like objects in IR.
+            
+            In particular, it covers:
+            * Lambdas and anonymous functions
+            * Regular function references (::foo, and receiver::foo in code)
+            * Function reference adaptors, which happens in cases where referenced function doesn't perfectly match expected shape, as:
+               * Returns something instead of Unit
+               * Has some more arguments, than needed, but with default values
+               * Consumes vararg, instead of some number of arguments of some type
+               * Is not suspend, while suspend function is expected
+               * Is a reference for functional interface or SAM-class constructor, which is not a real function at all 
+            * Sam or fun-interface conversions of something listed above
+            
+            This node is indented to replace [IrFunctionReference] and [IrFunctionExpression] in the IR tree.
+            It also replaces some adapted function references implemented as [IrBlock] with [IrFunction] and [IrFunctionReference] inside it.
+            
+            The mental model of this node is the following local object:
+            ```
+            object : ExpressionType {
+                // if reflectionTarget is not null
+                //    some platform specific implementation of reflection information for reflectionTarget
+                //    some platform specific implementation of equality/hashCode based on reflectionTarget 
+                private val boundValue0 = boundValues[0]
+                private val boundValue1 = boundValues[1]
+                ...
+                
+                private fun invokeFunction
+                
+                override fun overriddenFunctionName(
+                    overriddenFunctionParameters0: overriddenFunctionParametersType0,
+                    overriddenFunctionParameters1: overriddenFunctionParametersType1, 
+                    ....
+                ) = invokeFunction(
+                        boundValue0, boundValue1, ..., 
+                        overriddenFunctionParameters0, overriddenFunctionParameters1
+                    )
+            }
+            ```
+            
+            So basically, this is anonymous object implementing its type, capturing boundValues, and overriding function
+            stored in [overriddenFunctionSymbol] by function stored in [invokeFunction], with reflection 
+            information for [reflectionTargetSymbol] if it is not null.
+            
+            [overriddenFunctionSymbol] is typically the corresponding invoke method of [K][Suspend]FunctionN interface,
+            but it also can a be method of fun interface or java SAM-class, if corresponding sam conversion happened.
+            
+            [reflectionTargetSymbol] is typically a function for which reference was initially created, and it's null,
+            if it is a lambda, which doesn't need any reflection information. 
+            
+            [hasUnitConversion], [hasSuspendConversion], [hasVarargConversion], [isRestrictedSuspension] flags
+            represents some information about reference, which is useful for generating correct reflection information.
+            While it's technically possible to reconstruct it from function and reflection function signature,
+            it's easier and more robust to store it right away. 
+            
+            This allows processing function references by almost all lowerings as normal calls (within invokeFunction),
+            and don't make them special cases. Also, it enables support of several bound values. 
+        """.trimIndent()
+    }
+    val boundPropertyReference: Element by element(Expression) {
+        parent(expression)
+
+        +referencedSymbol("reflectionTargetSymbol", declarationWithAccessorsSymbol, nullable = true)
+        +listField("boundValues", expression, nullable = false, mutability = ListField.Mutability.MutableList)
+        +field("getterFunction", simpleFunction)
+        +field("setterFunction", simpleFunction, nullable = true)
+        +field("origin", statementOriginType, nullable = true)
+
+        kDoc = """
+            This node is intended to unify way of handling property reference-like objects in IR.
+            
+            In particular, it covers:
+              * references to regular properties
+              * references implicitly passed to property delegation functions
+              * references implicitly passed to local variable delegation functions (@see [IrLocalDelegatedProperty])
+
+            This node is indented to replace [IrPropertyReference] and [IrLocalDelegatedPropertyReference] in the IR tree.
+            
+            It's similar to [IrBoundFunctionReference] except for property references, and has same semantics, with following differences:
+              * There is no [IrBoundFunctionReference.overriddenFunctionSymbol] as property reference can't implement a fun interface/be sam converted
+              * There is no [IrBoundFunctionReference.invokeFunction], but there is [getterFunction] with similar semantics instead
+              * There is nullable [setterFunction] with similar semantics in case of mutable property
+        """.trimIndent()
+    }
+
     val classReference: Element by element(Expression) {
         parent(declarationReference)
 
