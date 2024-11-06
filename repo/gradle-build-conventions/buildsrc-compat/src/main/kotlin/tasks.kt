@@ -23,12 +23,14 @@ import org.gradle.kotlin.dsl.*
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.kotlin.gradle.plugin.KotlinPlatformType
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask
+import org.jetbrains.kotlin.ideaExt.idea
 import java.io.File
 import java.lang.Character.isLowerCase
 import java.lang.Character.isUpperCase
 import java.lang.management.ManagementFactory
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.apply
 
 val kotlinGradlePluginAndItsRequired = arrayOf(
     ":kotlin-assignment",
@@ -362,4 +364,48 @@ fun Project.optInToUnsafeDuringIrConstructionAPI() {
 
 fun Project.optInToObsoleteDescriptorBasedAPI() {
     optInTo("org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI")
+}
+
+/**
+ * This function creates `generateConfigurationKeys`, which generates
+ *   compiler configuration keys passed as arguments (like `CommonConfigurationKeys`)
+ */
+fun Project.generatedConfigurationKeys(name: String, vararg names: String) {
+    val generatorClasspath by configurations.creating
+
+    dependencies {
+        generatorClasspath(project(":compiler:config:configuration-keys-generator"))
+    }
+
+    val generationRoot = projectDir.resolve("gen")
+
+    tasks.register<NoDebugJavaExec>("generateConfigurationKeys") {
+        val generatorRoot = "$rootDir/compiler/config/configuration-keys-generator/src/"
+
+        val generatorConfigurationFiles = fileTree(generatorRoot) {
+            include("**/*.kt")
+        }
+
+        inputs.files(generatorConfigurationFiles)
+        outputs.dirs(generationRoot)
+
+        args(generationRoot, name, *names)
+        workingDir = rootDir
+        classpath = generatorClasspath
+        mainClass.set("org.jetbrains.kotlin.config.keys.generator.MainKt")
+        systemProperties["line.separator"] = "\n"
+    }
+
+    sourceSets {
+        "main" {
+            java.srcDir(generationRoot)
+        }
+    }
+
+    if (kotlinBuildProperties.isInJpsBuildIdeaSync) {
+        apply(plugin = "idea")
+        idea {
+            this.module.generatedSourceDirs.add(generationRoot)
+        }
+    }
 }
