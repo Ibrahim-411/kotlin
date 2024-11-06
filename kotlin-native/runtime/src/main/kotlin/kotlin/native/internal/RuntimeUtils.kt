@@ -92,6 +92,11 @@ internal fun ThrowIllegalArgumentExceptionWithMessage(message: String) : Nothing
     throw IllegalArgumentException(message)
 }
 
+@PublishedApi
+internal fun ThrowUnsupportedOperationException(message: String) : Nothing {
+    throw UnsupportedOperationException(message)
+}
+
 @ExportForCppRuntime
 internal fun ThrowIllegalStateException() : Nothing {
     throw IllegalStateException()

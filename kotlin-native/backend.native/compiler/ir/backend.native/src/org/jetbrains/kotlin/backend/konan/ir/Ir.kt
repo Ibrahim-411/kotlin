@@ -307,6 +307,8 @@ internal class KonanSymbols(
     val throwIllegalArgumentExceptionWithMessage = internalFunction("ThrowIllegalArgumentExceptionWithMessage")
 
 
+    override val throwUnsupportedOperationException = internalFunction("ThrowUnsupportedOperationException")
+
     override val throwUninitializedPropertyAccessException = internalFunction("ThrowUninitializedPropertyAccessException")
 
     override val stringBuilder = topLevelClass(StandardNames.TEXT_PACKAGE_FQ_NAME, "StringBuilder")

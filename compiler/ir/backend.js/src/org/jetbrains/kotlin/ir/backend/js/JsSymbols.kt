@@ -46,6 +46,9 @@ class JsSymbols(
     override val throwTypeCastException =
         symbolTable.descriptorExtension.referenceSimpleFunction(context.getFunctions(kotlinPackageFqn.child(Name.identifier("THROW_CCE"))).single())
 
+    override val throwUnsupportedOperationException =
+        symbolTable.descriptorExtension.referenceSimpleFunction(context.getFunctions(FqName("kotlin.throwUnsupportedOperationException")).single())
+
     override val throwUninitializedPropertyAccessException =
         symbolTable.descriptorExtension.referenceSimpleFunction(context.getFunctions(FqName("kotlin.throwUninitializedPropertyAccessException")).single())
 
