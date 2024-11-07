@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.load.kotlin.incremental.components.IncrementalCompil
 import org.jetbrains.kotlin.modules.Module
 import java.io.File
 
+@Suppress("unused")
 object JvmConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.config", "JVMConfigurationKeys") {
     val OUTPUT_DIRECTORY by key<File>("output directory");
     val OUTPUT_JAR by key<File>("output .jar")
@@ -37,9 +38,9 @@ object JvmConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.confi
 
     val MODULE_XML_FILE by key<File>("path to module.xml")
 
-    val MODULES by listKey<Module>("module data")
+    val MODULES by key<List<Module>>("module data")
 
-    val FRIEND_PATHS by listKey<String>("friend module paths")
+    val FRIEND_PATHS by key<List<String>>("friend module paths")
 
     val USE_PSI_CLASS_FILES_READING by key<Boolean>("use a slower (PSI-based) class files reading implementation")
 
@@ -49,7 +50,7 @@ object JvmConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.confi
 
     val COMPILE_JAVA by key<Boolean>("compile java files [experimental]")
 
-    val ADDITIONAL_JAVA_MODULES by listKey<String>("additional Java modules")
+    val ADDITIONAL_JAVA_MODULES by key<List<String>>("additional Java modules")
 
     val EMIT_JVM_TYPE_ANNOTATIONS by key<Boolean>("Emit JVM type annotations in bytecode")
 
@@ -61,7 +62,7 @@ object JvmConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.confi
 
     val LAMBDAS by key<JvmClosureGenerationScheme>("Lambdas code generation scheme")
 
-    val KLIB_PATHS by listKey<String>("Paths to .klib libraries")
+    val KLIB_PATHS by key<List<String>>("Paths to .klib libraries")
 
     val ABI_STABILITY by key<JvmAbiStability>("ABI stability of class files produced by JVM IR and/or FIR")
 
