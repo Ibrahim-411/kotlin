@@ -23,10 +23,19 @@ import org.jetbrains.kotlin.serialization.js.ModuleKind
 
 object JSConfigurationKeys {
     @JvmField
+    val WASM_COMPILATION = CompilerConfigurationKey.create<Boolean>("compile to WASM")
+
+    @JvmField
+    val OUTPUT_NAME = CompilerConfigurationKey.create<String>("Name of output KLib file")
+
+    @JvmField
     val TRANSITIVE_LIBRARIES = CompilerConfigurationKey.create<List<String>>("library files for transitive dependencies")
 
     @JvmField
     val LIBRARIES = CompilerConfigurationKey.create<List<String>>("library file paths")
+
+    @JvmField
+    val FRIEND_LIBRARIES = CompilerConfigurationKey.create<List<String>>("friend library file paths")
 
     @JvmField
     val SOURCE_MAP = CompilerConfigurationKey.create<Boolean>("generate source map")
@@ -133,7 +142,21 @@ object JSConfigurationKeys {
     @JvmField
     val USE_ES6_CLASSES = CompilerConfigurationKey.create<Boolean>("perform ES6 class usage")
 
+    @JvmField
+    val INCLUDES = CompilerConfigurationKey.create<String>("List of KLibs for this linking phase")
+
+    @JvmField
+    val PRODUCE_KLIB_FILE = CompilerConfigurationKey.create<Boolean>("Need to produce KLib file or not")
+
 }
+
+var CompilerConfiguration.wasmCompilation: Boolean
+    get() = getBoolean(JSConfigurationKeys.WASM_COMPILATION)
+    set(value) { putIfNotNull(JSConfigurationKeys.WASM_COMPILATION, value) }
+
+var CompilerConfiguration.outputName: String?
+    get() = get(JSConfigurationKeys.OUTPUT_NAME)
+    set(value) { putIfNotNull(JSConfigurationKeys.OUTPUT_NAME, value) }
 
 val CompilerConfiguration.transitiveLibraries: List<String>
     get() = getList(JSConfigurationKeys.TRANSITIVE_LIBRARIES)
@@ -155,6 +178,17 @@ fun CompilerConfiguration.addLibrary(value: String) {
 
 fun CompilerConfiguration.addLibraries(values: Collection<String>) {
     addAll(JSConfigurationKeys.LIBRARIES, values)
+}
+
+val CompilerConfiguration.friendLibraries: List<String>
+    get() = getList(JSConfigurationKeys.FRIEND_LIBRARIES)
+
+fun CompilerConfiguration.addFriendLibrary(value: String) {
+    add(JSConfigurationKeys.FRIEND_LIBRARIES, value)
+}
+
+fun CompilerConfiguration.addFriendLibraries(values: Collection<String>) {
+    addAll(JSConfigurationKeys.FRIEND_LIBRARIES, values)
 }
 
 var CompilerConfiguration.sourceMap: Boolean
@@ -309,4 +343,12 @@ var CompilerConfiguration.optimizeGeneratedJs: Boolean
 var CompilerConfiguration.useEs6Classes: Boolean
     get() = getBoolean(JSConfigurationKeys.USE_ES6_CLASSES)
     set(value) { putIfNotNull(JSConfigurationKeys.USE_ES6_CLASSES, value) }
+
+var CompilerConfiguration.includes: String?
+    get() = get(JSConfigurationKeys.INCLUDES)
+    set(value) { putIfNotNull(JSConfigurationKeys.INCLUDES, value) }
+
+var CompilerConfiguration.produceKlibFile: Boolean
+    get() = getBoolean(JSConfigurationKeys.PRODUCE_KLIB_FILE)
+    set(value) { putIfNotNull(JSConfigurationKeys.PRODUCE_KLIB_FILE, value) }
 

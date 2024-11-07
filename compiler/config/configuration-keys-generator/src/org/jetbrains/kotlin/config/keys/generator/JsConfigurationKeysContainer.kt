@@ -18,9 +18,15 @@ import java.io.File
 
 @Suppress("unused")
 object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.config", "JSConfigurationKeys") {
+    val WASM_COMPILATION by key<Boolean>("compile to WASM");
+
+    val OUTPUT_NAME by key<String>("Name of output KLib file");
+
     val TRANSITIVE_LIBRARIES by key<List<String>>("library files for transitive dependencies")
 
     val LIBRARIES by key<List<String>>("library file paths")
+
+    val FRIEND_LIBRARIES by key<List<String>>("friend library file paths");
 
     val SOURCE_MAP by key<Boolean>("generate source map")
 
@@ -95,4 +101,7 @@ object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.con
     val OPTIMIZE_GENERATED_JS by key<Boolean>("perform additional optimizations on the generated JS code")
 
     val USE_ES6_CLASSES by key<Boolean>("perform ES6 class usage")
+
+    val INCLUDES by key<String>("List of KLibs for this linking phase")
+    val PRODUCE_KLIB_FILE by key<Boolean>("Need to produce KLib file or not")
 }

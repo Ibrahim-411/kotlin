@@ -95,7 +95,7 @@ private val K2JSCompilerArguments.dtsStrategy: TsCompilationStrategy
         else -> TsCompilationStrategy.MERGED
     }
 
-private class DisposableZipFileSystemAccessor private constructor(
+internal class DisposableZipFileSystemAccessor private constructor(
     private val zipAccessor: ZipFileSystemCacheableAccessor,
 ) : Disposable, ZipFileSystemAccessor by zipAccessor {
     constructor(cacheLimit: Int) : this(ZipFileSystemCacheableAccessor(cacheLimit))
@@ -167,14 +167,6 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
     }
 
 
-    private val K2JSCompilerArguments.targetVersion: EcmaVersion?
-        get() {
-            val targetString = target
-            return when {
-                targetString != null -> EcmaVersion.entries.firstOrNull { it.name == targetString }
-                else -> EcmaVersion.defaultVersion()
-            }
-        }
 
     override fun doExecute(
         arguments: K2JSCompilerArguments,
@@ -999,20 +991,20 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
     override fun MutableList<String>.addPlatformOptions(arguments: K2JSCompilerArguments) {}
 
     companion object {
-        private val moduleKindMap = mapOf(
+        internal val moduleKindMap: Map<String, ModuleKind> = mapOf(
             K2JsArgumentConstants.MODULE_PLAIN to ModuleKind.PLAIN,
             K2JsArgumentConstants.MODULE_COMMONJS to ModuleKind.COMMON_JS,
             K2JsArgumentConstants.MODULE_AMD to ModuleKind.AMD,
             K2JsArgumentConstants.MODULE_UMD to ModuleKind.UMD,
             K2JsArgumentConstants.MODULE_ES to ModuleKind.ES,
         )
-        private val sourceMapContentEmbeddingMap = mapOf(
+        internal val sourceMapContentEmbeddingMap = mapOf(
             K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_ALWAYS to SourceMapSourceEmbedding.ALWAYS,
             K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_NEVER to SourceMapSourceEmbedding.NEVER,
             K2JsArgumentConstants.SOURCE_MAP_SOURCE_CONTENT_INLINING to SourceMapSourceEmbedding.INLINING
         )
 
-        private val sourceMapNamesPolicyMap = mapOf(
+        internal val sourceMapNamesPolicyMap = mapOf(
             K2JsArgumentConstants.SOURCE_MAP_NAMES_POLICY_NO to SourceMapNamesPolicy.NO,
             K2JsArgumentConstants.SOURCE_MAP_NAMES_POLICY_SIMPLE_NAMES to SourceMapNamesPolicy.SIMPLE_NAMES,
             K2JsArgumentConstants.SOURCE_MAP_NAMES_POLICY_FQ_NAMES to SourceMapNamesPolicy.FULLY_QUALIFIED_NAMES
@@ -1035,7 +1027,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
             messageCollector.report(LOGGING, "Compiling source files: " + join(fileNames, ", "), null)
         }
 
-        private fun configureLibraries(libraryString: String?): List<String> =
+        internal fun configureLibraries(libraryString: String?): List<String> =
             libraryString?.splitByPathSeparator() ?: emptyList()
 
         private fun String.splitByPathSeparator(): List<String> {
@@ -1045,7 +1037,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
                 .filterNot { it.isEmpty() }
         }
 
-        private fun calculateSourceMapSourceRoot(
+        internal fun calculateSourceMapSourceRoot(
             messageCollector: MessageCollector,
             arguments: K2JSCompilerArguments,
         ): String {
@@ -1118,3 +1110,12 @@ fun loadPluginsForTests(configuration: CompilerConfiguration): ExitCode {
 
     return PluginCliParser.loadPluginsSafe(pluginClasspath, listOf(), listOf(), configuration)
 }
+
+internal val K2JSCompilerArguments.targetVersion: EcmaVersion?
+    get() {
+        val targetString = target
+        return when {
+            targetString != null -> EcmaVersion.entries.firstOrNull { it.name == targetString }
+            else -> EcmaVersion.defaultVersion()
+        }
+    }
