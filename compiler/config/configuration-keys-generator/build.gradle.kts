@@ -16,8 +16,6 @@ dependencies {
     */
     compileOnly(intellijCore())
     compileOnly(libs.guava)
-
-    implementation(project(":compiler:psi"))
 }
 
 application {

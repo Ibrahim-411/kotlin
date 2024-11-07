@@ -31,8 +31,6 @@ object KeysContainerGenerator {
             printGeneratedMessage()
             collectAndPrintImports(container)
             generateKeysContainingClass(container)
-            println("// =========================== Accessors ===========================")
-            println()
             generateKeysAccessors(container)
         }
     }
@@ -99,7 +97,8 @@ object KeysContainerGenerator {
 
     private fun SmartPrinter.generateSimpleKeyAccessors(container: KeysContainer, key: SimpleKey) {
         val booleanFlag = key.typeString == "Boolean"
-        val returnType = key.typeString.applyIf(key.alwaysNullable) { "$this?"}
+        val nullable = !booleanFlag && key.defaultValue == null
+        val returnType = key.typeString.applyIf(nullable) { "$this?"}
 
         println("var CompilerConfiguration.${key.accessorName}: $returnType")
         val keyAccess = container.keyAccessString(key)
@@ -107,24 +106,10 @@ object KeysContainerGenerator {
             val getterBody = when {
                 booleanFlag -> "getBoolean($keyAccess)"
                 key.defaultValue != null -> "get($keyAccess, ${key.defaultValue})"
-                key.alwaysNullable -> "get($keyAccess)"
-                else -> "getNotNull($keyAccess)"
+                else -> "get($keyAccess)"
             }
             println("get() = $getterBody")
-
-            val method = when {
-                key.alwaysNullable -> "putIfNotNull"
-                else -> "put"
-            }
-            println("set(value) { $method($keyAccess, value) }")
-        }
-
-        if (!booleanFlag && key.defaultValue == null && !key.alwaysNullable) {
-            print("val CompilerConfiguration.${key.accessorName}OrNull")
-            println(": ${key.typeString}?")
-            withIndent {
-                println("get() = get($keyAccess)")
-            }
+            println("set(value) { putIfNotNull($keyAccess, value) }")
         }
         println()
     }

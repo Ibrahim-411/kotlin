@@ -14,6 +14,7 @@ import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KType
 import kotlin.reflect.full.starProjectedType
+import kotlin.reflect.typeOf
 
 sealed class Key {
     abstract val name: String
@@ -115,66 +116,38 @@ abstract class KeysContainer(val packageName: String, val className: String) {
     ): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, Key>> {
         return PropertyDelegateProvider { _, property ->
             val name = property.name
-            val klass = T::class
-            when (klass.qualifiedName) {
-                "kotlin.collections.List" -> error("Use `listKey` for keys of lists")
-                "kotlin.collections.Map" -> error("Use `mapKey` for keys of maps")
+            val type = typeOf<T>()
+            val key = when (T::class.qualifiedName) {
+                "kotlin.collections.List" -> ListKey(
+                    name,
+                    description,
+                    elementType = type.arguments[0].type!!,
+                    importsToAdd,
+                    accessorName ?: name.toCamelCase(),
+                    comment,
+                )
+                "kotlin.collections.Map" -> {
+                    MapKey(
+                        name,
+                        description,
+                        keyType = type.arguments[0].type!!,
+                        valueType = type.arguments[1].type!!,
+                        importsToAdd,
+                        accessorName ?: name.toCamelCase(),
+                        comment,
+                    )
+                }
+                else -> SimpleKey(
+                    name,
+                    description,
+                    type,
+                    defaultValue,
+                    alwaysNullable,
+                    importsToAdd,
+                    accessorName ?: name.toCamelCase(),
+                    comment,
+                )
             }
-            val key = SimpleKey(
-                name,
-                description,
-                klass.starProjectedType,
-                defaultValue,
-                alwaysNullable,
-                importsToAdd,
-                accessorName ?: name.toCamelCase(),
-                comment,
-            )
-            _keys += key
-            ReadOnlyProperty<Any?, Key> { _, _ -> key }
-        }
-    }
-
-    @OptIn(PrivateForInline::class)
-    inline fun <reified T : Any> listKey(
-        description: String,
-        importsToAdd: List<String> = emptyList(),
-        accessorName: String? = null,
-        comment: String? = null,
-    ): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, Key>> {
-        return PropertyDelegateProvider { _, property ->
-            val name = property.name
-            val key = ListKey(
-                name,
-                description,
-                elementType = T::class.starProjectedType,
-                importsToAdd,
-                accessorName ?: name.toCamelCase(),
-                comment,
-            )
-            _keys += key
-            ReadOnlyProperty<Any?, Key> { _, _ -> key }
-        }
-    }
-
-    @OptIn(PrivateForInline::class)
-    inline fun <reified K : Any, reified V : Any> mapKey(
-        description: String,
-        importsToAdd: List<String> = emptyList(),
-        accessorName: String? = null,
-        comment: String? = null,
-    ): PropertyDelegateProvider<Any?, ReadOnlyProperty<Any?, Key>> {
-        return PropertyDelegateProvider { _, property ->
-            val name = property.name
-            val key = MapKey(
-                name,
-                description,
-                keyType = K::class.starProjectedType,
-                valueType = V::class.starProjectedType,
-                importsToAdd,
-                accessorName ?: name.toCamelCase(),
-                comment,
-            )
             _keys += key
             ReadOnlyProperty<Any?, Key> { _, _ -> key }
         }
