@@ -99,127 +99,103 @@ object CommonConfigurationKeys {
 
 }
 
-// =========================== Accessors ===========================
-
 var CompilerConfiguration.languageVersionSettings: LanguageVersionSettings
     get() = get(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, LanguageVersionSettingsImpl.DEFAULT)
-    set(value) { put(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.LANGUAGE_VERSION_SETTINGS, value) }
 
 var CompilerConfiguration.disableInline: Boolean
     get() = getBoolean(CommonConfigurationKeys.DISABLE_INLINE)
-    set(value) { put(CommonConfigurationKeys.DISABLE_INLINE, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.DISABLE_INLINE, value) }
 
-var CompilerConfiguration.moduleName: String
-    get() = getNotNull(CommonConfigurationKeys.MODULE_NAME)
-    set(value) { put(CommonConfigurationKeys.MODULE_NAME, value) }
-val CompilerConfiguration.moduleNameOrNull: String?
+var CompilerConfiguration.moduleName: String?
     get() = get(CommonConfigurationKeys.MODULE_NAME)
+    set(value) { putIfNotNull(CommonConfigurationKeys.MODULE_NAME, value) }
 
 var CompilerConfiguration.reportOutputFiles: Boolean
     get() = getBoolean(CommonConfigurationKeys.REPORT_OUTPUT_FILES)
-    set(value) { put(CommonConfigurationKeys.REPORT_OUTPUT_FILES, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.REPORT_OUTPUT_FILES, value) }
 
-var CompilerConfiguration.lookupTracker: LookupTracker
-    get() = getNotNull(CommonConfigurationKeys.LOOKUP_TRACKER)
-    set(value) { put(CommonConfigurationKeys.LOOKUP_TRACKER, value) }
-val CompilerConfiguration.lookupTrackerOrNull: LookupTracker?
+var CompilerConfiguration.lookupTracker: LookupTracker?
     get() = get(CommonConfigurationKeys.LOOKUP_TRACKER)
+    set(value) { putIfNotNull(CommonConfigurationKeys.LOOKUP_TRACKER, value) }
 
-var CompilerConfiguration.expectActualTracker: ExpectActualTracker
-    get() = getNotNull(CommonConfigurationKeys.EXPECT_ACTUAL_TRACKER)
-    set(value) { put(CommonConfigurationKeys.EXPECT_ACTUAL_TRACKER, value) }
-val CompilerConfiguration.expectActualTrackerOrNull: ExpectActualTracker?
+var CompilerConfiguration.expectActualTracker: ExpectActualTracker?
     get() = get(CommonConfigurationKeys.EXPECT_ACTUAL_TRACKER)
+    set(value) { putIfNotNull(CommonConfigurationKeys.EXPECT_ACTUAL_TRACKER, value) }
 
-var CompilerConfiguration.inlineConstTracker: InlineConstTracker
-    get() = getNotNull(CommonConfigurationKeys.INLINE_CONST_TRACKER)
-    set(value) { put(CommonConfigurationKeys.INLINE_CONST_TRACKER, value) }
-val CompilerConfiguration.inlineConstTrackerOrNull: InlineConstTracker?
+var CompilerConfiguration.inlineConstTracker: InlineConstTracker?
     get() = get(CommonConfigurationKeys.INLINE_CONST_TRACKER)
+    set(value) { putIfNotNull(CommonConfigurationKeys.INLINE_CONST_TRACKER, value) }
 
-var CompilerConfiguration.enumWhenTracker: EnumWhenTracker
-    get() = getNotNull(CommonConfigurationKeys.ENUM_WHEN_TRACKER)
-    set(value) { put(CommonConfigurationKeys.ENUM_WHEN_TRACKER, value) }
-val CompilerConfiguration.enumWhenTrackerOrNull: EnumWhenTracker?
+var CompilerConfiguration.enumWhenTracker: EnumWhenTracker?
     get() = get(CommonConfigurationKeys.ENUM_WHEN_TRACKER)
+    set(value) { putIfNotNull(CommonConfigurationKeys.ENUM_WHEN_TRACKER, value) }
 
-var CompilerConfiguration.importTracker: ImportTracker
-    get() = getNotNull(CommonConfigurationKeys.IMPORT_TRACKER)
-    set(value) { put(CommonConfigurationKeys.IMPORT_TRACKER, value) }
-val CompilerConfiguration.importTrackerOrNull: ImportTracker?
+var CompilerConfiguration.importTracker: ImportTracker?
     get() = get(CommonConfigurationKeys.IMPORT_TRACKER)
+    set(value) { putIfNotNull(CommonConfigurationKeys.IMPORT_TRACKER, value) }
 
-var CompilerConfiguration.metadataVersion: BinaryVersion
-    get() = getNotNull(CommonConfigurationKeys.METADATA_VERSION)
-    set(value) { put(CommonConfigurationKeys.METADATA_VERSION, value) }
-val CompilerConfiguration.metadataVersionOrNull: BinaryVersion?
+var CompilerConfiguration.metadataVersion: BinaryVersion?
     get() = get(CommonConfigurationKeys.METADATA_VERSION)
+    set(value) { putIfNotNull(CommonConfigurationKeys.METADATA_VERSION, value) }
 
 var CompilerConfiguration.useFir: Boolean
     get() = getBoolean(CommonConfigurationKeys.USE_FIR)
-    set(value) { put(CommonConfigurationKeys.USE_FIR, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.USE_FIR, value) }
 
 var CompilerConfiguration.useLightTree: Boolean
     get() = getBoolean(CommonConfigurationKeys.USE_LIGHT_TREE)
-    set(value) { put(CommonConfigurationKeys.USE_LIGHT_TREE, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.USE_LIGHT_TREE, value) }
 
-var CompilerConfiguration.hmppModuleStructure: HmppCliModuleStructure
-    get() = getNotNull(CommonConfigurationKeys.HMPP_MODULE_STRUCTURE)
-    set(value) { put(CommonConfigurationKeys.HMPP_MODULE_STRUCTURE, value) }
-val CompilerConfiguration.hmppModuleStructureOrNull: HmppCliModuleStructure?
+var CompilerConfiguration.hmppModuleStructure: HmppCliModuleStructure?
     get() = get(CommonConfigurationKeys.HMPP_MODULE_STRUCTURE)
+    set(value) { putIfNotNull(CommonConfigurationKeys.HMPP_MODULE_STRUCTURE, value) }
 
 var CompilerConfiguration.metadataKlib: Boolean
     get() = getBoolean(CommonConfigurationKeys.METADATA_KLIB)
-    set(value) { put(CommonConfigurationKeys.METADATA_KLIB, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.METADATA_KLIB, value) }
 
 var CompilerConfiguration.useFirExtraCheckers: Boolean
     get() = getBoolean(CommonConfigurationKeys.USE_FIR_EXTRA_CHECKERS)
-    set(value) { put(CommonConfigurationKeys.USE_FIR_EXTRA_CHECKERS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.USE_FIR_EXTRA_CHECKERS, value) }
 
 var CompilerConfiguration.useFirExperimentalCheckers: Boolean
     get() = getBoolean(CommonConfigurationKeys.USE_FIR_EXPERIMENTAL_CHECKERS)
-    set(value) { put(CommonConfigurationKeys.USE_FIR_EXPERIMENTAL_CHECKERS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.USE_FIR_EXPERIMENTAL_CHECKERS, value) }
 
-var CompilerConfiguration.parallelBackendThreads: Int
-    get() = getNotNull(CommonConfigurationKeys.PARALLEL_BACKEND_THREADS)
-    set(value) { put(CommonConfigurationKeys.PARALLEL_BACKEND_THREADS, value) }
-val CompilerConfiguration.parallelBackendThreadsOrNull: Int?
+var CompilerConfiguration.parallelBackendThreads: Int?
     get() = get(CommonConfigurationKeys.PARALLEL_BACKEND_THREADS)
+    set(value) { putIfNotNull(CommonConfigurationKeys.PARALLEL_BACKEND_THREADS, value) }
 
 var CompilerConfiguration.incrementalCompilation: Boolean
     get() = getBoolean(CommonConfigurationKeys.INCREMENTAL_COMPILATION)
-    set(value) { put(CommonConfigurationKeys.INCREMENTAL_COMPILATION, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.INCREMENTAL_COMPILATION, value) }
 
 var CompilerConfiguration.allowAnyScriptsInSourceRoots: Boolean
     get() = getBoolean(CommonConfigurationKeys.ALLOW_ANY_SCRIPTS_IN_SOURCE_ROOTS)
-    set(value) { put(CommonConfigurationKeys.ALLOW_ANY_SCRIPTS_IN_SOURCE_ROOTS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.ALLOW_ANY_SCRIPTS_IN_SOURCE_ROOTS, value) }
 
 var CompilerConfiguration.ignoreConstOptimizationErrors: Boolean
     get() = getBoolean(CommonConfigurationKeys.IGNORE_CONST_OPTIMIZATION_ERRORS)
-    set(value) { put(CommonConfigurationKeys.IGNORE_CONST_OPTIMIZATION_ERRORS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.IGNORE_CONST_OPTIMIZATION_ERRORS, value) }
 
-var CompilerConfiguration.evaluatedConstTracker: EvaluatedConstTracker
-    get() = getNotNull(CommonConfigurationKeys.EVALUATED_CONST_TRACKER)
-    set(value) { put(CommonConfigurationKeys.EVALUATED_CONST_TRACKER, value) }
-val CompilerConfiguration.evaluatedConstTrackerOrNull: EvaluatedConstTracker?
+var CompilerConfiguration.evaluatedConstTracker: EvaluatedConstTracker?
     get() = get(CommonConfigurationKeys.EVALUATED_CONST_TRACKER)
+    set(value) { putIfNotNull(CommonConfigurationKeys.EVALUATED_CONST_TRACKER, value) }
 
 var CompilerConfiguration.messageCollector: MessageCollector
     get() = get(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY, MessageCollector.NONE)
-    set(value) { put(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY, value) }
 
-var CompilerConfiguration.verifyIr: IrVerificationMode
-    get() = getNotNull(CommonConfigurationKeys.VERIFY_IR)
-    set(value) { put(CommonConfigurationKeys.VERIFY_IR, value) }
-val CompilerConfiguration.verifyIrOrNull: IrVerificationMode?
+var CompilerConfiguration.verifyIr: IrVerificationMode?
     get() = get(CommonConfigurationKeys.VERIFY_IR)
+    set(value) { putIfNotNull(CommonConfigurationKeys.VERIFY_IR, value) }
 
 var CompilerConfiguration.enableIrVisibilityChecks: Boolean
     get() = getBoolean(CommonConfigurationKeys.ENABLE_IR_VISIBILITY_CHECKS)
-    set(value) { put(CommonConfigurationKeys.ENABLE_IR_VISIBILITY_CHECKS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.ENABLE_IR_VISIBILITY_CHECKS, value) }
 
 var CompilerConfiguration.enableIrVarargTypesChecks: Boolean
     get() = getBoolean(CommonConfigurationKeys.ENABLE_IR_VARARG_TYPES_CHECKS)
-    set(value) { put(CommonConfigurationKeys.ENABLE_IR_VARARG_TYPES_CHECKS, value) }
+    set(value) { putIfNotNull(CommonConfigurationKeys.ENABLE_IR_VARARG_TYPES_CHECKS, value) }
 
