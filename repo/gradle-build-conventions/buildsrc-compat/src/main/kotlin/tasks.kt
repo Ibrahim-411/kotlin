@@ -30,7 +30,6 @@ import java.lang.Character.isUpperCase
 import java.lang.management.ManagementFactory
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.apply
 
 val kotlinGradlePluginAndItsRequired = arrayOf(
     ":kotlin-assignment",
@@ -377,7 +376,9 @@ fun Project.generatedConfigurationKeys(name: String, vararg names: String) {
         generatorClasspath(project(":compiler:config:configuration-keys-generator"))
     }
 
-    val generationRoot = projectDir.resolve("gen")
+    // `src` will be changed to `gen` after migration of existing hand-written files
+    // this is needed to keep the git history for these files
+    val generationRoot = projectDir.resolve("src")
 
     tasks.register<NoDebugJavaExec>("generateConfigurationKeys") {
         val generatorRoot = "$rootDir/compiler/config/configuration-keys-generator/src/"
