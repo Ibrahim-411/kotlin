@@ -16,10 +16,11 @@ import org.jetbrains.kotlin.konan.file.ZipFileSystemAccessor
 import org.jetbrains.kotlin.serialization.js.ModuleKind
 import java.io.File
 
+@Suppress("unused")
 object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.config", "JSConfigurationKeys") {
-    val TRANSITIVE_LIBRARIES by listKey<String>("library files for transitive dependencies")
+    val TRANSITIVE_LIBRARIES by key<List<String>>("library files for transitive dependencies")
 
-    val LIBRARIES by listKey<String>("library file paths")
+    val LIBRARIES by key<List<String>>("library file paths")
 
     val SOURCE_MAP by key<Boolean>("generate source map")
 
@@ -29,7 +30,7 @@ object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.con
 
     val SOURCE_MAP_PREFIX by key<String>("prefix to add to paths in source map")
 
-    val SOURCE_MAP_SOURCE_ROOTS by listKey<String>("base directories used to calculate relative paths for source map")
+    val SOURCE_MAP_SOURCE_ROOTS by key<List<String>>("base directories used to calculate relative paths for source map")
 
     val SOURCE_MAP_EMBED_SOURCES by key<SourceMapSourceEmbedding>("embed source files into source map")
 
@@ -51,7 +52,7 @@ object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.con
 
     val FRIEND_PATHS_DISABLED by key<Boolean>("disable support for friend paths")
 
-    val FRIEND_PATHS by listKey<String>("friend module paths")
+    val FRIEND_PATHS by key<List<String>>("friend module paths")
 
     val METADATA_ONLY by key<Boolean>("generate .meta.js and .kjsm files only")
 
@@ -73,7 +74,7 @@ object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.con
         "generate special comments at the start and the end of each file block, it allows to fold them and navigate to them in the IDEA"
     )
 
-    val FILE_PATHS_PREFIX_MAP by mapKey<String, String>(
+    val FILE_PATHS_PREFIX_MAP by key<Map<String, String>>(
         "this map used to shorten/replace prefix of paths in comments with file paths, including region comments"
     )
 

@@ -23,34 +23,28 @@ import org.jetbrains.kotlin.serialization.js.ModuleKind
 
 object JSConfigurationKeys {
     @JvmField
-    val TRANSITIVE_LIBRARIES: CompilerConfigurationKey<List<String?>> =
-        CompilerConfigurationKey.create<List<String?>>("library files for transitive dependencies")
+    val TRANSITIVE_LIBRARIES = CompilerConfigurationKey.create<List<String>>("library files for transitive dependencies")
 
     @JvmField
-    val LIBRARIES: CompilerConfigurationKey<List<String?>> =
-        CompilerConfigurationKey.create<List<String?>>("library file paths")
+    val LIBRARIES = CompilerConfigurationKey.create<List<String>>("library file paths")
 
     @JvmField
     val SOURCE_MAP = CompilerConfigurationKey.create<Boolean>("generate source map")
 
     @JvmField
-    val USE_DEBUGGER_CUSTOM_FORMATTERS: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("add import of debugger custom formatters")
+    val USE_DEBUGGER_CUSTOM_FORMATTERS = CompilerConfigurationKey.create<Boolean>("add import of debugger custom formatters")
 
     @JvmField
     val OUTPUT_DIR = CompilerConfigurationKey.create<File>("output directory")
 
     @JvmField
-    val SOURCE_MAP_PREFIX: CompilerConfigurationKey<String> =
-        CompilerConfigurationKey.create<String>("prefix to add to paths in source map")
+    val SOURCE_MAP_PREFIX = CompilerConfigurationKey.create<String>("prefix to add to paths in source map")
 
     @JvmField
-    val SOURCE_MAP_SOURCE_ROOTS: CompilerConfigurationKey<List<String>> =
-        CompilerConfigurationKey.create<List<String>>("base directories used to calculate relative paths for source map")
+    val SOURCE_MAP_SOURCE_ROOTS = CompilerConfigurationKey.create<List<String>>("base directories used to calculate relative paths for source map")
 
     @JvmField
-    val SOURCE_MAP_EMBED_SOURCES: CompilerConfigurationKey<SourceMapSourceEmbedding> =
-        CompilerConfigurationKey.create<SourceMapSourceEmbedding>("embed source files into source map")
+    val SOURCE_MAP_EMBED_SOURCES = CompilerConfigurationKey.create<SourceMapSourceEmbedding>("embed source files into source map")
 
     @JvmField
     val SOURCEMAP_NAMES_POLICY = CompilerConfigurationKey.create<SourceMapNamesPolicy>("a policy to generate a mapping from generated identifiers to their corresponding original names")
@@ -68,103 +62,78 @@ object JSConfigurationKeys {
     val MODULE_KIND = CompilerConfigurationKey.create<ModuleKind>("module kind")
 
     @JvmField
-    val INCREMENTAL_DATA_PROVIDER: CompilerConfigurationKey<IncrementalDataProvider> =
-        CompilerConfigurationKey.create<IncrementalDataProvider>("incremental data provider")
+    val INCREMENTAL_DATA_PROVIDER = CompilerConfigurationKey.create<IncrementalDataProvider>("incremental data provider")
 
     @JvmField
-    val INCREMENTAL_RESULTS_CONSUMER: CompilerConfigurationKey<IncrementalResultsConsumer> =
-        CompilerConfigurationKey.create<IncrementalResultsConsumer>("incremental results consumer")
+    val INCREMENTAL_RESULTS_CONSUMER = CompilerConfigurationKey.create<IncrementalResultsConsumer>("incremental results consumer")
 
     @JvmField
-    val INCREMENTAL_NEXT_ROUND_CHECKER: CompilerConfigurationKey<IncrementalNextRoundChecker> =
-        CompilerConfigurationKey.create<IncrementalNextRoundChecker>("incremental compilation next round checker")
+    val INCREMENTAL_NEXT_ROUND_CHECKER = CompilerConfigurationKey.create<IncrementalNextRoundChecker>("incremental compilation next round checker")
 
     @JvmField
-    val FRIEND_PATHS_DISABLED: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("disable support for friend paths")
+    val FRIEND_PATHS_DISABLED = CompilerConfigurationKey.create<Boolean>("disable support for friend paths")
 
     @JvmField
-    val FRIEND_PATHS: CompilerConfigurationKey<List<String?>> =
-        CompilerConfigurationKey.create<List<String?>>("friend module paths")
+    val FRIEND_PATHS = CompilerConfigurationKey.create<List<String>>("friend module paths")
 
     @JvmField
-    val METADATA_ONLY: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("generate .meta.js and .kjsm files only")
+    val METADATA_ONLY = CompilerConfigurationKey.create<Boolean>("generate .meta.js and .kjsm files only")
 
     @JvmField
     val DEVELOPER_MODE = CompilerConfigurationKey.create<Boolean>("enables additional checkers")
 
     @JvmField
-    val GENERATE_COMMENTS_WITH_FILE_PATH: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("generate comments with file path at the start of each file block")
+    val GENERATE_COMMENTS_WITH_FILE_PATH = CompilerConfigurationKey.create<Boolean>("generate comments with file path at the start of each file block")
 
     @JvmField
-    val GENERATE_POLYFILLS: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("generate polyfills for newest properties, methods and classes from ES6+")
+    val GENERATE_POLYFILLS = CompilerConfigurationKey.create<Boolean>("generate polyfills for newest properties, methods and classes from ES6+")
 
     @JvmField
-    val DEFINE_PLATFORM_MAIN_FUNCTION_ARGUMENTS: CompilerConfigurationKey<String> =
-        CompilerConfigurationKey.create<String>("provide platform specific args as a parameter of the main function")
+    val DEFINE_PLATFORM_MAIN_FUNCTION_ARGUMENTS = CompilerConfigurationKey.create<String>("provide platform specific args as a parameter of the main function")
 
     @JvmField
     val GENERATE_DTS = CompilerConfigurationKey.create<Boolean>("generate TypeScript definition file")
 
     @JvmField
-    val COMPILE_SUSPEND_AS_JS_GENERATOR: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("force suspend functions compilation int JS generator functions")
+    val COMPILE_SUSPEND_AS_JS_GENERATOR = CompilerConfigurationKey.create<Boolean>("force suspend functions compilation int JS generator functions")
 
     @JvmField
-    val COMPILE_LAMBDAS_AS_ES6_ARROW_FUNCTIONS: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("lower Kotlin lambdas into arrow functions instead of anonymous functions")
+    val COMPILE_LAMBDAS_AS_ES6_ARROW_FUNCTIONS = CompilerConfigurationKey.create<Boolean>("lower Kotlin lambdas into arrow functions instead of anonymous functions")
 
     @JvmField
     val GENERATE_REGION_COMMENTS = CompilerConfigurationKey.create<Boolean>("generate special comments at the start and the end of each file block, it allows to fold them and navigate to them in the IDEA")
 
     @JvmField
-    val FILE_PATHS_PREFIX_MAP: CompilerConfigurationKey<MutableMap<String?, String?>> =
-        CompilerConfigurationKey.create<MutableMap<String?, String?>>(
-            "this map used to shorten/replace prefix of paths in comments with file paths, " +
-                    "including region comments"
-        )
+    val FILE_PATHS_PREFIX_MAP = CompilerConfigurationKey.create<Map<String, String>>("this map used to shorten/replace prefix of paths in comments with file paths, including region comments")
 
     @JvmField
-    val PRINT_REACHABILITY_INFO: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("print declarations' reachability info during performing DCE")
+    val PRINT_REACHABILITY_INFO = CompilerConfigurationKey.create<Boolean>("print declarations' reachability info during performing DCE")
 
     @JvmField
-    val DUMP_REACHABILITY_INFO_TO_FILE: CompilerConfigurationKey<String> =
-        CompilerConfigurationKey.create<String>("dump declarations' reachability info to file during performing DCE")
+    val DUMP_REACHABILITY_INFO_TO_FILE = CompilerConfigurationKey.create<String>("dump declarations' reachability info to file during performing DCE")
 
     @JvmField
-    val FAKE_OVERRIDE_VALIDATOR: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("IR fake override validator")
+    val FAKE_OVERRIDE_VALIDATOR = CompilerConfigurationKey.create<Boolean>("IR fake override validator")
 
     @JvmField
-    val PROPERTY_LAZY_INITIALIZATION: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("perform lazy initialization for properties")
+    val PROPERTY_LAZY_INITIALIZATION = CompilerConfigurationKey.create<Boolean>("perform lazy initialization for properties")
 
     @JvmField
-    val GENERATE_INLINE_ANONYMOUS_FUNCTIONS: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("translate lambdas into in-line anonymous functions")
+    val GENERATE_INLINE_ANONYMOUS_FUNCTIONS = CompilerConfigurationKey.create<Boolean>("translate lambdas into in-line anonymous functions")
 
     @JvmField
-    val GENERATE_STRICT_IMPLICIT_EXPORT: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("enable strict implicitly exported entities types inside d.ts files")
+    val GENERATE_STRICT_IMPLICIT_EXPORT = CompilerConfigurationKey.create<Boolean>("enable strict implicitly exported entities types inside d.ts files")
 
     @JvmField
-    val ZIP_FILE_SYSTEM_ACCESSOR: CompilerConfigurationKey<ZipFileSystemAccessor> =
-        CompilerConfigurationKey.create<ZipFileSystemAccessor>("zip file system accessor, used for klib reading")
+    val ZIP_FILE_SYSTEM_ACCESSOR = CompilerConfigurationKey.create<ZipFileSystemAccessor>("zip file system accessor, used for klib reading")
 
     @JvmField
-    val OPTIMIZE_GENERATED_JS: CompilerConfigurationKey<Boolean> =
-        CompilerConfigurationKey.create<Boolean>("perform additional optimizations on the generated JS code")
+    val OPTIMIZE_GENERATED_JS = CompilerConfigurationKey.create<Boolean>("perform additional optimizations on the generated JS code")
 
     @JvmField
     val USE_ES6_CLASSES = CompilerConfigurationKey.create<Boolean>("perform ES6 class usage")
 
 }
-
-// =========================== Accessors ===========================
 
 val CompilerConfiguration.transitiveLibraries: List<String>
     get() = getList(JSConfigurationKeys.TRANSITIVE_LIBRARIES)
@@ -190,23 +159,19 @@ fun CompilerConfiguration.addLibraries(values: Collection<String>) {
 
 var CompilerConfiguration.sourceMap: Boolean
     get() = getBoolean(JSConfigurationKeys.SOURCE_MAP)
-    set(value) { put(JSConfigurationKeys.SOURCE_MAP, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.SOURCE_MAP, value) }
 
 var CompilerConfiguration.useDebuggerCustomFormatters: Boolean
     get() = getBoolean(JSConfigurationKeys.USE_DEBUGGER_CUSTOM_FORMATTERS)
-    set(value) { put(JSConfigurationKeys.USE_DEBUGGER_CUSTOM_FORMATTERS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.USE_DEBUGGER_CUSTOM_FORMATTERS, value) }
 
-var CompilerConfiguration.outputDir: File
-    get() = getNotNull(JSConfigurationKeys.OUTPUT_DIR)
-    set(value) { put(JSConfigurationKeys.OUTPUT_DIR, value) }
-val CompilerConfiguration.outputDirOrNull: File?
+var CompilerConfiguration.outputDir: File?
     get() = get(JSConfigurationKeys.OUTPUT_DIR)
+    set(value) { putIfNotNull(JSConfigurationKeys.OUTPUT_DIR, value) }
 
-var CompilerConfiguration.sourceMapPrefix: String
-    get() = getNotNull(JSConfigurationKeys.SOURCE_MAP_PREFIX)
-    set(value) { put(JSConfigurationKeys.SOURCE_MAP_PREFIX, value) }
-val CompilerConfiguration.sourceMapPrefixOrNull: String?
+var CompilerConfiguration.sourceMapPrefix: String?
     get() = get(JSConfigurationKeys.SOURCE_MAP_PREFIX)
+    set(value) { putIfNotNull(JSConfigurationKeys.SOURCE_MAP_PREFIX, value) }
 
 val CompilerConfiguration.sourceMapSourceRoots: List<String>
     get() = getList(JSConfigurationKeys.SOURCE_MAP_SOURCE_ROOTS)
@@ -219,57 +184,45 @@ fun CompilerConfiguration.addSourceMapSourceRoots(values: Collection<String>) {
     addAll(JSConfigurationKeys.SOURCE_MAP_SOURCE_ROOTS, values)
 }
 
-var CompilerConfiguration.sourceMapEmbedSources: SourceMapSourceEmbedding
-    get() = getNotNull(JSConfigurationKeys.SOURCE_MAP_EMBED_SOURCES)
-    set(value) { put(JSConfigurationKeys.SOURCE_MAP_EMBED_SOURCES, value) }
-val CompilerConfiguration.sourceMapEmbedSourcesOrNull: SourceMapSourceEmbedding?
+var CompilerConfiguration.sourceMapEmbedSources: SourceMapSourceEmbedding?
     get() = get(JSConfigurationKeys.SOURCE_MAP_EMBED_SOURCES)
+    set(value) { putIfNotNull(JSConfigurationKeys.SOURCE_MAP_EMBED_SOURCES, value) }
 
-var CompilerConfiguration.sourcemapNamesPolicy: SourceMapNamesPolicy
-    get() = getNotNull(JSConfigurationKeys.SOURCEMAP_NAMES_POLICY)
-    set(value) { put(JSConfigurationKeys.SOURCEMAP_NAMES_POLICY, value) }
-val CompilerConfiguration.sourcemapNamesPolicyOrNull: SourceMapNamesPolicy?
+var CompilerConfiguration.sourcemapNamesPolicy: SourceMapNamesPolicy?
     get() = get(JSConfigurationKeys.SOURCEMAP_NAMES_POLICY)
+    set(value) { putIfNotNull(JSConfigurationKeys.SOURCEMAP_NAMES_POLICY, value) }
 
 var CompilerConfiguration.sourceMapIncludeMappingsFromUnavailableFiles: Boolean
     get() = getBoolean(JSConfigurationKeys.SOURCE_MAP_INCLUDE_MAPPINGS_FROM_UNAVAILABLE_FILES)
-    set(value) { put(JSConfigurationKeys.SOURCE_MAP_INCLUDE_MAPPINGS_FROM_UNAVAILABLE_FILES, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.SOURCE_MAP_INCLUDE_MAPPINGS_FROM_UNAVAILABLE_FILES, value) }
 
 var CompilerConfiguration.metaInfo: Boolean
     get() = getBoolean(JSConfigurationKeys.META_INFO)
-    set(value) { put(JSConfigurationKeys.META_INFO, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.META_INFO, value) }
 
-var CompilerConfiguration.target: EcmaVersion
-    get() = getNotNull(JSConfigurationKeys.TARGET)
-    set(value) { put(JSConfigurationKeys.TARGET, value) }
-val CompilerConfiguration.targetOrNull: EcmaVersion?
+var CompilerConfiguration.target: EcmaVersion?
     get() = get(JSConfigurationKeys.TARGET)
+    set(value) { putIfNotNull(JSConfigurationKeys.TARGET, value) }
 
-var CompilerConfiguration.moduleKind: ModuleKind
-    get() = getNotNull(JSConfigurationKeys.MODULE_KIND)
-    set(value) { put(JSConfigurationKeys.MODULE_KIND, value) }
-val CompilerConfiguration.moduleKindOrNull: ModuleKind?
+var CompilerConfiguration.moduleKind: ModuleKind?
     get() = get(JSConfigurationKeys.MODULE_KIND)
+    set(value) { putIfNotNull(JSConfigurationKeys.MODULE_KIND, value) }
 
 var CompilerConfiguration.incrementalDataProvider: IncrementalDataProvider?
     get() = get(JSConfigurationKeys.INCREMENTAL_DATA_PROVIDER)
     set(value) { putIfNotNull(JSConfigurationKeys.INCREMENTAL_DATA_PROVIDER, value) }
 
-var CompilerConfiguration.incrementalResultsConsumer: IncrementalResultsConsumer
-    get() = getNotNull(JSConfigurationKeys.INCREMENTAL_RESULTS_CONSUMER)
-    set(value) { put(JSConfigurationKeys.INCREMENTAL_RESULTS_CONSUMER, value) }
-val CompilerConfiguration.incrementalResultsConsumerOrNull: IncrementalResultsConsumer?
+var CompilerConfiguration.incrementalResultsConsumer: IncrementalResultsConsumer?
     get() = get(JSConfigurationKeys.INCREMENTAL_RESULTS_CONSUMER)
+    set(value) { putIfNotNull(JSConfigurationKeys.INCREMENTAL_RESULTS_CONSUMER, value) }
 
-var CompilerConfiguration.incrementalNextRoundChecker: IncrementalNextRoundChecker
-    get() = getNotNull(JSConfigurationKeys.INCREMENTAL_NEXT_ROUND_CHECKER)
-    set(value) { put(JSConfigurationKeys.INCREMENTAL_NEXT_ROUND_CHECKER, value) }
-val CompilerConfiguration.incrementalNextRoundCheckerOrNull: IncrementalNextRoundChecker?
+var CompilerConfiguration.incrementalNextRoundChecker: IncrementalNextRoundChecker?
     get() = get(JSConfigurationKeys.INCREMENTAL_NEXT_ROUND_CHECKER)
+    set(value) { putIfNotNull(JSConfigurationKeys.INCREMENTAL_NEXT_ROUND_CHECKER, value) }
 
 var CompilerConfiguration.friendPathsDisabled: Boolean
     get() = getBoolean(JSConfigurationKeys.FRIEND_PATHS_DISABLED)
-    set(value) { put(JSConfigurationKeys.FRIEND_PATHS_DISABLED, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.FRIEND_PATHS_DISABLED, value) }
 
 val CompilerConfiguration.friendPaths: List<String>
     get() = getList(JSConfigurationKeys.FRIEND_PATHS)
@@ -284,82 +237,76 @@ fun CompilerConfiguration.addFriendPaths(values: Collection<String>) {
 
 var CompilerConfiguration.metadataOnly: Boolean
     get() = getBoolean(JSConfigurationKeys.METADATA_ONLY)
-    set(value) { put(JSConfigurationKeys.METADATA_ONLY, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.METADATA_ONLY, value) }
 
 var CompilerConfiguration.developerMode: Boolean
     get() = getBoolean(JSConfigurationKeys.DEVELOPER_MODE)
-    set(value) { put(JSConfigurationKeys.DEVELOPER_MODE, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.DEVELOPER_MODE, value) }
 
 var CompilerConfiguration.generateCommentsWithFilePath: Boolean
     get() = getBoolean(JSConfigurationKeys.GENERATE_COMMENTS_WITH_FILE_PATH)
-    set(value) { put(JSConfigurationKeys.GENERATE_COMMENTS_WITH_FILE_PATH, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.GENERATE_COMMENTS_WITH_FILE_PATH, value) }
 
 var CompilerConfiguration.generatePolyfills: Boolean
     get() = getBoolean(JSConfigurationKeys.GENERATE_POLYFILLS)
-    set(value) { put(JSConfigurationKeys.GENERATE_POLYFILLS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.GENERATE_POLYFILLS, value) }
 
-var CompilerConfiguration.definePlatformMainFunctionArguments: String
-    get() = getNotNull(JSConfigurationKeys.DEFINE_PLATFORM_MAIN_FUNCTION_ARGUMENTS)
-    set(value) { put(JSConfigurationKeys.DEFINE_PLATFORM_MAIN_FUNCTION_ARGUMENTS, value) }
-val CompilerConfiguration.definePlatformMainFunctionArgumentsOrNull: String?
+var CompilerConfiguration.definePlatformMainFunctionArguments: String?
     get() = get(JSConfigurationKeys.DEFINE_PLATFORM_MAIN_FUNCTION_ARGUMENTS)
+    set(value) { putIfNotNull(JSConfigurationKeys.DEFINE_PLATFORM_MAIN_FUNCTION_ARGUMENTS, value) }
 
 var CompilerConfiguration.generateDts: Boolean
     get() = getBoolean(JSConfigurationKeys.GENERATE_DTS)
-    set(value) { put(JSConfigurationKeys.GENERATE_DTS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.GENERATE_DTS, value) }
 
 var CompilerConfiguration.compileSuspendAsJsGenerator: Boolean
     get() = getBoolean(JSConfigurationKeys.COMPILE_SUSPEND_AS_JS_GENERATOR)
-    set(value) { put(JSConfigurationKeys.COMPILE_SUSPEND_AS_JS_GENERATOR, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.COMPILE_SUSPEND_AS_JS_GENERATOR, value) }
 
 var CompilerConfiguration.compileLambdasAsEs6ArrowFunctions: Boolean
     get() = getBoolean(JSConfigurationKeys.COMPILE_LAMBDAS_AS_ES6_ARROW_FUNCTIONS)
-    set(value) { put(JSConfigurationKeys.COMPILE_LAMBDAS_AS_ES6_ARROW_FUNCTIONS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.COMPILE_LAMBDAS_AS_ES6_ARROW_FUNCTIONS, value) }
 
 var CompilerConfiguration.generateRegionComments: Boolean
     get() = getBoolean(JSConfigurationKeys.GENERATE_REGION_COMMENTS)
-    set(value) { put(JSConfigurationKeys.GENERATE_REGION_COMMENTS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.GENERATE_REGION_COMMENTS, value) }
 
 val CompilerConfiguration.filePathsPrefixMap: Map<String, String>
     get() = getMap(JSConfigurationKeys.FILE_PATHS_PREFIX_MAP)
 
 var CompilerConfiguration.printReachabilityInfo: Boolean
     get() = getBoolean(JSConfigurationKeys.PRINT_REACHABILITY_INFO)
-    set(value) { put(JSConfigurationKeys.PRINT_REACHABILITY_INFO, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.PRINT_REACHABILITY_INFO, value) }
 
-var CompilerConfiguration.dumpReachabilityInfoToFile: String
-    get() = getNotNull(JSConfigurationKeys.DUMP_REACHABILITY_INFO_TO_FILE)
-    set(value) { put(JSConfigurationKeys.DUMP_REACHABILITY_INFO_TO_FILE, value) }
-val CompilerConfiguration.dumpReachabilityInfoToFileOrNull: String?
+var CompilerConfiguration.dumpReachabilityInfoToFile: String?
     get() = get(JSConfigurationKeys.DUMP_REACHABILITY_INFO_TO_FILE)
+    set(value) { putIfNotNull(JSConfigurationKeys.DUMP_REACHABILITY_INFO_TO_FILE, value) }
 
 var CompilerConfiguration.fakeOverrideValidator: Boolean
     get() = getBoolean(JSConfigurationKeys.FAKE_OVERRIDE_VALIDATOR)
-    set(value) { put(JSConfigurationKeys.FAKE_OVERRIDE_VALIDATOR, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.FAKE_OVERRIDE_VALIDATOR, value) }
 
 var CompilerConfiguration.propertyLazyInitialization: Boolean
     get() = getBoolean(JSConfigurationKeys.PROPERTY_LAZY_INITIALIZATION)
-    set(value) { put(JSConfigurationKeys.PROPERTY_LAZY_INITIALIZATION, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.PROPERTY_LAZY_INITIALIZATION, value) }
 
 var CompilerConfiguration.generateInlineAnonymousFunctions: Boolean
     get() = getBoolean(JSConfigurationKeys.GENERATE_INLINE_ANONYMOUS_FUNCTIONS)
-    set(value) { put(JSConfigurationKeys.GENERATE_INLINE_ANONYMOUS_FUNCTIONS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.GENERATE_INLINE_ANONYMOUS_FUNCTIONS, value) }
 
 var CompilerConfiguration.generateStrictImplicitExport: Boolean
     get() = getBoolean(JSConfigurationKeys.GENERATE_STRICT_IMPLICIT_EXPORT)
-    set(value) { put(JSConfigurationKeys.GENERATE_STRICT_IMPLICIT_EXPORT, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.GENERATE_STRICT_IMPLICIT_EXPORT, value) }
 
-var CompilerConfiguration.zipFileSystemAccessor: ZipFileSystemAccessor
-    get() = getNotNull(JSConfigurationKeys.ZIP_FILE_SYSTEM_ACCESSOR)
-    set(value) { put(JSConfigurationKeys.ZIP_FILE_SYSTEM_ACCESSOR, value) }
-val CompilerConfiguration.zipFileSystemAccessorOrNull: ZipFileSystemAccessor?
+var CompilerConfiguration.zipFileSystemAccessor: ZipFileSystemAccessor?
     get() = get(JSConfigurationKeys.ZIP_FILE_SYSTEM_ACCESSOR)
+    set(value) { putIfNotNull(JSConfigurationKeys.ZIP_FILE_SYSTEM_ACCESSOR, value) }
 
 var CompilerConfiguration.optimizeGeneratedJs: Boolean
     get() = getBoolean(JSConfigurationKeys.OPTIMIZE_GENERATED_JS)
-    set(value) { put(JSConfigurationKeys.OPTIMIZE_GENERATED_JS, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.OPTIMIZE_GENERATED_JS, value) }
 
 var CompilerConfiguration.useEs6Classes: Boolean
     get() = getBoolean(JSConfigurationKeys.USE_ES6_CLASSES)
-    set(value) { put(JSConfigurationKeys.USE_ES6_CLASSES, value) }
+    set(value) { putIfNotNull(JSConfigurationKeys.USE_ES6_CLASSES, value) }
 
