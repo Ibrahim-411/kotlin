@@ -13,8 +13,9 @@ import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.keys.generator.model.KeysContainer
 import java.io.File
 
+@Suppress("unused")
 object CLIConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.cli.common", "CLIConfigurationKeys") {
-    val CONTENT_ROOTS by listKey<ContentRoot>("content roots", comment = "Roots, including dependencies and own sources")
+    val CONTENT_ROOTS by key<List<ContentRoot>>("content roots", comment = "Roots, including dependencies and own sources")
 
     val MESSAGE_COLLECTOR_KEY by deprecatedKey<MessageCollector>(
         initializer = "CommonConfigurationKeys.MESSAGE_COLLECTOR_KEY",

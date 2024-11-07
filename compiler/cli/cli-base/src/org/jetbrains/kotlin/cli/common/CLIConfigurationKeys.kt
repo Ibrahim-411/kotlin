@@ -68,8 +68,6 @@ object CLIConfigurationKeys {
 
 }
 
-// =========================== Accessors ===========================
-
 val CompilerConfiguration.contentRoots: List<ContentRoot>
     get() = getList(CLIConfigurationKeys.CONTENT_ROOTS)
 
@@ -81,53 +79,39 @@ fun CompilerConfiguration.addContentRoots(values: Collection<ContentRoot>) {
     addAll(CLIConfigurationKeys.CONTENT_ROOTS, values)
 }
 
-var CompilerConfiguration.originalMessageCollectorKey: MessageCollector
-    get() = getNotNull(CLIConfigurationKeys.ORIGINAL_MESSAGE_COLLECTOR_KEY)
-    set(value) { put(CLIConfigurationKeys.ORIGINAL_MESSAGE_COLLECTOR_KEY, value) }
-val CompilerConfiguration.originalMessageCollectorKeyOrNull: MessageCollector?
+var CompilerConfiguration.originalMessageCollectorKey: MessageCollector?
     get() = get(CLIConfigurationKeys.ORIGINAL_MESSAGE_COLLECTOR_KEY)
+    set(value) { putIfNotNull(CLIConfigurationKeys.ORIGINAL_MESSAGE_COLLECTOR_KEY, value) }
 
 var CompilerConfiguration.renderDiagnosticInternalName: Boolean
     get() = getBoolean(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME)
-    set(value) { put(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME, value) }
+    set(value) { putIfNotNull(CLIConfigurationKeys.RENDER_DIAGNOSTIC_INTERNAL_NAME, value) }
 
 var CompilerConfiguration.allowKotlinPackage: Boolean
     get() = getBoolean(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE)
-    set(value) { put(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, value) }
+    set(value) { putIfNotNull(CLIConfigurationKeys.ALLOW_KOTLIN_PACKAGE, value) }
 
-var CompilerConfiguration.perfManager: CommonCompilerPerformanceManager
-    get() = getNotNull(CLIConfigurationKeys.PERF_MANAGER)
-    set(value) { put(CLIConfigurationKeys.PERF_MANAGER, value) }
-val CompilerConfiguration.perfManagerOrNull: CommonCompilerPerformanceManager?
+var CompilerConfiguration.perfManager: CommonCompilerPerformanceManager?
     get() = get(CLIConfigurationKeys.PERF_MANAGER)
+    set(value) { putIfNotNull(CLIConfigurationKeys.PERF_MANAGER, value) }
 
-var CompilerConfiguration.intellijPluginRoot: String
-    get() = getNotNull(CLIConfigurationKeys.INTELLIJ_PLUGIN_ROOT)
-    set(value) { put(CLIConfigurationKeys.INTELLIJ_PLUGIN_ROOT, value) }
-val CompilerConfiguration.intellijPluginRootOrNull: String?
+var CompilerConfiguration.intellijPluginRoot: String?
     get() = get(CLIConfigurationKeys.INTELLIJ_PLUGIN_ROOT)
+    set(value) { putIfNotNull(CLIConfigurationKeys.INTELLIJ_PLUGIN_ROOT, value) }
 
-var CompilerConfiguration.metadataDestinationDirectory: File
-    get() = getNotNull(CLIConfigurationKeys.METADATA_DESTINATION_DIRECTORY)
-    set(value) { put(CLIConfigurationKeys.METADATA_DESTINATION_DIRECTORY, value) }
-val CompilerConfiguration.metadataDestinationDirectoryOrNull: File?
+var CompilerConfiguration.metadataDestinationDirectory: File?
     get() = get(CLIConfigurationKeys.METADATA_DESTINATION_DIRECTORY)
+    set(value) { putIfNotNull(CLIConfigurationKeys.METADATA_DESTINATION_DIRECTORY, value) }
 
-var CompilerConfiguration.phaseConfig: PhaseConfig
-    get() = getNotNull(CLIConfigurationKeys.PHASE_CONFIG)
-    set(value) { put(CLIConfigurationKeys.PHASE_CONFIG, value) }
-val CompilerConfiguration.phaseConfigOrNull: PhaseConfig?
+var CompilerConfiguration.phaseConfig: PhaseConfig?
     get() = get(CLIConfigurationKeys.PHASE_CONFIG)
+    set(value) { putIfNotNull(CLIConfigurationKeys.PHASE_CONFIG, value) }
 
-var CompilerConfiguration.flexiblePhaseConfig: PhaseConfigurationService
-    get() = getNotNull(CLIConfigurationKeys.FLEXIBLE_PHASE_CONFIG)
-    set(value) { put(CLIConfigurationKeys.FLEXIBLE_PHASE_CONFIG, value) }
-val CompilerConfiguration.flexiblePhaseConfigOrNull: PhaseConfigurationService?
+var CompilerConfiguration.flexiblePhaseConfig: PhaseConfigurationService?
     get() = get(CLIConfigurationKeys.FLEXIBLE_PHASE_CONFIG)
+    set(value) { putIfNotNull(CLIConfigurationKeys.FLEXIBLE_PHASE_CONFIG, value) }
 
-var CompilerConfiguration.pathToKotlinCompilerJar: File
-    get() = getNotNull(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR)
-    set(value) { put(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR, value) }
-val CompilerConfiguration.pathToKotlinCompilerJarOrNull: File?
+var CompilerConfiguration.pathToKotlinCompilerJar: File?
     get() = get(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR)
+    set(value) { putIfNotNull(CLIConfigurationKeys.PATH_TO_KOTLIN_COMPILER_JAR, value) }
 
