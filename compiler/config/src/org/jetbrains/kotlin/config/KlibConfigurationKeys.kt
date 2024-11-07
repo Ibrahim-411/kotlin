@@ -40,8 +40,6 @@ object KlibConfigurationKeys {
 
 }
 
-// =========================== Accessors ===========================
-
 val CompilerConfiguration.klibRelativePathBases: List<String>
     get() = getList(KlibConfigurationKeys.KLIB_RELATIVE_PATH_BASES)
 
@@ -55,33 +53,29 @@ fun CompilerConfiguration.addKlibRelativePathBases(values: Collection<String>) {
 
 var CompilerConfiguration.klibNormalizeAbsolutePath: Boolean
     get() = getBoolean(KlibConfigurationKeys.KLIB_NORMALIZE_ABSOLUTE_PATH)
-    set(value) { put(KlibConfigurationKeys.KLIB_NORMALIZE_ABSOLUTE_PATH, value) }
+    set(value) { putIfNotNull(KlibConfigurationKeys.KLIB_NORMALIZE_ABSOLUTE_PATH, value) }
 
 var CompilerConfiguration.produceKlibSignaturesClashChecks: Boolean
     get() = getBoolean(KlibConfigurationKeys.PRODUCE_KLIB_SIGNATURES_CLASH_CHECKS)
-    set(value) { put(KlibConfigurationKeys.PRODUCE_KLIB_SIGNATURES_CLASH_CHECKS, value) }
+    set(value) { putIfNotNull(KlibConfigurationKeys.PRODUCE_KLIB_SIGNATURES_CLASH_CHECKS, value) }
 
 var CompilerConfiguration.enableIrVisibilityChecksAfterInlining: Boolean
     get() = getBoolean(KlibConfigurationKeys.ENABLE_IR_VISIBILITY_CHECKS_AFTER_INLINING)
-    set(value) { put(KlibConfigurationKeys.ENABLE_IR_VISIBILITY_CHECKS_AFTER_INLINING, value) }
+    set(value) { putIfNotNull(KlibConfigurationKeys.ENABLE_IR_VISIBILITY_CHECKS_AFTER_INLINING, value) }
 
 var CompilerConfiguration.noDoubleInlining: Boolean
     get() = getBoolean(KlibConfigurationKeys.NO_DOUBLE_INLINING)
-    set(value) { put(KlibConfigurationKeys.NO_DOUBLE_INLINING, value) }
+    set(value) { putIfNotNull(KlibConfigurationKeys.NO_DOUBLE_INLINING, value) }
 
-var CompilerConfiguration.syntheticAccessorsDumpDir: String
-    get() = getNotNull(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_DUMP_DIR)
-    set(value) { put(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_DUMP_DIR, value) }
-val CompilerConfiguration.syntheticAccessorsDumpDirOrNull: String?
+var CompilerConfiguration.syntheticAccessorsDumpDir: String?
     get() = get(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_DUMP_DIR)
+    set(value) { putIfNotNull(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_DUMP_DIR, value) }
 
 var CompilerConfiguration.syntheticAccessorsWithNarrowedVisibility: Boolean
     get() = getBoolean(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_WITH_NARROWED_VISIBILITY)
-    set(value) { put(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_WITH_NARROWED_VISIBILITY, value) }
+    set(value) { putIfNotNull(KlibConfigurationKeys.SYNTHETIC_ACCESSORS_WITH_NARROWED_VISIBILITY, value) }
 
-var CompilerConfiguration.duplicatedUniqueNameStrategy: DuplicatedUniqueNameStrategy
-    get() = getNotNull(KlibConfigurationKeys.DUPLICATED_UNIQUE_NAME_STRATEGY)
-    set(value) { put(KlibConfigurationKeys.DUPLICATED_UNIQUE_NAME_STRATEGY, value) }
-val CompilerConfiguration.duplicatedUniqueNameStrategyOrNull: DuplicatedUniqueNameStrategy?
+var CompilerConfiguration.duplicatedUniqueNameStrategy: DuplicatedUniqueNameStrategy?
     get() = get(KlibConfigurationKeys.DUPLICATED_UNIQUE_NAME_STRATEGY)
+    set(value) { putIfNotNull(KlibConfigurationKeys.DUPLICATED_UNIQUE_NAME_STRATEGY, value) }
 

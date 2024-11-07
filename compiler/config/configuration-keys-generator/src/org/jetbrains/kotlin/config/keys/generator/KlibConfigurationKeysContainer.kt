@@ -8,8 +8,9 @@ package org.jetbrains.kotlin.config.keys.generator
 import org.jetbrains.kotlin.config.DuplicatedUniqueNameStrategy
 import org.jetbrains.kotlin.config.keys.generator.model.KeysContainer
 
+@Suppress("unused")
 object KlibConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.config", "KlibConfigurationKeys") {
-    val KLIB_RELATIVE_PATH_BASES by listKey<String>("Provides a path from which relative paths in klib are being computed")
+    val KLIB_RELATIVE_PATH_BASES by key<List<String>>("Provides a path from which relative paths in klib are being computed")
 
     val KLIB_NORMALIZE_ABSOLUTE_PATH by key<Boolean>("Normalize absolute paths in klib (replace file separator with '/')")
 
