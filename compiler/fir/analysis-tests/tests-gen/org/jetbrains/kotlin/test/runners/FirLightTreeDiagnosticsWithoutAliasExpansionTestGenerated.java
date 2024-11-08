@@ -187,6 +187,12 @@ public class FirLightTreeDiagnosticsWithoutAliasExpansionTestGenerated extends A
       public void testTypeAliasConstructor() {
         runTest("compiler/fir/analysis-tests/testData/resolve/expresssions/typeAliasConstructor.kt");
       }
+
+      @Nested
+      @TestMetadata("compiler/fir/analysis-tests/testData/resolve/expresssions/operators")
+      @TestDataPath("$PROJECT_ROOT")
+      public class Operators {
+      }
     }
 
     @Nested
