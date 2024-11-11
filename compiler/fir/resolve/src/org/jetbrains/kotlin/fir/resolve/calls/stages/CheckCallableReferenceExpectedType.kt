@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.builtins.functions.FunctionTypeKind
 import org.jetbrains.kotlin.builtins.functions.isBasicFunctionOrKFunction
 import org.jetbrains.kotlin.config.LanguageFeature
 import org.jetbrains.kotlin.fir.*
+import org.jetbrains.kotlin.fir.builder.FirFunctionTypeParameterBuilder
 import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.builder.buildNamedArgumentExpression
@@ -142,7 +143,14 @@ private fun buildResultingTypeAndAdaptation(
             val returnTypeWithoutCoercion = returnTypeRef.coneType
             val returnType = if (callableReferenceAdaptation == null) {
                 returnTypeWithoutCoercion.also {
-                    fir.valueParameters.mapTo(parameters) { it.returnTypeRef.coneType }
+                    fir.valueParameters.mapTo(parameters) { valueParameter ->
+                        val typeParameterBuilder = FirFunctionTypeParameterBuilder().apply {
+                            this.name = valueParameter.name
+                            this.source = valueParameter.source
+                            this.returnTypeRef = valueParameter.returnTypeRef
+                        }
+                        valueParameter.returnTypeRef.coneType.withParameterNameAnnotation(typeParameterBuilder.build())
+                    }
                 }
             } else {
                 parameters += callableReferenceAdaptation.argumentTypes
