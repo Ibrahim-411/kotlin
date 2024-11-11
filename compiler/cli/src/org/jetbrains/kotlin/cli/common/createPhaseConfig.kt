@@ -12,34 +12,49 @@ import org.jetbrains.kotlin.backend.common.phaser.toPhaseMap
 import org.jetbrains.kotlin.cli.common.arguments.CommonCompilerArguments
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
+import org.jetbrains.kotlin.config.*
 
 fun createPhaseConfig(
     compoundPhase: CompilerPhase<*, *, *>,
     arguments: CommonCompilerArguments,
     messageCollector: MessageCollector
 ): PhaseConfig {
+    val configuration = CompilerConfiguration()
+    configuration.fillPhaseConfigKeys(arguments)
+    return createPhaseConfig(compoundPhase, configuration, messageCollector).also {
+        if (arguments.listPhases) {
+            it.list()
+        }
+    }
+}
+
+fun createPhaseConfig(
+    compoundPhase: CompilerPhase<*, *, *>,
+    configuration: CompilerConfiguration,
+    messageCollector: MessageCollector
+): PhaseConfig {
     fun report(message: String) = messageCollector.report(CompilerMessageSeverity.ERROR, message)
 
     val phases = compoundPhase.toPhaseMap()
-    val enabled = computeEnabled(phases, arguments.disablePhases, ::report).toMutableSet()
-    val verbose = phaseSetFromArguments(phases, arguments.verbosePhases, ::report)
+    val enabled = computeEnabled(phases, configuration.disablePhases, ::report).toMutableSet()
+    val verbose = phaseSetFromArguments(phases, configuration.verbosePhases, ::report)
 
-    val beforeDumpSet = phaseSetFromArguments(phases, arguments.phasesToDumpBefore, ::report)
-    val afterDumpSet = phaseSetFromArguments(phases, arguments.phasesToDumpAfter, ::report)
-    val bothDumpSet = phaseSetFromArguments(phases, arguments.phasesToDump, ::report)
+    val beforeDumpSet = phaseSetFromArguments(phases, configuration.phasesToDumpBefore, ::report)
+    val afterDumpSet = phaseSetFromArguments(phases, configuration.phasesToDumpAfter, ::report)
+    val bothDumpSet = phaseSetFromArguments(phases, configuration.phasesToDump, ::report)
     val toDumpStateBefore = beforeDumpSet + bothDumpSet
     val toDumpStateAfter = afterDumpSet + bothDumpSet
-    val dumpDirectory = arguments.dumpDirectory
-    val dumpOnlyFqName = arguments.dumpOnlyFqName
-    val beforeValidateSet = phaseSetFromArguments(phases, arguments.phasesToValidateBefore, ::report)
-    val afterValidateSet = phaseSetFromArguments(phases, arguments.phasesToValidateAfter, ::report)
-    val bothValidateSet = phaseSetFromArguments(phases, arguments.phasesToValidate, ::report)
+    val dumpDirectory = configuration.phaseDumpDirectory
+    val dumpOnlyFqName = configuration.phaseDumpOnlyFqName
+    val beforeValidateSet = phaseSetFromArguments(phases, configuration.phasesToValidateBefore, ::report)
+    val afterValidateSet = phaseSetFromArguments(phases, configuration.phasesToValidateAfter, ::report)
+    val bothValidateSet = phaseSetFromArguments(phases, configuration.phasesToValidate, ::report)
     val toValidateStateBefore = beforeValidateSet + bothValidateSet
     val toValidateStateAfter = afterValidateSet + bothValidateSet
 
-    val needProfiling = arguments.profilePhases
-    val checkConditions = arguments.checkPhaseConditions
-    val checkStickyConditions = arguments.checkStickyPhaseConditions
+    val needProfiling = configuration.needProfilePhases
+    val checkConditions = configuration.checkPhaseConditions
+    val checkStickyConditions = configuration.checkStickyPhaseConditions
 
     return PhaseConfig(
         compoundPhase,
@@ -55,16 +70,30 @@ fun createPhaseConfig(
         needProfiling,
         checkConditions,
         checkStickyConditions
-    ).also {
-        if (arguments.listPhases) {
-            it.list()
-        }
-    }
+    )
+}
+
+fun CompilerConfiguration.fillPhaseConfigKeys(arguments: CommonCompilerArguments) {
+    addDisablePhases(arguments.disablePhases.toList())
+    addVerbosePhases(arguments.verbosePhases.toList())
+    addPhasesToDump(arguments.phasesToDump.toList())
+    phaseDumpDirectory = arguments.dumpDirectory
+    phaseDumpOnlyFqName = arguments.dumpOnlyFqName
+    addPhasesToValidateBefore(arguments.phasesToValidateBefore.toList())
+    addPhasesToValidateAfter(arguments.phasesToValidateAfter.toList())
+    addPhasesToValidate(arguments.phasesToValidate.toList())
+    needProfilePhases = arguments.profilePhases
+    checkPhaseConditions = arguments.checkPhaseConditions
+    checkStickyPhaseConditions = arguments.checkStickyPhaseConditions
+}
+
+private fun Array<String>?.toList(): List<String> {
+    return this.orEmpty().toList()
 }
 
 private fun computeEnabled(
     phases: MutableMap<String, AnyNamedPhase>,
-    namesOfDisabled: Array<String>?,
+    namesOfDisabled: List<String>,
     report: (String) -> Unit
 ): Set<AnyNamedPhase> {
     val disabledPhases = phaseSetFromArguments(phases, namesOfDisabled, report)
@@ -73,10 +102,9 @@ private fun computeEnabled(
 
 private fun phaseSetFromArguments(
     phases: MutableMap<String, AnyNamedPhase>,
-    names: Array<String>?,
+    names: List<String>,
     report: (String) -> Unit
 ): Set<AnyNamedPhase> {
-    if (names == null) return emptySet()
     if ("ALL" in names) return phases.values.toSet()
     return names.mapNotNull {
         phases[it] ?: run {
