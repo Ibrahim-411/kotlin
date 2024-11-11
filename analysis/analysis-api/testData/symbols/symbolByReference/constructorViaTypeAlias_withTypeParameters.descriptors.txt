@@ -1,0 +1,61 @@
+KaConstructorSymbol:
+  annotations: []
+  callableId: null
+  compilerVisibility: Public
+  containingClassId: test/MyClass
+  contextReceivers: []
+  hasStableParameterNames: true
+  isActual: false
+  isExpect: false
+  isExtension: false
+  isPrimary: true
+  location: CLASS
+  modality: FINAL
+  origin: SOURCE
+  receiverParameter: null
+  returnType: KaUsualClassType:
+    annotations: []
+    typeArguments: [
+      KaTypeParameterType:
+        annotations: []
+        type: TT
+    ]
+    type: test/MyClass<TT>
+  typeParameters: [
+    KaTypeParameterSymbol(T)
+  ]
+  valueParameters: [
+    KaValueParameterSymbol:
+      annotations: []
+      callableId: null
+      compilerVisibility: Local
+      contextReceivers: []
+      generatedPrimaryConstructorProperty: null
+      hasDefaultValue: false
+      isActual: false
+      isCrossinline: false
+      isExpect: false
+      isExtension: false
+      isImplicitLambdaParameter: false
+      isNoinline: false
+      isVal: true
+      isVararg: false
+      location: LOCAL
+      modality: FINAL
+      name: t
+      origin: SOURCE
+      receiverParameter: null
+      returnType: KaTypeParameterType:
+        annotations: []
+        type: TT
+      visibility: LOCAL
+      getContainingFileSymbol: KaFileSymbol(constructorViaTypeAlias_withTypeParameters.kt)
+      getContainingJvmClassName: test.MyClass
+      getContainingModule: KaSourceModule "Sources of main"
+      deprecationStatus: null
+  ]
+  visibility: PUBLIC
+  getContainingFileSymbol: KaFileSymbol(constructorViaTypeAlias_withTypeParameters.kt)
+  getContainingJvmClassName: test.MyClass
+  getContainingModule: KaSourceModule "Sources of main"
+  deprecationStatus: null
