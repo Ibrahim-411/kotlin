@@ -154,6 +154,24 @@ object JSConfigurationKeys {
     @JvmField
     val PER_MODULE_OUTPUT_NAME = CompilerConfigurationKey.create<String>("Custom output name to the split .js files")
 
+    @JvmField
+    val KEEP = CompilerConfigurationKey.create<List<String>>("list of fully qualified names not to be eliminated by DCE")
+
+    @JvmField
+    val DCE = CompilerConfigurationKey.create<Boolean>("Perform experimental dead code elimination")
+
+    @JvmField
+    val DCE_RUNTIME_DIAGNOSTIC = CompilerConfigurationKey.create<String>("Enable runtime diagnostics instead of removing declarations when performing DCE")
+
+    @JvmField
+    val SAFE_EXTERNAL_BOOLEAN = CompilerConfigurationKey.create<Boolean>("Wrap access to external 'Boolean' properties with an explicit conversion to 'Boolean'")
+
+    @JvmField
+    val SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC = CompilerConfigurationKey.create<String>("Enable runtime diagnostics when accessing external 'Boolean' properties")
+
+    @JvmField
+    val MINIMIZED_MEMBER_NAMES = CompilerConfigurationKey.create<Boolean>("Minimize the names of members")
+
 }
 
 var CompilerConfiguration.wasmCompilation: Boolean
@@ -365,4 +383,31 @@ var CompilerConfiguration.produceKlibDir: Boolean
 var CompilerConfiguration.perModuleOutputName: String?
     get() = get(JSConfigurationKeys.PER_MODULE_OUTPUT_NAME)
     set(value) { putIfNotNull(JSConfigurationKeys.PER_MODULE_OUTPUT_NAME, value) }
+
+val CompilerConfiguration.keep: List<String>
+    get() = getList(JSConfigurationKeys.KEEP)
+
+fun CompilerConfiguration.addKeep(values: Collection<String>) {
+    addAll(JSConfigurationKeys.KEEP, values)
+}
+
+var CompilerConfiguration.dce: Boolean
+    get() = getBoolean(JSConfigurationKeys.DCE)
+    set(value) { putIfNotNull(JSConfigurationKeys.DCE, value) }
+
+var CompilerConfiguration.dceRuntimeDiagnostic: String?
+    get() = get(JSConfigurationKeys.DCE_RUNTIME_DIAGNOSTIC)
+    set(value) { putIfNotNull(JSConfigurationKeys.DCE_RUNTIME_DIAGNOSTIC, value) }
+
+var CompilerConfiguration.safeExternalBoolean: Boolean
+    get() = getBoolean(JSConfigurationKeys.SAFE_EXTERNAL_BOOLEAN)
+    set(value) { putIfNotNull(JSConfigurationKeys.SAFE_EXTERNAL_BOOLEAN, value) }
+
+var CompilerConfiguration.safeExternalBooleanDiagnostic: String?
+    get() = get(JSConfigurationKeys.SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC)
+    set(value) { putIfNotNull(JSConfigurationKeys.SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC, value) }
+
+var CompilerConfiguration.minimizedMemberNames: Boolean
+    get() = getBoolean(JSConfigurationKeys.MINIMIZED_MEMBER_NAMES)
+    set(value) { putIfNotNull(JSConfigurationKeys.MINIMIZED_MEMBER_NAMES, value) }
 

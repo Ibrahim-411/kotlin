@@ -106,4 +106,12 @@ object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.con
     val PRODUCE_KLIB_FILE by key<Boolean>("Need to produce KLib file or not")
     val PRODUCE_KLIB_DIR by key<Boolean>("Need to produce unpacked KLib dir or not")
     val PER_MODULE_OUTPUT_NAME by key<String>("Custom output name to the split .js files")
+
+    val KEEP by key<List<String>>("list of fully qualified names not to be eliminated by DCE")
+    val DCE by key<Boolean>("Perform experimental dead code elimination")
+    val DCE_RUNTIME_DIAGNOSTIC by key<String>("Enable runtime diagnostics instead of removing declarations when performing DCE")
+    val SAFE_EXTERNAL_BOOLEAN by key<Boolean>("Wrap access to external 'Boolean' properties with an explicit conversion to 'Boolean'")
+    val SAFE_EXTERNAL_BOOLEAN_DIAGNOSTIC by key<String>("Enable runtime diagnostics when accessing external 'Boolean' properties")
+    val MINIMIZED_MEMBER_NAMES by key<Boolean>("Minimize the names of members")
+    val GRANULARITY by key<JsGenerationGranularity>("Granularity of JS files generation")
 }
