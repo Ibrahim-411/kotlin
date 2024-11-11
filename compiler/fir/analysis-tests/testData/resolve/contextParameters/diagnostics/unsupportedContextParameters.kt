@@ -69,3 +69,12 @@ class ClassWithContextReceiverSyntax {
     <!UNSUPPORTED!>context(String)<!>
     constructor() {}
 }
+
+<!UNSUPPORTED!>context(x: String = <!CONTEXT_PARAMETER_WITH_DEFAULT, CONTEXT_PARAMETER_WITH_DEFAULT!>""<!>)<!>
+class ClassWithContextDefaultValue
+
+context(x: String = <!CONTEXT_PARAMETER_WITH_DEFAULT!>""<!>)
+val contextHasDefaultValue: String get() = ""
+
+context(x: String = <!CONTEXT_PARAMETER_WITH_DEFAULT!>""<!>)
+fun contextHasDefaultValue() {}
