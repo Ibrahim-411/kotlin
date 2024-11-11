@@ -148,6 +148,12 @@ object JSConfigurationKeys {
     @JvmField
     val PRODUCE_KLIB_FILE = CompilerConfigurationKey.create<Boolean>("Need to produce KLib file or not")
 
+    @JvmField
+    val PRODUCE_KLIB_DIR = CompilerConfigurationKey.create<Boolean>("Need to produce unpacked KLib dir or not")
+
+    @JvmField
+    val PER_MODULE_OUTPUT_NAME = CompilerConfigurationKey.create<String>("Custom output name to the split .js files")
+
 }
 
 var CompilerConfiguration.wasmCompilation: Boolean
@@ -351,4 +357,12 @@ var CompilerConfiguration.includes: String?
 var CompilerConfiguration.produceKlibFile: Boolean
     get() = getBoolean(JSConfigurationKeys.PRODUCE_KLIB_FILE)
     set(value) { putIfNotNull(JSConfigurationKeys.PRODUCE_KLIB_FILE, value) }
+
+var CompilerConfiguration.produceKlibDir: Boolean
+    get() = getBoolean(JSConfigurationKeys.PRODUCE_KLIB_DIR)
+    set(value) { putIfNotNull(JSConfigurationKeys.PRODUCE_KLIB_DIR, value) }
+
+var CompilerConfiguration.perModuleOutputName: String?
+    get() = get(JSConfigurationKeys.PER_MODULE_OUTPUT_NAME)
+    set(value) { putIfNotNull(JSConfigurationKeys.PER_MODULE_OUTPUT_NAME, value) }
 

@@ -14,9 +14,11 @@ import org.jetbrains.kotlin.cli.common.ExitCode.OK
 import org.jetbrains.kotlin.cli.common.allowKotlinPackage
 import org.jetbrains.kotlin.cli.common.arguments.K2JSCompilerArguments
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
+import org.jetbrains.kotlin.cli.common.createPhaseConfig
 import org.jetbrains.kotlin.cli.common.incrementalCompilationIsEnabledForJs
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.ERROR
 import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.WARNING
+import org.jetbrains.kotlin.cli.common.phaseConfig
 import org.jetbrains.kotlin.cli.common.renderDiagnosticInternalName
 import org.jetbrains.kotlin.cli.common.setupCommonKlibArguments
 import org.jetbrains.kotlin.cli.js.DisposableZipFileSystemAccessor
@@ -204,6 +206,7 @@ object JsConfigurationFiller : ConfigurationFiller<K2JSCompilerArguments, JsConf
         wasmCompilation = arguments.wasm
         arguments.includes?.let { includes = it }
         produceKlibFile = arguments.irProduceKlibFile
+        produceKlibDir = arguments.irProduceKlibDir
 
         // -------------- from doExecute --------------
 
@@ -324,6 +327,8 @@ object JsConfigurationFiller : ConfigurationFiller<K2JSCompilerArguments, JsConf
             messageCollector.report(ERROR, "Could not resolve output directory", location = null)
             return COMPILATION_ERROR
         }
+
+        perModuleOutputName = arguments.irPerModuleOutputName
 
         return OK
     }

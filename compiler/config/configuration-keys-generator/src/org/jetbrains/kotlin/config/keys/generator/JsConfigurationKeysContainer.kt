@@ -104,4 +104,6 @@ object JsConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.js.con
 
     val INCLUDES by key<String>("List of KLibs for this linking phase")
     val PRODUCE_KLIB_FILE by key<Boolean>("Need to produce KLib file or not")
+    val PRODUCE_KLIB_DIR by key<Boolean>("Need to produce unpacked KLib dir or not")
+    val PER_MODULE_OUTPUT_NAME by key<String>("Custom output name to the split .js files")
 }

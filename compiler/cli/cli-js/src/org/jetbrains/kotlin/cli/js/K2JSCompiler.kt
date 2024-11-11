@@ -114,7 +114,7 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
         return K2JSCompilerArguments()
     }
 
-    private class Ir2JsTransformer(
+    class Ir2JsTransformer(
         val arguments: K2JSCompilerArguments,
         val module: ModulesStructure,
         val phaseConfig: PhaseConfig,
@@ -842,15 +842,6 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
         return null
     }
 
-    private fun runStandardLibrarySpecialCompatibilityChecks(
-        libraries: List<KotlinLibrary>,
-        isWasm: Boolean,
-        messageCollector: MessageCollector,
-    ) {
-        val checker = if (isWasm) WasmStandardLibrarySpecialCompatibilityChecker else JsStandardLibrarySpecialCompatibilityChecker
-        checker.check(libraries, messageCollector)
-    }
-
     override fun setupPlatformSpecificArgumentsAndServices(
         configuration: CompilerConfiguration,
         arguments: K2JSCompilerArguments,
@@ -1083,6 +1074,15 @@ class K2JSCompiler : CLICompiler<K2JSCompilerArguments>() {
             }
 
             return commonPath?.path ?: "."
+        }
+
+        fun runStandardLibrarySpecialCompatibilityChecks(
+            libraries: List<KotlinLibrary>,
+            isWasm: Boolean,
+            messageCollector: MessageCollector,
+        ) {
+            val checker = if (isWasm) WasmStandardLibrarySpecialCompatibilityChecker else JsStandardLibrarySpecialCompatibilityChecker
+            checker.check(libraries, messageCollector)
         }
     }
 }

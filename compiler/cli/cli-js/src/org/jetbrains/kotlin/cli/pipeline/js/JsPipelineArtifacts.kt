@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.cli.pipeline.js
 
+import com.intellij.openapi.project.Project
 import org.jetbrains.kotlin.cli.js.klib.AnalyzedFirOutput
 import org.jetbrains.kotlin.cli.pipeline.Fir2IrPipelineArtifact
 import org.jetbrains.kotlin.cli.pipeline.FrontendPipelineArtifact
@@ -27,6 +28,7 @@ data class JsFrontendPipelineArtifact(
 
 data class JsFir2IrPipelineArtifact(
     override val result: Fir2IrActualizedResult,
+    val analyzedFirOutput: AnalyzedFirOutput,
     val configuration: CompilerConfiguration,
     val diagnosticCollector: BaseDiagnosticsCollector,
     val moduleStructure: ModulesStructure,
@@ -34,4 +36,14 @@ data class JsFir2IrPipelineArtifact(
 
 data class JsKlibPipelineArtifact(
     val outputKlibPath: String,
+    val sourceModule: ModulesStructure?,
+    val project: Project,
+    val diagnosticsCollector: BaseDiagnosticsCollector,
+    val configuration: CompilerConfiguration,
+) : PipelineArtifact()
+
+
+data class JsBackendPipelineArtifact(
+    val outputKlibPath: String,
+    val modulesStructure: ModulesStructure,
 ) : PipelineArtifact()

@@ -15,9 +15,20 @@ import org.jetbrains.kotlin.cli.common.messages.CompilerMessageSeverity.LOGGING
 import org.jetbrains.kotlin.cli.common.messages.GroupingMessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.cli.common.messages.MessageCollectorUtil
+import org.jetbrains.kotlin.cli.js.K2JSCompiler
 import org.jetbrains.kotlin.cli.js.K2JSCompiler.K2JSCompilerPerformanceManager
-import org.jetbrains.kotlin.cli.pipeline.*
-import org.jetbrains.kotlin.config.*
+import org.jetbrains.kotlin.cli.pipeline.ArgumentsPipelineArtifact
+import org.jetbrains.kotlin.cli.pipeline.CompilerPipelineStep
+import org.jetbrains.kotlin.cli.pipeline.StepStatus
+import org.jetbrains.kotlin.cli.pipeline.unwrap
+import org.jetbrains.kotlin.config.Services
+import org.jetbrains.kotlin.config.messageCollector
+import org.jetbrains.kotlin.ir.backend.js.MainModule
+import org.jetbrains.kotlin.ir.backend.js.ModulesStructure
+import org.jetbrains.kotlin.js.config.friendLibraries
+import org.jetbrains.kotlin.js.config.includes
+import org.jetbrains.kotlin.js.config.libraries
+import org.jetbrains.kotlin.js.config.wasmCompilation
 import org.jetbrains.kotlin.progress.CompilationCanceledException
 import org.jetbrains.kotlin.progress.CompilationCanceledStatus
 import org.jetbrains.kotlin.progress.ProgressIndicatorAndCompilationCanceledStatus
@@ -27,12 +38,59 @@ import java.io.File
 // ============================== frontend ==============================
 // ============================== fir2ir ==============================
 // ============================== klib ==============================
-object JsKlibPipelineStep : CompilerPipelineStep<JsFir2IrPipelineArtifact, JsKlibPipelineArtifact>() {
-    override fun execute(input: JsFir2IrPipelineArtifact): StepStatus<JsKlibPipelineArtifact> {
-        TODO("Not yet implemented")
+// ============================== backend ==============================
+
+class JsBackendPipelineStep : CompilerPipelineStep<JsKlibPipelineArtifact, JsBackendPipelineArtifact>() {
+    override fun execute(input: JsKlibPipelineArtifact): StepStatus<JsBackendPipelineArtifact> {
+        val (outputKlibPath, sourceModule, project, diagnosticsCollector, configuration) = input
+        val module = sourceModule ?: run {
+            val includes = configuration.includes!!
+            val includesPath = File(includes).canonicalPath
+            val mainLibPath = configuration.libraries.find { File(it).canonicalPath == includesPath }
+                ?: error("No library with name $includes ($includesPath) found")
+            val kLib = MainModule.Klib(mainLibPath)
+            ModulesStructure(
+                project,
+                kLib,
+                configuration,
+                configuration.libraries,
+                configuration.friendLibraries
+            ).also {
+                K2JSCompiler.runStandardLibrarySpecialCompatibilityChecks(
+                    it.allDependencies,
+                    isWasm = configuration.wasmCompilation,
+                    configuration.messageCollector
+                )
+            }
+        }
+
+        val start = System.currentTimeMillis()
+//        try {
+//            val ir2JsTransformer = Ir2JsTransformer(arguments, module, phaseConfig, messageCollector, mainCallArguments)
+//            val outputs = ir2JsTransformer.compileAndTransformIrNew()
+//
+//            messageCollector.report(INFO, "Executable production duration: ${System.currentTimeMillis() - start}ms")
+//
+//            outputs.writeAll(outputDir, outputName, arguments.dtsStrategy, moduleName, moduleKind)
+//        } catch (e: CompilationException) {
+//            messageCollector.report(
+//                ERROR,
+//                e.stackTraceToString(),
+//                CompilerMessageLocation.create(
+//                    path = e.path,
+//                    line = e.line,
+//                    column = e.column,
+//                    lineContent = e.content
+//                )
+//            )
+//            return INTERNAL_ERROR
+//        }
+
+
+        TODO()
     }
 }
-// ============================== backend ==============================
+
 // ============================== entrypoint ==============================
 
 class JsCliFirstStepPipeline {
