@@ -122,10 +122,12 @@ object KeysContainerGenerator {
         }
         println()
 
-        inBracketsWithIndent("fun CompilerConfiguration.add${StringUtil.unpluralize(key.capitalizedAccessorName)}(value: ${key.elementType.name})") {
-            println("add($keyAccess, value)")
+        StringUtil.unpluralize(key.capitalizedAccessorName)?.let { singleForm ->
+            inBracketsWithIndent("fun CompilerConfiguration.add$singleForm(value: ${key.elementType.name})") {
+                println("add($keyAccess, value)")
+            }
+            println()
         }
-        println()
 
         inBracketsWithIndent("fun CompilerConfiguration.add${key.capitalizedAccessorName}(values: Collection<${key.elementType.name}>)") {
             println("addAll($keyAccess, values)")
