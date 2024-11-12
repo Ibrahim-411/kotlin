@@ -30,6 +30,5 @@ interface BackendContext {
     val irBuiltIns: IrBuiltIns
     val typeSystem: IrTypeSystemContext
     val sharedVariablesManager: SharedVariablesManager
-    val internalPackageFqn: FqName
     val irFactory: IrFactory
 }

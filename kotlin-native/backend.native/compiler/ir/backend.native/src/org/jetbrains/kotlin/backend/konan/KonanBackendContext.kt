@@ -26,8 +26,6 @@ internal abstract class KonanBackendContext(config: KonanConfig) : BasicPhaseCon
         KonanSharedVariablesManager(irBuiltIns, ir.symbols)
     }
 
-    override val internalPackageFqn = KonanFqNames.internalPackageName
-
     override val mapping: Mapping = Mapping()
 
     override val irFactory: IrFactory = IrFactoryImpl

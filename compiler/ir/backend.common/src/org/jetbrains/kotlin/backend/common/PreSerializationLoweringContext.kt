@@ -43,9 +43,6 @@ class PreSerializationLoweringContext(
     override val sharedVariablesManager: SharedVariablesManager
         get() = TODO("Not yet implemented") // Should be implemented in scope of KT-71415
 
-    override val internalPackageFqn: FqName
-        get() = TODO("Not yet implemented") // Should be implemented in scope of KT-71415
-
     override val irFactory: IrFactory
         get() = IrFactoryImpl
 

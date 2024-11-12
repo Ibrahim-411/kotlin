@@ -32,6 +32,8 @@ import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.resolve.scopes.MemberScope
 
 interface JsCommonBackendContext : CommonBackendContext {
+    val internalPackageFqn: FqName
+
     override val mapping: JsMapping
 
     val reflectionSymbols: ReflectionSymbols
