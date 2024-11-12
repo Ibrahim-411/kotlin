@@ -24,6 +24,6 @@ KaValueParameterSymbol:
     type: kotlin/String
   visibility: PUBLIC
   getContainingFileSymbol: KaFileSymbol(constructorParameterViaTypeAlias.kt)
-  getContainingJvmClassName: test.MyClass
+  getContainingJvmClassName: test.MyAlias
   getContainingModule: KaSourceModule "Sources of main"
   deprecationStatus: null
