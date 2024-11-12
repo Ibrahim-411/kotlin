@@ -20,10 +20,13 @@ import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationUseSiteTarget
 import org.jetbrains.kotlin.fir.FirElement
 import org.jetbrains.kotlin.fir.declarations.FirCallableDeclaration
+import org.jetbrains.kotlin.fir.declarations.FirConstructor
 import org.jetbrains.kotlin.fir.declarations.FirDeclaration
 import org.jetbrains.kotlin.fir.psi
+import org.jetbrains.kotlin.fir.scopes.impl.typeAliasForConstructor
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.fir.unwrapFakeOverridesOrDelegated
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.CallableId
@@ -58,7 +61,9 @@ internal fun FirElement.findPsi(): PsiElement? =
 
 @KaImplementationDetail
 fun FirBasedSymbol<*>.findPsi(): PsiElement? {
-    return if (this is FirCallableSymbol<*>) {
+    return if (this is FirConstructorSymbol && this.typeAliasForConstructor != null) {
+        typeAliasForConstructor?.fir?.findPsi()
+    } else if (this is FirCallableSymbol<*>) {
         fir.unwrapFakeOverridesOrDelegated().findPsi()
     } else {
         fir.findPsi()
@@ -71,7 +76,9 @@ fun FirBasedSymbol<*>.findPsi(): PsiElement? {
  * Otherwise, behaves the same way as [findPsi] returns exact PSI declaration corresponding to passed [FirDeclaration]
  */
 internal fun FirDeclaration.findReferencePsi(): PsiElement? {
-    return if (this is FirCallableDeclaration) {
+    return if (this is FirConstructor && typeAliasForConstructor != null) {
+        typeAliasForConstructor?.fir?.psi
+    } else if (this is FirCallableDeclaration) {
         unwrapFakeOverridesOrDelegated().psi
     } else {
         psi

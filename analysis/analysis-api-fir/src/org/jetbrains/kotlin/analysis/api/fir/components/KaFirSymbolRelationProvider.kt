@@ -47,6 +47,7 @@ import org.jetbrains.kotlin.fir.diagnostics.ConeDestructuringDeclarationsOnTopLe
 import org.jetbrains.kotlin.fir.resolve.FirSamResolver
 import org.jetbrains.kotlin.fir.resolve.SessionHolderImpl
 import org.jetbrains.kotlin.fir.resolve.toSymbol
+import org.jetbrains.kotlin.fir.scopes.impl.typeAliasForConstructor
 import org.jetbrains.kotlin.fir.symbols.FirBasedSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.*
 import org.jetbrains.kotlin.fir.symbols.lazyResolveToPhase
@@ -116,6 +117,11 @@ internal class KaFirSymbolRelationProvider(
                 }
 
                 is KaCallableSymbol -> {
+                    val typeAliasForConstructor = (firSymbol as? FirConstructorSymbol)?.typeAliasForConstructor
+                    if (typeAliasForConstructor != null) {
+                        return firSymbolBuilder.buildSymbol(typeAliasForConstructor) as? KaTypeAliasSymbol
+                    }
+
                     val outerFirClassifier = firSymbol.getContainingClassSymbol()
                     if (outerFirClassifier != null) {
                         return firSymbolBuilder.buildSymbol(outerFirClassifier) as? KaDeclarationSymbol

@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.analysis.api.annotations.KaAnnotationList
 import org.jetbrains.kotlin.analysis.api.fir.KaFirSession
 import org.jetbrains.kotlin.analysis.api.fir.findPsi
 import org.jetbrains.kotlin.analysis.api.fir.symbols.pointers.KaFirConstructorSymbolPointer
+import org.jetbrains.kotlin.analysis.api.fir.symbols.pointers.KaFirTypeAliasedConstructorMemberPointer
 import org.jetbrains.kotlin.analysis.api.fir.symbols.pointers.createOwnerPointer
 import org.jetbrains.kotlin.analysis.api.fir.visibilityByModifiers
 import org.jetbrains.kotlin.analysis.api.lifetime.withValidityAssertion
@@ -27,12 +28,15 @@ import org.jetbrains.kotlin.fir.declarations.utils.isActual
 import org.jetbrains.kotlin.fir.declarations.utils.isExpect
 import org.jetbrains.kotlin.fir.declarations.utils.visibility
 import org.jetbrains.kotlin.fir.realPsi
+import org.jetbrains.kotlin.fir.scopes.impl.originalConstructorIfTypeAlias
+import org.jetbrains.kotlin.fir.scopes.impl.typeAliasForConstructor
 import org.jetbrains.kotlin.fir.symbols.impl.FirConstructorSymbol
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.psi.KtConstructor
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.psiUtil.isExpectDeclaration
+import java.util.Objects
 
 internal class KaFirConstructorSymbol private constructor(
     override val backingPsi: KtConstructor<*>?,
@@ -46,7 +50,7 @@ internal class KaFirConstructorSymbol private constructor(
     )
 
     constructor(symbol: FirConstructorSymbol, session: KaFirSession) : this(
-        backingPsi = symbol.fir.realPsi as? KtConstructor<*>,
+        backingPsi = symbol.takeIf { it.typeAliasForConstructor == null }?.fir?.realPsi as? KtConstructor<*>,
         lazyFirSymbol = lazyOf(symbol),
         analysisSession = session,
     )
@@ -80,6 +84,7 @@ internal class KaFirConstructorSymbol private constructor(
     override val containingClassId: ClassId?
         get() = withValidityAssertion {
             backingPsi?.getContainingClassOrObject()?.getClassId()
+                ?: firSymbol.typeAliasForConstructor?.classId?.takeUnless { it.isLocal }
                 ?: firSymbol.containingClassLookupTag()?.classId?.takeUnless { it.isLocal }
         }
 
@@ -108,13 +113,37 @@ internal class KaFirConstructorSymbol private constructor(
     override fun createPointer(): KaSymbolPointer<KaConstructorSymbol> = withValidityAssertion {
         psiBasedSymbolPointerOfTypeIfSource<KaConstructorSymbol>()?.let { return it }
 
-        KaFirConstructorSymbolPointer(
-            analysisSession.createOwnerPointer(this),
-            isPrimary,
-            FirCallableSignature.createSignature(firSymbol),
-        )
+        if (firSymbol.typeAliasForConstructor == null) {
+            KaFirConstructorSymbolPointer(
+                analysisSession.createOwnerPointer(this),
+                isPrimary,
+                FirCallableSignature.createSignature(firSymbol),
+            )
+        } else {
+            KaFirTypeAliasedConstructorMemberPointer(
+                analysisSession.createOwnerPointer(this),
+                FirCallableSignature.createSignature(firSymbol),
+            )
+        }
     }
 
-    override fun equals(other: Any?): Boolean = psiOrSymbolEquals(other)
-    override fun hashCode(): Int = psiOrSymbolHashCode()
+    override fun equals(other: Any?): Boolean {
+        if (firSymbol.typeAliasForConstructor == null) {
+            return psiOrSymbolEquals(other)
+        }
+
+        // TODO remove explicit comparison when KT-72929 is fixed
+        return other is KaFirConstructorSymbol &&
+                other.firSymbol.typeAliasForConstructor == firSymbol.typeAliasForConstructor &&
+                other.firSymbol.originalConstructorIfTypeAlias == firSymbol.originalConstructorIfTypeAlias
+    }
+
+    override fun hashCode(): Int {
+        if (firSymbol.typeAliasForConstructor == null) {
+            return psiOrSymbolHashCode()
+        }
+
+        // TODO remove explicit hashing when KT-72929 is fixed
+        return Objects.hash(firSymbol.typeAliasForConstructor, firSymbol.originalConstructorIfTypeAlias)
+    }
 }
