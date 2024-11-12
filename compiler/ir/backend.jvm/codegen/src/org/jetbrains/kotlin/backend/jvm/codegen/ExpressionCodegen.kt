@@ -1075,6 +1075,16 @@ class ExpressionCodegen(
             mv.mark(elseLabel)
         }
         mv.mark(endLabel)
+
+        // Mark closing bracket for ifs in suspend functions.
+        // Because for step-over to work, when we build a state-machine,
+        // we move next line number after suspend call closer to the call,
+        // we can end up with non-debuggable statement right after the if.
+        // See KT-48311.
+        if (irFunction.isSuspend || irFunction.isInvokeSuspendOfLambda()) {
+            expression.markLineNumber(startOffset = false)
+        }
+
         return unitValue
     }
 
