@@ -67,7 +67,6 @@ class JvmBackendContext(
 
     override val irFactory: IrFactory = IrFactoryImpl
 
-    override val builtIns = state.module.builtIns
     override val typeSystem: IrTypeSystemContext = JvmIrTypeSystemContext(irBuiltIns)
     val defaultTypeMapper = IrTypeMapper(this)
     val defaultMethodSignatureMapper = MethodSignatureMapper(this, defaultTypeMapper)

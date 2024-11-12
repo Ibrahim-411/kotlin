@@ -25,7 +25,6 @@ import org.jetbrains.kotlin.ir.types.IrTypeSystemContext
 
 interface BackendContext {
     val ir: Ir<CommonBackendContext>
-    val builtIns: KotlinBuiltIns
     val irBuiltIns: IrBuiltIns
     val typeSystem: IrTypeSystemContext
     val sharedVariablesManager: SharedVariablesManager
