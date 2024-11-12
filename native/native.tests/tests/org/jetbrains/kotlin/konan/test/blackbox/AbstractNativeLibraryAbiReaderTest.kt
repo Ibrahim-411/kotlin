@@ -48,7 +48,7 @@ abstract class AbstractNativeLibraryAbiReaderTest : AbstractNativeSimpleTest() {
             testCase = generateTestCaseWithSingleFile(
                 sourceFile = sourceFile,
                 moduleName = moduleName,
-                freeCompilerArgs = TestCompilerArgs("-Xcontext-receivers")
+                freeCompilerArgs = TestCompilerArgs("-Xcontext-parameters")
             ),
             dependencies = customDependencies.toTypedArray()
         ).resultingArtifact.klibFile
