@@ -29,7 +29,7 @@ public actual class AtomicIntArray {
      * Creates a new [AtomicIntArray] filled with elements of the given [array].
      */
     public actual constructor(array: IntArray) {
-        this.array = array.copyOf()
+        this.array = array.asDynamic().slice() as IntArray
     }
 
     /**
@@ -160,7 +160,7 @@ public actual class AtomicLongArray {
      * Creates a new [AtomicIntArray] filled with elements of the given [array].
      */
     public actual constructor(array: LongArray) {
-        this.array = array.copyOf()
+        this.array = array.asDynamic().slice() as LongArray
     }
 
     /**
@@ -282,7 +282,7 @@ public actual class AtomicArray<T> {
      * Creates a new [AtomicArray] filled with elements of the given [array].
      */
     public actual constructor (array: Array<T>) {
-        this.array = array.copyOf()
+        this.array = array.asDynamic().slice() as Array<T>
     }
 
     /**
