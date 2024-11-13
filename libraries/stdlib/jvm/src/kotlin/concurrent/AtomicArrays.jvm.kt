@@ -24,7 +24,7 @@ public fun AtomicIntArray.asJavaAtomicArray(): AtomicIntegerArray = this as Atom
  */
 @SinceKotlin("2.1")
 @Suppress("UNCHECKED_CAST")
-public fun AtomicIntegerArray.asKotlinAtomicArray(): AtomicIntArray = this as AtomicIntArray
+public fun java.util.concurrent.atomic.AtomicIntegerArray.asKotlinAtomicArray(): AtomicIntArray = this as AtomicIntArray
 
 /**
  * Casts the given [AtomicLongArray] instance to [java.util.concurrent.atomic.AtomicLongArray].
@@ -52,4 +52,4 @@ public fun <T> AtomicArray<T>.asJavaAtomicArray(): AtomicReferenceArray<T> = thi
  */
 @SinceKotlin("2.1")
 @Suppress("UNCHECKED_CAST")
-public fun <T> AtomicReferenceArray<T>.asKotlinAtomicArray(): AtomicArray<T> = this as AtomicArray<T>
+public fun <T> java.util.concurrent.atomic.AtomicReferenceArray<T>.asKotlinAtomicArray(): AtomicArray<T> = this as AtomicArray<T>

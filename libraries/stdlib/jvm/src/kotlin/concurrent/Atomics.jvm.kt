@@ -24,7 +24,7 @@ public fun AtomicInt.asJavaAtomic(): AtomicInteger = this as AtomicInteger
  */
 @SinceKotlin("2.1")
 @Suppress("UNCHECKED_CAST")
-public fun AtomicInteger.asKotlinAtomic(): AtomicInt = this as AtomicInt
+public fun java.util.concurrent.atomic.AtomicInteger.asKotlinAtomic(): AtomicInt = this as AtomicInt
 
 /**
  * Casts the given [AtomicLong] instance to [java.util.concurrent.atomic.AtomicLong].
