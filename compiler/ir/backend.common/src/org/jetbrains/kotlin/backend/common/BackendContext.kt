@@ -21,7 +21,6 @@ import org.jetbrains.kotlin.backend.common.ir.SharedVariablesManager
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.declarations.IrFactory
-import org.jetbrains.kotlin.ir.types.IrTypeSystemContext
 
 interface BackendContext {
     val configuration: CompilerConfiguration
