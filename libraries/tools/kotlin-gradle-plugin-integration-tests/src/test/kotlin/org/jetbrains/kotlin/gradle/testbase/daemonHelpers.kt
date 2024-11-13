@@ -5,8 +5,12 @@
 
 package org.jetbrains.kotlin.gradle.testbase
 
+import oshi.SystemInfo
+import java.lang.ProcessHandle
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.io.path.deleteIfExists
+import kotlin.io.path.deleteRecursively
 import kotlin.io.path.listDirectoryEntries
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
@@ -43,11 +47,34 @@ fun awaitKotlinDaemonTermination(
         Thread.sleep(periodicCheckTime.inWholeMilliseconds)
     }
 
-    error(
-        "Kotlin daemon has not been terminated in $maxWaitTime. Remaining run files: \n${
-            lastRunFiles.joinToString("\n") {
-                it.toAbsolutePath().normalize().toString()
-            }
-        }"
-    )
+    val daemonProcesses = SystemInfo().operatingSystem.processes.filter { runFilesDirectory.toString() in it.commandLine }
+
+    for (daemonProcess in daemonProcesses) {
+        val processHandle = ProcessHandle.of(daemonProcess.processID.toLong())
+        if (processHandle.isPresent) {
+            System.err.println("The Kotlin daemon process ${daemonProcess.processID} was not shut down gracefully. Trying to kill it.")
+            processHandle.get().destroy()
+        }
+    }
+
+    while ((endOfWaitTime + 1.seconds).hasNotPassedNow()) {
+        lastRunFiles = runFilesDirectory.listDirectoryEntries()
+        if (lastRunFiles.isEmpty()) {
+            return
+        }
+        Thread.sleep(periodicCheckTime.inWholeMilliseconds)
+    }
+
+    for (daemonProcess in daemonProcesses) {
+        val processHandle = ProcessHandle.of(daemonProcess.processID.toLong())
+        if (processHandle.isPresent) {
+            System.err.println("The Kotlin daemon process ${daemonProcess.processID} was not shut down gracefully. Killing it forcibly.")
+            processHandle.get().destroyForcibly()
+        }
+    }
+
+    // forcibly killing may prevent run files from being deleted in the shutdown hook
+    for (path in lastRunFiles) {
+        path.deleteIfExists()
+    }
 }
