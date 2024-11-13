@@ -5,10 +5,7 @@
 
 package org.jetbrains.kotlin.ir.inline
 
-import org.jetbrains.kotlin.backend.common.BodyLoweringPass
-import org.jetbrains.kotlin.backend.common.CommonBackendContext
-import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
-import org.jetbrains.kotlin.backend.common.ScopeWithIr
+import org.jetbrains.kotlin.backend.common.*
 import org.jetbrains.kotlin.backend.common.ir.Symbols
 import org.jetbrains.kotlin.backend.common.ir.isInlineLambdaBlock
 import org.jetbrains.kotlin.backend.common.ir.isPure
@@ -85,7 +82,7 @@ abstract class InlineFunctionResolver(val inlineMode: InlineMode) {
     }
 }
 
-abstract class InlineFunctionResolverReplacingCoroutineIntrinsics<Ctx : CommonBackendContext>(
+abstract class InlineFunctionResolverReplacingCoroutineIntrinsics<Ctx : BackendContext>(
     protected val context: Ctx,
     inlineMode: InlineMode,
 ) : InlineFunctionResolver(inlineMode) {

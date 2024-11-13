@@ -5,6 +5,7 @@
 
 package org.jetbrains.kotlin.backend.common.lower.inline
 
+import org.jetbrains.kotlin.backend.common.BackendContext
 import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.FileLoweringPass
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities.*
@@ -26,7 +27,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.getOrSetIfNull
  * Generates a special private member accessor for outer@this implicit value parameter in inline functions.
  */
 class OuterThisInInlineFunctionsSpecialAccessorLowering(
-    context: CommonBackendContext,
+    context: BackendContext,
 
     /**
      * This key is a temporary workaround for static caches in Kotlin/Native:

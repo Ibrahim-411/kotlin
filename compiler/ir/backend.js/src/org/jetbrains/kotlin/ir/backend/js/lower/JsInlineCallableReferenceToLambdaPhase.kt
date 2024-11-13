@@ -5,11 +5,12 @@
 
 package org.jetbrains.kotlin.ir.backend.js.lower
 
+import org.jetbrains.kotlin.backend.common.BackendContext
 import org.jetbrains.kotlin.ir.backend.js.JsIrBackendContext
 import org.jetbrains.kotlin.ir.backend.js.lower.inline.JsInlineFunctionResolver
 import org.jetbrains.kotlin.ir.inline.CommonInlineCallableReferenceToLambdaPhase
 import org.jetbrains.kotlin.ir.inline.InlineMode
 
-internal class JsInlineCallableReferenceToLambdaPhase(context: JsIrBackendContext) : CommonInlineCallableReferenceToLambdaPhase(
+internal class JsInlineCallableReferenceToLambdaPhase(context: BackendContext) : CommonInlineCallableReferenceToLambdaPhase(
     context, JsInlineFunctionResolver(context, inlineMode = InlineMode.ALL_INLINE_FUNCTIONS)
 )
