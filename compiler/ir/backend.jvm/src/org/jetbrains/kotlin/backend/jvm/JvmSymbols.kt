@@ -1047,13 +1047,15 @@ class JvmSymbols(
         }
 
     private val defaultValueOfFunction = javaLangString.functions.single {
-        it.owner.name.asString() == "valueOf" && it.owner.valueParameters.singleOrNull()?.type?.isNullableAny() == true
+        it.owner.name.asString() == "valueOf"
+                && it.owner.hasShape(dispatchReceiver = true, regularParameters = 1, parameterTypes = listOf(null, irBuiltIns.anyNType))
     }
 
     private val valueOfFunctions: Map<IrType, IrSimpleFunctionSymbol?> =
         context.irBuiltIns.primitiveIrTypes.associateWith { type ->
             javaLangString.functions.singleOrNull {
-                it.owner.name.asString() == "valueOf" && it.owner.valueParameters.singleOrNull()?.type == type
+                it.owner.name.asString() == "valueOf"
+                        && it.owner.hasShape(dispatchReceiver = true, regularParameters = 1, parameterTypes = listOf(null, type))
             }
         }
 
