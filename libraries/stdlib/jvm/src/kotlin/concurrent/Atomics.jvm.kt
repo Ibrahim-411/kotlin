@@ -3,7 +3,6 @@
  * that can be found in the LICENSE file.
  */
 
-@file:Suppress("NEWER_VERSION_IN_SINCE_KOTLIN", "API_NOT_AVAILABLE")
 @file:kotlin.jvm.JvmMultifileClass
 @file:kotlin.jvm.JvmName("AtomicsKt")
 
