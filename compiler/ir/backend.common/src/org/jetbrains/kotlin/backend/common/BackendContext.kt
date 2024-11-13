@@ -24,7 +24,7 @@ import org.jetbrains.kotlin.ir.declarations.IrFactory
 
 interface BackendContext {
     val configuration: CompilerConfiguration
-    val ir: Ir<CommonBackendContext>
+    val ir: Ir
     val irBuiltIns: IrBuiltIns
     val sharedVariablesManager: SharedVariablesManager
     val irFactory: IrFactory

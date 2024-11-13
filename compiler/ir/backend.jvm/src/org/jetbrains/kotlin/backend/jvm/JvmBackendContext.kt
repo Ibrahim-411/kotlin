@@ -39,7 +39,6 @@ import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.resolve.jvm.JvmClassName
 import org.jetbrains.kotlin.resolve.jvm.diagnostics.JvmBackendErrors
 import org.jetbrains.org.objectweb.asm.Type
-import java.util.concurrent.ConcurrentHashMap
 
 @OptIn(ObsoleteDescriptorBasedAPI::class)
 class JvmBackendContext(
@@ -156,7 +155,7 @@ class JvmBackendContext(
 
     inner class JvmIr(
         symbolTable: SymbolTable,
-    ) : Ir<JvmBackendContext>(this) {
+    ) : Ir() {
         override val symbols = JvmSymbols(this@JvmBackendContext, symbolTable)
 
         override fun shouldGenerateHandlerParameterForDefaultBodyFun() = true

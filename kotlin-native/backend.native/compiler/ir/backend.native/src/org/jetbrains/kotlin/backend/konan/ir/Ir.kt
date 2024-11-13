@@ -23,13 +23,10 @@ import org.jetbrains.kotlin.ir.symbols.*
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.konan.target.CompilerOutputKind
-import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.FqName
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.KotlinType
 import org.jetbrains.kotlin.types.TypeUtils
-import kotlin.IllegalArgumentException
-import kotlin.NoSuchElementException
 
 object KonanNameConventions {
     val setWithoutBoundCheck = Name.special("<setWithoutBoundCheck>")
@@ -63,7 +60,7 @@ internal interface SymbolLookupUtils {
 }
 
 // This is what Context collects about IR.
-internal class KonanIr(context: Context, override val symbols: KonanSymbols): Ir<Context>(context)
+internal class KonanIr(override val symbols: KonanSymbols): Ir()
 
 internal class KonanSymbols(
         context: PhaseContext,
