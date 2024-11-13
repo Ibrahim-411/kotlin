@@ -529,15 +529,11 @@ private fun IrClass.hasEnumEntriesFunction(): Boolean {
 
 private fun IrSimpleFunction.isGetEntries(): Boolean =
     name.toString() == "<get-entries>"
-            && dispatchReceiverParameter == null
-            && extensionReceiverParameter == null
-            && valueParameters.isEmpty()
+            && hasShape()
 
 fun IrClass.findEnumValuesFunction(context: JvmBackendContext): IrSimpleFunction = functions.single {
     it.name.toString() == "values"
-            && it.dispatchReceiverParameter == null
-            && it.extensionReceiverParameter == null
-            && it.valueParameters.isEmpty()
+            && it.hasShape()
             && it.returnType.isBoxedArray
             && it.returnType.getArrayElementType(context.irBuiltIns).classOrNull == this.symbol
 }
