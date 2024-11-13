@@ -4,6 +4,9 @@
  */
 
 @file:Suppress("NEWER_VERSION_IN_SINCE_KOTLIN", "API_NOT_AVAILABLE")
+@file:kotlin.jvm.JvmMultifileClass
+@file:kotlin.jvm.JvmName("AtomicsKt")
+
 @file:OptIn(ExperimentalStdlibApi::class)
 
 package kotlin.concurrent
