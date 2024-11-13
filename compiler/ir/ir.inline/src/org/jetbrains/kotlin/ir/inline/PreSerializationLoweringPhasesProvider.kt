@@ -48,7 +48,6 @@ abstract class PreSerializationLoweringPhasesProvider<Context : CommonBackendCon
 //                  ::SyntheticAccessorLowering,
 //                  { _ -> CacheInlineFunctionsBeforeInlining(cacheOnlyPrivateFunctions = false) },
                 ),
-                supportParallel = false,
             ) then buildModuleLoweringsPhase(
 //              validateIrAfterInliningOnlyPrivateFunctions,
             ) then performByIrFile(
@@ -56,7 +55,6 @@ abstract class PreSerializationLoweringPhasesProvider<Context : CommonBackendCon
                 createFilePhases(
 //                  { FunctionInlining(it, inlineFunctionResolver(context, InlineMode.ALL_INLINE_FUNCTIONS), produceOuterThisFields = false) },
                 ),
-                supportParallel = false,
             ) then buildModuleLoweringsPhase(
 //              validateIrAfterInliningAllFunctions
             )

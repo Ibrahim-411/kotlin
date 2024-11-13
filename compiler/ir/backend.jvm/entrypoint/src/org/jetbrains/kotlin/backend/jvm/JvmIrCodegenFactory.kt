@@ -11,9 +11,12 @@ import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
 import org.jetbrains.kotlin.backend.common.extensions.IrPluginContextImpl
 import org.jetbrains.kotlin.backend.common.linkage.issues.checkNoUnboundSymbols
 import org.jetbrains.kotlin.backend.common.phaser.CompilerPhase
+import org.jetbrains.kotlin.backend.common.phaser.PerformByIrFilePhase
 import org.jetbrains.kotlin.backend.common.phaser.PhaseConfig
+import org.jetbrains.kotlin.backend.common.phaser.createSimpleNamedCompilerPhase
 import org.jetbrains.kotlin.backend.common.phaser.invokeToplevel
 import org.jetbrains.kotlin.backend.common.serialization.DescriptorByIdSignatureFinderImpl
+import org.jetbrains.kotlin.backend.jvm.codegen.ClassCodegen
 import org.jetbrains.kotlin.backend.jvm.codegen.EnumEntriesIntrinsicMappingsCacheImpl
 import org.jetbrains.kotlin.backend.jvm.codegen.JvmIrIntrinsicExtension
 import org.jetbrains.kotlin.backend.jvm.intrinsics.IrIntrinsicMethods
@@ -37,6 +40,7 @@ import org.jetbrains.kotlin.ir.ObsoleteDescriptorBasedAPI
 import org.jetbrains.kotlin.ir.backend.jvm.serialization.JvmDescriptorMangler
 import org.jetbrains.kotlin.ir.backend.jvm.serialization.JvmIrLinker
 import org.jetbrains.kotlin.ir.builders.TranslationPluginContext
+import org.jetbrains.kotlin.ir.declarations.IrClass
 import org.jetbrains.kotlin.ir.declarations.IrFile
 import org.jetbrains.kotlin.ir.declarations.IrModuleFragment
 import org.jetbrains.kotlin.ir.declarations.impl.IrFactoryImpl
@@ -370,7 +374,31 @@ open class JvmIrCodegenFactory(
         if (hasErrors()) return
 
         notifyCodegenStart()
-        jvmCodegenPhases.invokeToplevel(PhaseConfig(), context, module)
+
+        // Generate multifile facades first, to compute and store JVM signatures of const properties which are later used
+        // when serializing metadata in the multifile parts.
+        // TODO: consider dividing codegen itself into separate phases (bytecode generation, metadata serialization) to avoid this
+        for (generateMultifileFacades in listOf(true, false)) {
+            val codegen = createSimpleNamedCompilerPhase(
+                "Codegen",
+                outputIfNotEnabled = { _, _, _, it -> it },
+                op = { context: JvmBackendContext, file: IrFile ->
+                    val isMultifileFacade = file.fileEntry is MultifileFacadeFileEntry
+                    if (isMultifileFacade == generateMultifileFacades) {
+                        for (loweredClass in file.declarations) {
+                            if (loweredClass !is IrClass) {
+                                throw AssertionError("File-level declaration should be IrClass after JvmLower: " + loweredClass.render())
+                            }
+                            ClassCodegen.getOrCreate(loweredClass, context).generate()
+                        }
+                    }
+                    file
+                }
+            )
+            PerformByIrFilePhase(listOf(codegen), supportParallel = true).invokeToplevel(PhaseConfig(), context, module)
+        }
+
+        context.enumEntriesIntrinsicMappingsCache.generateMappingsClasses()
 
         if (hasErrors()) return
         // TODO: split classes into groups connected by inline calls; call this after every group
