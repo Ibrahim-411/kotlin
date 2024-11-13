@@ -18,11 +18,13 @@ package org.jetbrains.kotlin.backend.common
 
 import org.jetbrains.kotlin.backend.common.ir.Ir
 import org.jetbrains.kotlin.backend.common.ir.SharedVariablesManager
+import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.ir.IrBuiltIns
 import org.jetbrains.kotlin.ir.declarations.IrFactory
 import org.jetbrains.kotlin.ir.types.IrTypeSystemContext
 
 interface BackendContext {
+    val configuration: CompilerConfiguration
     val ir: Ir<CommonBackendContext>
     val irBuiltIns: IrBuiltIns
     val typeSystem: IrTypeSystemContext
