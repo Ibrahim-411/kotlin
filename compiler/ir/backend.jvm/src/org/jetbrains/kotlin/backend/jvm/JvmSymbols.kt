@@ -857,10 +857,14 @@ class JvmSymbols(
     }
 
     val nonGenericToArray: IrSimpleFunctionSymbol =
-        collectionToArrayClass.functions.single { it.owner.name.asString() == "toArray" && it.owner.valueParameters.size == 1 }
+        collectionToArrayClass.functions.single {
+            it.owner.name.asString() == "toArray" && it.owner.hasShape(dispatchReceiver = true, regularParameters = 1)
+        }
 
     val genericToArray: IrSimpleFunctionSymbol =
-        collectionToArrayClass.functions.single { it.owner.name.asString() == "toArray" && it.owner.valueParameters.size == 2 }
+        collectionToArrayClass.functions.single {
+            it.owner.name.asString() == "toArray"  && it.owner.hasShape(dispatchReceiver = true, regularParameters = 2)
+        }
 
     val jvmName: IrClassSymbol = createClass(FqName("kotlin.jvm.JvmName"), ClassKind.ANNOTATION_CLASS) { klass ->
         klass.addConstructor().apply {
