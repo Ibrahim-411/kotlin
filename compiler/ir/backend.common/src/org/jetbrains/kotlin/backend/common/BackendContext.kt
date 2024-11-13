@@ -27,7 +27,6 @@ interface BackendContext {
     val configuration: CompilerConfiguration
     val ir: Ir<CommonBackendContext>
     val irBuiltIns: IrBuiltIns
-    val typeSystem: IrTypeSystemContext
     val sharedVariablesManager: SharedVariablesManager
     val irFactory: IrFactory
 }

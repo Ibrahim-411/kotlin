@@ -6,6 +6,7 @@
 package org.jetbrains.kotlin.backend.common.lower
 
 import org.jetbrains.kotlin.backend.common.BackendContext
+import org.jetbrains.kotlin.backend.common.CommonBackendContext
 import org.jetbrains.kotlin.backend.common.FileLoweringPass
 import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -66,7 +67,7 @@ open class AnnotationImplementationLowering(
     }
 }
 
-abstract class AnnotationImplementationTransformer(val context: BackendContext, val irFile: IrFile?) :
+abstract class AnnotationImplementationTransformer(val context: CommonBackendContext, val irFile: IrFile?) :
     IrElementTransformerVoidWithContext() {
     internal val implementations: MutableMap<IrClass, IrClass> = mutableMapOf()
 
