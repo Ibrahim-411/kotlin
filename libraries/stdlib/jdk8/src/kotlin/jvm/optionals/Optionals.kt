@@ -10,6 +10,8 @@ import kotlin.contracts.*
 
 /**
  * Returns this [Optional]'s value if [present][Optional.isPresent], or otherwise `null`.
+ *
+ * @sample samples.optionals.Optionals.getOrNull
  */
 @SinceKotlin("1.8")
 @WasExperimental(ExperimentalStdlibApi::class)
@@ -17,6 +19,8 @@ public fun <T : Any> Optional<T>.getOrNull(): T? = orElse(null)
 
 /**
  * Returns this [Optional]'s value if [present][Optional.isPresent], or otherwise [defaultValue].
+ *
+ * @sample samples.optionals.Optionals.getOrDefault
  */
 @SinceKotlin("1.8")
 @WasExperimental(ExperimentalStdlibApi::class)
@@ -24,6 +28,8 @@ public fun <T> Optional<out T & Any>.getOrDefault(defaultValue: T): T = if (isPr
 
 /**
  * Returns this [Optional]'s value if [present][Optional.isPresent], or otherwise the result of the [defaultValue] function.
+ *
+ * @sample samples.optionals.Optionals.getOrElse
  */
 @SinceKotlin("1.8")
 @WasExperimental(ExperimentalStdlibApi::class)
