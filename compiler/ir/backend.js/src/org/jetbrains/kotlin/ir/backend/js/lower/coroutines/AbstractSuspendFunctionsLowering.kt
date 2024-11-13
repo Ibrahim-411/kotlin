@@ -578,5 +578,5 @@ fun getSuspendFunctionKind(
 // Suppress since it is used in native
 @Suppress("MemberVisibilityCanBePrivate")
 fun IrCall.isReturnIfSuspendedCall(context: JsCommonBackendContext) =
-    symbol.owner.run { fqNameWhenAvailable == context.internalPackageFqn.child(Name.identifier("returnIfSuspended")) }
+    symbol == context.ir.symbols.returnIfSuspended
 
