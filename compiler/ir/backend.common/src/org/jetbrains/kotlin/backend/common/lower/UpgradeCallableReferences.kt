@@ -111,6 +111,14 @@ open class UpgradeCallableReferences(
             return visitElement(declaration, data) as IrFile
         }
 
+        override fun visitCall(expression: IrCall, data: IrDeclarationParent): IrElement {
+            return when (expression.symbol.owner.name.asString()) {
+                "<jvm-indy-lambda-metafactory>" -> expression
+                "<signature-string>" -> expression
+                else -> super.visitCall(expression, data)
+            }
+        }
+
         private fun IrType.arrayDepth(): Int {
             if (this !is IrSimpleType) return 0
             return when (classOrNull) {
@@ -140,7 +148,10 @@ open class UpgradeCallableReferences(
             if (origin !in blockReferenceOrigins) {
                 return super.visitBlock(expression, data)
             }
-            require(expression.statements.size == 2)
+            if (expression.statements.size != 2 || expression.statements[0] !is IrSimpleFunction) {
+                // TODO: temp for jvm
+                return super.visitBlock(expression, data)
+            }
             val function = expression.statements[0] as IrSimpleFunction
             val (reference, expressionType) = when (val ref = expression.statements[1]) {
                 is IrTypeOperatorCall -> {
@@ -148,10 +159,18 @@ open class UpgradeCallableReferences(
                     ref.argument as IrFunctionReference to ref.typeOperand
                 }
                 is IrFunctionReference -> ref to ref.type
-                else -> shouldNotBeCalled()
+                else -> {
+                    // TODO: temp for jvm
+                    return super.visitBlock(expression, data)
+                }
             }
             function.transformChildren(this, function)
             reference.transformChildren(this, data)
+
+            // TODO: temp for jvm
+            if (function.origin == LoweredDeclarationOrigins.INLINE_LAMBDA) {
+                return expression
+            }
             val isRestrictedSuspension = function.isRestrictedSuspensionFunction()
             function.flattenParameters()
             val (boundParameters, unboundParameters) = function.parameters.partition { reference.arguments[it.indexInParameters] != null }
