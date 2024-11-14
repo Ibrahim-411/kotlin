@@ -36,8 +36,16 @@ class Optionals {
     fun getOrElse() {
         val user = Optional.of("Vlad Tepes")
         val stranger = Optional.empty<String>()
-        assertPrints(user.getOrElse { "Anonymous" }, "Vlad Tepes")
-        assertPrints(stranger.getOrElse { "Anonymous" }, "Anonymous")
+        val username = user.getOrElse {
+            println("This block is never called, optional has some value")
+            "Anonymous"
+        }
+        assertPrints(username, "Vlad Tepes")
+        val anonymousUsername = stranger.getOrElse {
+            println("Computing anonymous username")
+            "Anonymous"
+        }
+        assertPrints(anonymousUsername, "Anonymous")
     }
 
     @Sample
