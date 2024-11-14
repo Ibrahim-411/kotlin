@@ -6,7 +6,10 @@
 package org.jetbrains.kotlin.analysis.test.framework
 
 import com.intellij.openapi.Disposable
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.WriteAction
 import com.intellij.openapi.util.Disposer
+import org.jetbrains.kotlin.test.testFramework.runWriteAction
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
@@ -22,7 +25,15 @@ abstract class TestWithDisposable {
 
     @AfterEach
     fun disposeDisposable() {
-        _disposable?.let { Disposer.dispose(it) }
+        _disposable?.let {
+            if (ApplicationManager.getApplication() != null) {
+                runWriteAction {
+                    Disposer.dispose(it)
+                }
+            } else {
+                Disposer.dispose(it)
+            }
+        }
         _disposable = null
     }
 }

@@ -16,6 +16,7 @@
 
 package org.jetbrains.kotlin.jvm.repl
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.util.Disposer
 import org.jetbrains.kotlin.cli.common.config.addKotlinSourceRoot
 import org.jetbrains.kotlin.cli.common.messages.MessageRenderer
@@ -39,6 +40,7 @@ import org.jetbrains.kotlin.test.KotlinTestUtils
 import org.jetbrains.kotlin.test.TestJdkKind
 import org.jetbrains.kotlin.test.testFramework.KtUsefulTestCase
 import org.jetbrains.kotlin.test.testFramework.resetApplicationToNull
+import org.jetbrains.kotlin.test.testFramework.runWriteAction
 import org.junit.Assert
 import java.io.File
 
@@ -69,7 +71,13 @@ class ReplCompilerJava8Test : KtUsefulTestCase() {
             val res = KotlinToJVMBytecodeCompiler.compileBunchOfSources(environment)
             Assert.assertTrue(res)
         } finally {
-            Disposer.dispose(disposable)
+            if (ApplicationManager.getApplication() != null) {
+                runWriteAction {
+                    Disposer.dispose(disposable)
+                }
+            } else {
+                Disposer.dispose(disposable)
+            }
             resetApplicationToNull()
         }
     }
