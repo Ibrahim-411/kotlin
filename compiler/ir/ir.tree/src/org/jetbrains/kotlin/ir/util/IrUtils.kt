@@ -176,7 +176,7 @@ fun IrExpression.coerceToUnit(builtins: IrBuiltIns): IrExpression {
 }
 
 fun IrExpression.coerceToUnitIfNeeded(valueType: IrType, irBuiltIns: IrBuiltIns): IrExpression {
-    return if (valueType.isUnit())
+    return if (valueType.isUnit() || valueType.isNothing())
         this
     else
         IrTypeOperatorCallImpl(
