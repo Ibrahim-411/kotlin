@@ -124,13 +124,8 @@ public expect class AtomicIntArray {
  */
 @SinceKotlin("2.1")
 @ExperimentalStdlibApi
-public inline fun AtomicIntArray(size: Int, init: (Int) -> Int): AtomicIntArray {
-    val inner = IntArray(size)
-    for (index in 0 until size) {
-        inner[index] = init(index)
-    }
-    return AtomicIntArray(inner)
-}
+public inline fun AtomicIntArray(size: Int, init: (Int) -> Int): AtomicIntArray =
+    AtomicIntArray(IntArray(size) { init(it) })
 
 /**
  * Atomically increments the element at the given [index] by one and returns the old value of the element.
@@ -282,13 +277,8 @@ public expect class AtomicLongArray {
  */
 @SinceKotlin("2.1")
 @ExperimentalStdlibApi
-public inline fun AtomicLongArray(size: Int, init: (Int) -> Long): AtomicLongArray {
-    val inner = LongArray(size)
-    for (index in 0 until size) {
-        inner[index] = init(index)
-    }
-    return AtomicLongArray(inner)
-}
+public inline fun AtomicLongArray(size: Int, init: (Int) -> Long): AtomicLongArray =
+    AtomicLongArray(LongArray(size) { init(it) })
 
 /**
  * Atomically increments the element at the given [index] by one and returns the old value of the element.
@@ -422,10 +412,5 @@ public expect class AtomicArray<T> {
 @SinceKotlin("2.1")
 @ExperimentalStdlibApi
 @Suppress("UNCHECKED_CAST")
-public inline fun <reified T> AtomicArray(size: Int, init: (Int) -> T): AtomicArray<T> {
-    val inner = arrayOfNulls<T>(size)
-    for (index in 0 until size) {
-        inner[index] = init(index)
-    }
-    return AtomicArray(inner as Array<T>)
-}
+public inline fun <reified T> AtomicArray(size: Int, init: (Int) -> T): AtomicArray<T> =
+    AtomicArray(Array(size) { init(it) })
