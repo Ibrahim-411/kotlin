@@ -31378,6 +31378,46 @@ public class IrBlackBoxCodegenTestGenerated extends AbstractIrBlackBoxCodegenTes
     }
 
     @Nested
+    @TestMetadata("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed")
+    @TestDataPath("$PROJECT_ROOT")
+    public class JvmExposeBoxed {
+      @Test
+      public void testAllFilesPresentInJvmExposeBoxed() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM_IR, true);
+      }
+
+      @Test
+      @TestMetadata("globalReturn.kt")
+      public void testGlobalReturn() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/globalReturn.kt");
+      }
+
+      @Test
+      @TestMetadata("initBlock.kt")
+      public void testInitBlock() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/initBlock.kt");
+      }
+
+      @Test
+      @TestMetadata("method.kt")
+      public void testMethod() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/method.kt");
+      }
+
+      @Test
+      @TestMetadata("methodReturn.kt")
+      public void testMethodReturn() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/methodReturn.kt");
+      }
+
+      @Test
+      @TestMetadata("simple.kt")
+      public void testSimple() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/simple.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("compiler/testData/codegen/box/inlineClasses/propertyDelegation")
     @TestDataPath("$PROJECT_ROOT")
     public class PropertyDelegation {

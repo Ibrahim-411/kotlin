@@ -51,6 +51,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 import org.jetbrains.kotlin.load.java.JavaDescriptorVisibilities
 import org.jetbrains.kotlin.load.java.JvmAbi
+import org.jetbrains.kotlin.load.java.JvmAnnotationNames
 import org.jetbrains.kotlin.load.kotlin.FacadeClassSource
 import org.jetbrains.kotlin.load.kotlin.JvmPackagePartSource
 import org.jetbrains.kotlin.metadata.jvm.deserialization.JvmProtoBufUtil
@@ -61,6 +62,7 @@ import org.jetbrains.kotlin.name.JvmStandardClassIds.JVM_DEFAULT_WITH_COMPATIBIL
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.resolve.DescriptorUtils
+import org.jetbrains.kotlin.resolve.JVM_EXPOSE_BOXED_ANNOTATION_FQ_NAME
 import org.jetbrains.kotlin.resolve.jvm.AsmTypes
 import org.jetbrains.kotlin.resolve.multiplatform.OptionalAnnotationUtil
 import org.jetbrains.kotlin.resolve.source.PsiSourceElement
@@ -70,8 +72,10 @@ import org.jetbrains.org.objectweb.asm.commons.Method
 import java.io.File
 
 fun IrDeclaration.getJvmNameFromAnnotation(): String? {
-    // TODO lower @JvmName?
-    val const = getAnnotation(DescriptorUtils.JVM_NAME)?.getValueArgument(0) as? IrConst ?: return null
+    // TODO lower @JvmName and @JvmExposeBoxed?
+    val const = getAnnotation(DescriptorUtils.JVM_NAME)?.getValueArgument(0) as? IrConst
+        ?: getJvmNameFromJvmExposeBoxedAnnotation()
+        ?: return null
     val value = const.value as? String ?: return null
     return when (origin) {
         IrDeclarationOrigin.FUNCTION_FOR_DEFAULT_PARAMETER -> "$value\$default"
@@ -79,6 +83,12 @@ fun IrDeclaration.getJvmNameFromAnnotation(): String? {
         JvmLoweredDeclarationOrigin.FOR_INLINE_STATE_MACHINE_TEMPLATE_CAPTURES_CROSSINLINE -> "$value$FOR_INLINE_SUFFIX"
         else -> value
     }
+}
+
+private fun IrDeclaration.getJvmNameFromJvmExposeBoxedAnnotation(): IrConst? {
+    // @JvmExposeBoxed should have no effect on not exposed functions
+    if (origin != JvmLoweredDeclarationOrigin.FUNCTION_WITH_EXPOSED_INLINE_CLASS) return null
+    return getAnnotation(JVM_EXPOSE_BOXED_ANNOTATION_FQ_NAME)?.getValueArgument(0) as? IrConst
 }
 
 fun IrFunction.isSimpleFunctionCompiledToJvmDefault(jvmDefaultMode: JvmDefaultMode): Boolean {
@@ -258,6 +268,22 @@ val IrDeclaration.isStaticInlineClassReplacement: Boolean
 val IrDeclaration.isStaticMultiFieldValueClassReplacement: Boolean
     get() = origin == JvmLoweredDeclarationOrigin.STATIC_MULTI_FIELD_VALUE_CLASS_REPLACEMENT
             || origin == JvmLoweredDeclarationOrigin.STATIC_MULTI_FIELD_VALUE_CLASS_CONSTRUCTOR
+
+fun IrDeclaration.shouldBeExposedByAnnotation(): Boolean {
+    val annotation = findJvmExposeBoxedAnnotation() ?: return false
+    // Second argument tells us, whether to expose the declaration
+    // val expose: Boolean = true
+    return annotation.arguments.size < 2 || (annotation.arguments[1]?.isTrueConst() ?: true)
+}
+
+private fun IrDeclaration.findJvmExposeBoxedAnnotation(): IrConstructorCall? {
+    var cursor: IrDeclaration? = this
+    while (cursor != null) {
+        cursor.getAnnotation(JVM_EXPOSE_BOXED_ANNOTATION_FQ_NAME)?.let { return it }
+        cursor = cursor.parent as? IrDeclaration
+    }
+    return null
+}
 
 val IrDeclaration.isStaticValueClassReplacement: Boolean
     get() = isStaticMultiFieldValueClassReplacement || isStaticInlineClassReplacement

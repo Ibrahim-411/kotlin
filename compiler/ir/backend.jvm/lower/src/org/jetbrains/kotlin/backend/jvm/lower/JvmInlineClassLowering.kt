@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.backend.common.lower.loops.ForLoopsLowering
 import org.jetbrains.kotlin.backend.common.phaser.PhaseDescription
 import org.jetbrains.kotlin.backend.jvm.*
 import org.jetbrains.kotlin.backend.jvm.ir.erasedUpperBound
+import org.jetbrains.kotlin.backend.jvm.ir.shouldBeExposedByAnnotation
 import org.jetbrains.kotlin.builtins.StandardNames
 import org.jetbrains.kotlin.config.ApiVersion
 import org.jetbrains.kotlin.descriptors.DescriptorVisibilities
@@ -18,6 +19,7 @@ import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.UNDEFINED_OFFSET
 import org.jetbrains.kotlin.ir.builders.*
 import org.jetbrains.kotlin.ir.builders.declarations.addConstructor
+import org.jetbrains.kotlin.ir.builders.declarations.addValueParameter
 import org.jetbrains.kotlin.ir.builders.declarations.buildFun
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
@@ -65,6 +67,9 @@ internal class JvmInlineClassLowering(context: JvmBackendContext) : JvmValueClas
         context.irFactory.buildFun {
             updateFrom(source)
             name = mangledName
+            if (source.shouldBeExposedByAnnotation()) {
+                origin = JvmLoweredDeclarationOrigin.FUNCTION_WITH_EXPOSED_INLINE_CLASS
+            }
             returnType = source.returnType
         }.apply {
             copyParameterDeclarationsFrom(source)
@@ -431,7 +436,7 @@ internal class JvmInlineClassLowering(context: JvmBackendContext) : JvmValueClas
 
     private fun buildPrimaryInlineClassConstructor(valueClass: IrClass, irConstructor: IrConstructor) {
         // Add the default primary constructor
-        valueClass.addConstructor {
+        val primaryConstructor = valueClass.addConstructor {
             updateFrom(irConstructor)
             visibility = DescriptorVisibilities.PRIVATE
             origin = JvmLoweredDeclarationOrigin.SYNTHETIC_INLINE_CLASS_MEMBER
@@ -440,6 +445,13 @@ internal class JvmInlineClassLowering(context: JvmBackendContext) : JvmValueClas
             // Don't create a default argument stub for the primary constructor
             irConstructor.valueParameters.forEach { it.defaultValue = null }
             copyParameterDeclarationsFrom(irConstructor)
+            if (irConstructor.shouldBeExposedByAnnotation()) {
+                addValueParameter {
+                    origin = JvmLoweredDeclarationOrigin.INLINE_CLASS_CONSTRUCTOR_SYNTHETIC_PARAMETER
+                    name = Name.identifier("\$null")
+                    type = context.irBuiltIns.nothingNType
+                }
+            }
             annotations = irConstructor.annotations
             body = context.createIrBuilder(this.symbol).irBlockBody(this) {
                 +irDelegatingConstructorCall(context.irBuiltIns.anyClass.owner.constructors.single())
@@ -473,6 +485,34 @@ internal class JvmInlineClassLowering(context: JvmBackendContext) : JvmValueClas
 
         valueClass.declarations.removeAll(initBlocks)
         valueClass.declarations += function
+
+        // Add constructor, which is exposed to Java
+        if (irConstructor.shouldBeExposedByAnnotation()) {
+            valueClass.addConstructor {
+                updateFrom(irConstructor)
+                isPrimary = false
+                origin = JvmLoweredDeclarationOrigin.EXPOSED_INLINE_CLASS_CONSTRUCTOR
+                returnType = irConstructor.returnType
+            }.apply {
+                // Don't create a default argument stub for the exposed constructor
+                irConstructor.valueParameters.forEach { it.defaultValue = null }
+                copyParameterDeclarationsFrom(irConstructor)
+                annotations = irConstructor.annotations
+                body = context.createIrBuilder(this.symbol).irBlockBody(this) {
+                    // Call private constructor
+                    +irDelegatingConstructorCall(primaryConstructor).apply {
+                        passTypeArgumentsFrom(primaryConstructor)
+                        putValueArgument(0, irGet(valueParameters[0]))
+                        putValueArgument(1, irNull())
+                    }
+                    // Call constructor-impl to run init blocks
+                    +irCall(function).apply {
+                        passTypeArgumentsFrom(primaryConstructor)
+                        putValueArgument(0, irGet(valueParameters[0]))
+                    }
+                }
+            }
+        }
     }
 
     private fun buildBoxFunction(valueClass: IrClass) {
@@ -482,6 +522,9 @@ internal class JvmInlineClassLowering(context: JvmBackendContext) : JvmValueClas
                 irCall(valueClass.primaryConstructor!!.symbol).apply {
                     passTypeArgumentsFrom(function)
                     putValueArgument(0, irGet(function.valueParameters[0]))
+                    if (valueClass.primaryConstructor?.shouldBeExposedByAnnotation() == true) {
+                        putValueArgument(1, irNull())
+                    }
                 }
             )
         }

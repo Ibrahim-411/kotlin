@@ -39,6 +39,7 @@ object JvmDeclarationCheckers : DeclarationCheckers() {
         get() = setOf(
             FirJvmRecordChecker,
             FirJvmInlineApplicabilityChecker,
+            FirJvmExposeBoxedChecker,
             FirInlineBodyRegularClassChecker,
         )
 

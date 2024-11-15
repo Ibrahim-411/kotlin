@@ -26420,6 +26420,44 @@ public class LightAnalysisModeTestGenerated extends AbstractLightAnalysisModeTes
       }
     }
 
+    @TestMetadata("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed")
+    @TestDataPath("$PROJECT_ROOT")
+    @RunWith(JUnit3RunnerWithInners.class)
+    public static class JvmExposeBoxed extends AbstractLightAnalysisModeTest {
+      @TestMetadata("globalReturn.kt")
+      public void ignoreGlobalReturn() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/globalReturn.kt");
+      }
+
+      @TestMetadata("initBlock.kt")
+      public void ignoreInitBlock() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/initBlock.kt");
+      }
+
+      @TestMetadata("method.kt")
+      public void ignoreMethod() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/method.kt");
+      }
+
+      @TestMetadata("methodReturn.kt")
+      public void ignoreMethodReturn() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/methodReturn.kt");
+      }
+
+      @TestMetadata("simple.kt")
+      public void ignoreSimple() {
+        runTest("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed/simple.kt");
+      }
+
+      private void runTest(String testDataFilePath) {
+        KotlinTestUtils.runTest(this::doTest, TargetBackend.JVM_IR, testDataFilePath);
+      }
+
+      public void testAllFilesPresentInJvmExposeBoxed() {
+        KtTestUtil.assertAllTestsPresentByMetadataWithExcluded(this.getClass(), new File("compiler/testData/codegen/box/inlineClasses/jvmExposeBoxed"), Pattern.compile("^(.+)\\.kt$"), null, TargetBackend.JVM_IR, true);
+      }
+    }
+
     @TestMetadata("compiler/testData/codegen/box/inlineClasses/propertyDelegation")
     @TestDataPath("$PROJECT_ROOT")
     @RunWith(JUnit3RunnerWithInners.class)

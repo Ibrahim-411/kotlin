@@ -3872,6 +3872,10 @@ sealed interface KaFirDiagnostic<PSI : PsiElement> : KaDiagnosticWithPsi<PSI> {
         override val diagnosticClass get() = JvmInlineWithoutValueClass::class
     }
 
+    interface JvmExposeBoxedWithoutInline : KaFirDiagnostic<KtAnnotationEntry> {
+        override val diagnosticClass get() = JvmExposeBoxedWithoutInline::class
+    }
+
     interface WrongNullabilityForJavaOverride : KaFirDiagnostic<PsiElement> {
         override val diagnosticClass get() = WrongNullabilityForJavaOverride::class
         val override: KaCallableSymbol

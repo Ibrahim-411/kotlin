@@ -4667,6 +4667,11 @@ internal class JvmInlineWithoutValueClassImpl(
     token: KaLifetimeToken,
 ) : KaAbstractFirDiagnostic<PsiElement>(firDiagnostic, token), KaFirDiagnostic.JvmInlineWithoutValueClass
 
+internal class JvmExposeBoxedWithoutInlineImpl(
+    firDiagnostic: KtPsiDiagnostic,
+    token: KaLifetimeToken,
+) : KaAbstractFirDiagnostic<KtAnnotationEntry>(firDiagnostic, token), KaFirDiagnostic.JvmExposeBoxedWithoutInline
+
 internal class WrongNullabilityForJavaOverrideImpl(
     override val override: KaCallableSymbol,
     override val base: KaCallableSymbol,

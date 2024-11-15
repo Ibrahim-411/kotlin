@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.backend.common.IrElementTransformerVoidWithContext
 import org.jetbrains.kotlin.backend.common.pop
 import org.jetbrains.kotlin.backend.common.push
 import org.jetbrains.kotlin.backend.jvm.*
+import org.jetbrains.kotlin.backend.jvm.ir.shouldBeExposedByAnnotation
 import org.jetbrains.kotlin.ir.IrStatement
 import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
@@ -115,8 +116,9 @@ internal abstract class JvmValueClassAbstractLowering(
         replacement.copyAttributes(function)
 
         // Don't create a wrapper for functions which are only used in an unboxed context
-        if (function.overriddenSymbols.isEmpty() || replacement.dispatchReceiverParameter != null)
-            return listOf(replacement)
+        if (!function.shouldBeExposedByAnnotation() &&
+            (function.overriddenSymbols.isEmpty() || replacement.dispatchReceiverParameter != null)
+        ) return listOf(replacement)
 
         val bridgeFunction = createBridgeFunction(function, replacement)
 
@@ -220,9 +222,10 @@ internal abstract class JvmValueClassAbstractLowering(
     }
 
     private fun IrSimpleFunction.signatureRequiresMangling(includeInline: Boolean = true, includeMFVC: Boolean = true) =
-        fullValueParameterList.any { it.type.getRequiresMangling(includeInline, includeMFVC) } ||
-                context.config.functionsWithInlineClassReturnTypesMangled &&
-                returnType.getRequiresMangling(includeInline = includeInline, includeMFVC = false)
+        !shouldBeExposedByAnnotation() &&
+                (fullValueParameterList.any { it.type.getRequiresMangling(includeInline, includeMFVC) } ||
+                        context.config.functionsWithInlineClassReturnTypesMangled &&
+                        returnType.getRequiresMangling(includeInline = includeInline, includeMFVC = false))
 
     protected fun typedArgumentList(function: IrFunction, expression: IrMemberAccessExpression<*>) = listOfNotNull(
         function.dispatchReceiverParameter?.let { it to expression.dispatchReceiver },
