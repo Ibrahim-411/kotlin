@@ -5,7 +5,6 @@
 
 package org.jetbrains.kotlin.gradle.testbase
 
-import com.intellij.util.containers.orNull
 import oshi.SystemInfo
 import java.io.IOException
 import java.lang.ProcessHandle
@@ -13,6 +12,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.listDirectoryEntries
+import kotlin.jvm.optionals.getOrNull
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
@@ -54,7 +54,7 @@ fun awaitKotlinDaemonTermination(
     val daemonProcesses = SystemInfo().operatingSystem.processes.filter { runFilesDirectory.toString() in it.commandLine }
 
     for (daemonProcess in daemonProcesses) {
-        val processHandle = ProcessHandle.of(daemonProcess.processID.toLong()).orNull()
+        val processHandle = ProcessHandle.of(daemonProcess.processID.toLong()).getOrNull()
         // `null` indicates the process has already terminated
         if (processHandle != null) {
             System.err.println("The Kotlin daemon process ${daemonProcess.processID} was not shut down gracefully. Trying to kill it.")
@@ -72,7 +72,7 @@ fun awaitKotlinDaemonTermination(
 
     // we do not expect new daemon processes to be started, so no reason to query running processes again
     for (daemonProcess in daemonProcesses) {
-        val processHandle = ProcessHandle.of(daemonProcess.processID.toLong()).orNull()
+        val processHandle = ProcessHandle.of(daemonProcess.processID.toLong()).getOrNull()
         // `null` indicates the process has already terminated
         if (processHandle != null) {
             System.err.println("The Kotlin daemon process ${daemonProcess.processID} was not shut down gracefully. Killing it forcibly.")
