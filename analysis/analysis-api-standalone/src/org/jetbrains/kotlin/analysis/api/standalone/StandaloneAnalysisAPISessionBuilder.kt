@@ -64,7 +64,6 @@ import kotlin.contracts.contract
 public class StandaloneAnalysisAPISessionBuilder(
     projectDisposable: Disposable,
     unitTestMode: Boolean,
-    classLoader: ClassLoader = MockProject::class.java.classLoader
 ) {
     init {
         // We depend on swing (indirectly through PSI or something), so we want to declare headless mode,
@@ -79,7 +78,6 @@ public class StandaloneAnalysisAPISessionBuilder(
         StandaloneProjectFactory.createProjectEnvironment(
             projectDisposable,
             KotlinCoreApplicationEnvironmentMode.fromUnitTestModeFlag(unitTestMode),
-            classLoader = classLoader
         )
 
     private val serviceRegistrars = listOf(FirStandaloneServiceRegistrar, StandaloneSessionServiceRegistrar)
@@ -87,12 +85,7 @@ public class StandaloneAnalysisAPISessionBuilder(
     init {
         val application = kotlinCoreProjectEnvironment.environment.application
         ApplicationServiceRegistration.registerWithCustomRegistration(application, serviceRegistrars) {
-            // TODO (KT-68186): Passing the class loader explicitly is a workaround for KT-68186.
-            if (this is FirStandaloneServiceRegistrar) {
-                registerApplicationServicesWithCustomClassLoader(application, classLoader)
-            } else {
-                registerApplicationServices(application, data = Unit)
-            }
+            registerApplicationServices(application, data = Unit)
         }
     }
 
@@ -251,7 +244,6 @@ internal object StandaloneSessionServiceRegistrar : AnalysisApiSimpleServiceRegi
 public inline fun buildStandaloneAnalysisAPISession(
     projectDisposable: Disposable = Disposer.newDisposable("StandaloneAnalysisAPISession.project"),
     unitTestMode: Boolean = false,
-    classLoader: ClassLoader = MockProject::class.java.classLoader,
     init: StandaloneAnalysisAPISessionBuilder.() -> Unit,
 ): StandaloneAnalysisAPISession {
     contract {
@@ -260,6 +252,5 @@ public inline fun buildStandaloneAnalysisAPISession(
     return StandaloneAnalysisAPISessionBuilder(
         projectDisposable,
         unitTestMode,
-        classLoader
     ).apply(init).build()
 }
