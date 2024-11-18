@@ -9,10 +9,13 @@ import org.jetbrains.kotlin.analysis.api.KaImplementationDetail
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
+import java.lang.ref.WeakReference
 
-internal class KaFe10NeverRestoringSymbolPointer<T : KaSymbol> : KaSymbolPointer<T>() {
+internal class KaFe10NeverRestoringSymbolPointer<T : KaSymbol>() : KaSymbolPointer<T>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): T? {
+    override fun restoreIfNotCached(analysisSession: KaSession): T? {
         return null
     }
+
+    override var cachedSymbol: WeakReference<T>? = null
 }

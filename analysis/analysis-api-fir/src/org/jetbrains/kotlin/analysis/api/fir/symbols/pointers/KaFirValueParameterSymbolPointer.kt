@@ -13,14 +13,16 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaValueParameterSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
 import org.jetbrains.kotlin.name.Name
+import java.lang.ref.WeakReference
 
 internal class KaFirValueParameterSymbolPointer(
     private val ownerPointer: KaSymbolPointer<KaFunctionSymbol>,
     private val name: Name,
     private val index: Int,
+    override var cachedSymbol: WeakReference<KaValueParameterSymbol>?,
 ) : KaSymbolPointer<KaValueParameterSymbol>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): KaValueParameterSymbol? {
+    override fun restoreIfNotCached(analysisSession: KaSession): KaValueParameterSymbol? {
         require(analysisSession is KaFirSession)
         val ownerSymbol = with(analysisSession) {
             ownerPointer.restoreSymbol()

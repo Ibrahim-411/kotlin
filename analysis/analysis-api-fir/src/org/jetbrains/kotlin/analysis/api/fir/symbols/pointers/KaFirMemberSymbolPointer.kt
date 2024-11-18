@@ -26,7 +26,7 @@ internal abstract class KaFirMemberSymbolPointer<S : KaSymbol>(
     private val isStatic: Boolean = false,
 ) : KaSymbolPointer<S>() {
     @KaImplementationDetail
-    final override fun restoreSymbol(analysisSession: KaSession): S? {
+    final override fun restoreIfNotCached(analysisSession: KaSession): S? {
         require(analysisSession is KaFirSession)
         val scope = with(analysisSession) {
             val ownerSymbol = ownerPointer.restoreSymbol() ?: return null

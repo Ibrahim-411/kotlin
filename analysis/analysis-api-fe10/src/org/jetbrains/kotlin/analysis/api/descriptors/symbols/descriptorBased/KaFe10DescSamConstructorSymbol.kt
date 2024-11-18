@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.resolve.calls.inference.returnTypeOrNothing
 import org.jetbrains.kotlin.resolve.descriptorUtil.isExtension
 import org.jetbrains.kotlin.resolve.sam.SamConstructorDescriptor
 import org.jetbrains.kotlin.resolve.sam.SamTypeAliasConstructorDescriptor
+import java.lang.ref.WeakReference
 
 internal class KaFe10DescSamConstructorSymbol(
     override val descriptor: SamConstructorDescriptor,
@@ -78,7 +79,7 @@ internal class KaFe10DescSamConstructorSymbol(
 
         val classId = descriptor.baseDescriptorForSynthetic.classId
         if (classId != null) {
-            return KaFe10DescSamConstructorSymbolPointer(classId)
+            return KaFe10DescSamConstructorSymbolPointer(classId, WeakReference(this))
         }
 
         return KaFe10NeverRestoringSymbolPointer()

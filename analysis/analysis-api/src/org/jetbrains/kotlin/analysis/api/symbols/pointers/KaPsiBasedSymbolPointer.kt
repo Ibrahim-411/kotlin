@@ -23,15 +23,17 @@ import org.jetbrains.kotlin.psi.KtElement
 import org.jetbrains.kotlin.psi.KtFile
 import org.jetbrains.kotlin.psi.KtObjectLiteralExpression
 import java.lang.ref.SoftReference
+import java.lang.ref.WeakReference
 import kotlin.reflect.KClass
 
 @KaImplementationDetail
 public class KaPsiBasedSymbolPointer<S : KaSymbol> private constructor(
     private val psiPointer: SmartPsiElementPointer<out KtElement>,
     private val expectedClass: KClass<S>,
+    override var cachedSymbol: WeakReference<S>?,
 ) : KaSymbolPointer<S>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): S? {
+    override fun restoreIfNotCached(analysisSession: KaSession): S? {
         val psi = psiPointer.element ?: return null
 
         val symbol: KaSymbol = with(analysisSession) {
@@ -56,7 +58,7 @@ public class KaPsiBasedSymbolPointer<S : KaSymbol> private constructor(
             other.expectedClass == expectedClass &&
             other.psiPointer == psiPointer
 
-    public constructor(psi: KtElement, expectedClass: KClass<S>) : this(createCompatibleSmartPointer(psi), expectedClass)
+    public constructor(psi: KtElement, expectedClass: KClass<S>) : this(createCompatibleSmartPointer(psi), expectedClass, null)
 
     @KaImplementationDetail
     public companion object {

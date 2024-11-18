@@ -12,14 +12,16 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaClassLikeSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
 import org.jetbrains.kotlin.name.ClassId
+import java.lang.ref.WeakReference
 import kotlin.reflect.KClass
 
 internal class KaFirClassLikeSymbolPointer<T : KaClassLikeSymbol>(
     private val classId: ClassId,
     private val expectedClass: KClass<T>,
+    override var cachedSymbol: WeakReference<T>?,
 ) : KaSymbolPointer<T>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): T? {
+    override fun restoreIfNotCached(analysisSession: KaSession): T? {
         require(analysisSession is KaFirSession)
         val classLikeSymbol = analysisSession.firSymbolBuilder.classifierBuilder.buildClassLikeSymbolByClassId(classId) ?: return null
         if (!expectedClass.isInstance(classLikeSymbol)) return null

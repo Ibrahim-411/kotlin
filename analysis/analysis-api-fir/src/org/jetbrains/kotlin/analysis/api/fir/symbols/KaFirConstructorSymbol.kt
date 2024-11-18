@@ -33,6 +33,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.psi.KtConstructor
 import org.jetbrains.kotlin.psi.KtPrimaryConstructor
 import org.jetbrains.kotlin.psi.psiUtil.isExpectDeclaration
+import java.lang.ref.WeakReference
 
 internal class KaFirConstructorSymbol private constructor(
     override val backingPsi: KtConstructor<*>?,
@@ -112,6 +113,7 @@ internal class KaFirConstructorSymbol private constructor(
             analysisSession.createOwnerPointer(this),
             isPrimary,
             FirCallableSignature.createSignature(firSymbol),
+            WeakReference(this)
         )
     }
 

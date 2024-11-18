@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaEnumEntryInitializerSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaPsiBasedSymbolPointer
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
 import org.jetbrains.kotlin.fir.symbols.impl.FirAnonymousObjectSymbol
+import java.lang.ref.WeakReference
 
 internal class KaFirEnumEntryInitializerSymbol(
     firSymbol: FirAnonymousObjectSymbol,
@@ -33,6 +34,6 @@ internal class KaFirEnumEntryInitializerSymbol(
      */
     override fun createPointer(): KaSymbolPointer<KaFirEnumEntryInitializerSymbol> = withValidityAssertion {
         KaPsiBasedSymbolPointer.createForSymbolFromSource<KaFirEnumEntryInitializerSymbol>(this)
-            ?: KaFirEnumEntryInitializerSymbolPointer(analysisSession.createOwnerPointer(this))
+            ?: KaFirEnumEntryInitializerSymbolPointer(analysisSession.createOwnerPointer(this), WeakReference(this))
     }
 }

@@ -1211,7 +1211,10 @@ public abstract interface class org/jetbrains/kotlin/analysis/api/symbols/marker
 
 public abstract class org/jetbrains/kotlin/analysis/api/symbols/pointers/KaSymbolPointer {
 	public fun <init> ()V
+	protected abstract fun getCachedSymbol ()Ljava/lang/ref/WeakReference;
 	public fun pointsToTheSameSymbolAs (Lorg/jetbrains/kotlin/analysis/api/symbols/pointers/KaSymbolPointer;)Z
+	protected abstract fun restoreIfNotCached (Lorg/jetbrains/kotlin/analysis/api/KaSession;)Lorg/jetbrains/kotlin/analysis/api/symbols/KaSymbol;
+	protected abstract fun setCachedSymbol (Ljava/lang/ref/WeakReference;)V
 	public fun toString ()Ljava/lang/String;
 }
 

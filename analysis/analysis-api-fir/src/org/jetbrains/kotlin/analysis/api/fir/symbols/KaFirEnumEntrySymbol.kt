@@ -26,6 +26,7 @@ import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtEnumEntry
 import org.jetbrains.kotlin.psi.psiUtil.isExpectDeclaration
+import java.lang.ref.WeakReference
 
 internal class KaFirEnumEntrySymbol private constructor(
     override val backingPsi: KtEnumEntry?,
@@ -86,7 +87,7 @@ internal class KaFirEnumEntrySymbol private constructor(
 
     override fun createPointer(): KaSymbolPointer<KaEnumEntrySymbol> = withValidityAssertion {
         psiBasedSymbolPointerOfTypeIfSource<KaEnumEntrySymbol>()
-            ?: KaFirEnumEntrySymbolPointer(analysisSession.createOwnerPointer(this), name)
+            ?: KaFirEnumEntrySymbolPointer(analysisSession.createOwnerPointer(this), name, WeakReference(this))
     }
 
     override fun equals(other: Any?): Boolean = psiOrSymbolEquals(other)

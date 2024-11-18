@@ -31,6 +31,7 @@ import org.jetbrains.kotlin.psi.psiUtil.isExpectDeclaration
 import org.jetbrains.kotlin.utils.exceptions.errorWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.requireWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.withPsiEntry
+import java.lang.ref.WeakReference
 
 internal class KaFirPropertyGetterSymbol(
     val owningKaProperty: KaFirKotlinPropertySymbol<KtProperty>,
@@ -132,7 +133,7 @@ internal class KaFirPropertyGetterSymbol(
 
     override fun createPointer(): KaSymbolPointer<KaPropertyGetterSymbol> = withValidityAssertion {
         psiBasedSymbolPointerOfTypeIfSource<KaPropertyGetterSymbol>()
-            ?: KaBasePropertyGetterSymbolPointer(propertySymbolPointer = owningKaProperty.createPointer())
+            ?: KaBasePropertyGetterSymbolPointer(propertySymbolPointer = owningKaProperty.createPointer(), WeakReference(this))
     }
 
     override fun equals(other: Any?): Boolean = psiOrSymbolEquals(other)

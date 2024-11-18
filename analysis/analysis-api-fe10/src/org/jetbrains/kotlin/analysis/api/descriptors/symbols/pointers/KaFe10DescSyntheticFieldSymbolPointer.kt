@@ -17,12 +17,14 @@ import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaPsiBasedSymbolPointe
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
 import org.jetbrains.kotlin.descriptors.PropertyAccessorDescriptor
 import org.jetbrains.kotlin.descriptors.impl.SyntheticFieldDescriptor
+import java.lang.ref.WeakReference
 
 internal class KaFe10DescSyntheticFieldSymbolPointer(
-    private val psiPointer: KaPsiBasedSymbolPointer<KaPropertyAccessorSymbol>
+    private val psiPointer: KaPsiBasedSymbolPointer<KaPropertyAccessorSymbol>,
+    override var cachedSymbol: WeakReference<KaBackingFieldSymbol>?
 ) : KaSymbolPointer<KaBackingFieldSymbol>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): KaBackingFieldSymbol? {
+    override fun restoreIfNotCached(analysisSession: KaSession): KaBackingFieldSymbol? {
         check(analysisSession is KaFe10Session)
         val analysisContext = analysisSession.analysisContext
         val accessorSymbol = psiPointer.restoreSymbol(analysisSession) ?: return null

@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.psiUtil.hasExpectModifier
 import org.jetbrains.kotlin.psi.psiUtil.isExtensionDeclaration
 import org.jetbrains.kotlin.resolve.BindingContext
+import java.lang.ref.WeakReference
 
 internal class KaFe10PsiDefaultPropertySetterSymbol(
     private val propertyPsi: KtProperty,
@@ -106,8 +107,9 @@ internal class KaFe10PsiDefaultPropertySetterSymbol(
         }
 
     override fun createPointer(): KaSymbolPointer<KaPropertySetterSymbol> = withValidityAssertion {
-        KaPsiBasedSymbolPointer.createForSymbolFromPsi<KaPropertySymbol>(propertyPsi)?.let(::KaBasePropertySetterSymbolPointer)
-            ?: KaFe10NeverRestoringSymbolPointer()
+        KaPsiBasedSymbolPointer.createForSymbolFromPsi<KaPropertySymbol>(propertyPsi)?.let {
+            KaBasePropertySetterSymbolPointer(it, WeakReference(this))
+        } ?: KaFe10NeverRestoringSymbolPointer()
     }
 
     override fun equals(other: Any?): Boolean = isEqualTo(other)
@@ -155,7 +157,7 @@ internal class KaFe10PsiDefaultPropertySetterSymbol(
 
         override fun createPointer(): KaSymbolPointer<KaValueParameterSymbol> = withValidityAssertion {
             KaPsiBasedSymbolPointer.createForSymbolFromPsi<KaPropertySymbol>(propertyPsi)?.let {
-                KaBaseValueParameterFromDefaultSetterSymbolPointer(it)
+                KaBaseValueParameterFromDefaultSetterSymbolPointer(it, WeakReference(this))
             } ?: KaFe10NeverRestoringSymbolPointer()
         }
 

@@ -18,13 +18,15 @@ import org.jetbrains.kotlin.descriptors.findClassAcrossModuleDependencies
 import org.jetbrains.kotlin.incremental.components.NoLookupLocation
 import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
+import java.lang.ref.WeakReference
 
 internal class KaFe10DescEnumEntrySymbolPointer(
     private val classId: ClassId,
     private val entryName: Name,
+    override var cachedSymbol: WeakReference<KaEnumEntrySymbol>?,
 ) : KaSymbolPointer<KaEnumEntrySymbol>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): KaEnumEntrySymbol? {
+    override fun restoreIfNotCached(analysisSession: KaSession): KaEnumEntrySymbol? {
         check(analysisSession is KaFe10Session)
         val analysisContext = analysisSession.analysisContext
 

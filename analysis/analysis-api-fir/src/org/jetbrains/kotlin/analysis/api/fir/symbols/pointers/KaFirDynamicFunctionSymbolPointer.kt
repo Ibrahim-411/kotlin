@@ -13,12 +13,14 @@ import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
 import org.jetbrains.kotlin.fir.scopes.getFunctions
 import org.jetbrains.kotlin.fir.scopes.impl.dynamicMembersStorage
 import org.jetbrains.kotlin.name.Name
+import java.lang.ref.WeakReference
 
 internal class KaFirDynamicFunctionSymbolPointer(
     private val name: Name,
+    override var cachedSymbol: WeakReference<KaNamedFunctionSymbol>?,
 ) : KaSymbolPointer<KaNamedFunctionSymbol>() {
 
-    override fun restoreSymbol(analysisSession: KaSession): KaNamedFunctionSymbol {
+    override fun restoreIfNotCached(analysisSession: KaSession): KaNamedFunctionSymbol {
         require(analysisSession is KaFirSession)
         val dynamicScope =
             analysisSession.firSession.dynamicMembersStorage.getDynamicScopeFor(analysisSession.getScopeSessionFor(analysisSession.firSession))

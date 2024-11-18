@@ -39,6 +39,7 @@ import org.jetbrains.kotlin.name.CallableId
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.psiUtil.isExtensionDeclaration
 import org.jetbrains.kotlin.resolve.BindingContext
+import java.lang.ref.WeakReference
 
 internal class KaFe10PsiDefaultPropertyGetterSymbol(
     private val propertyPsi: KtProperty,
@@ -97,8 +98,9 @@ internal class KaFe10PsiDefaultPropertyGetterSymbol(
         }
 
     override fun createPointer(): KaSymbolPointer<KaPropertyGetterSymbol> = withValidityAssertion {
-        KaPsiBasedSymbolPointer.createForSymbolFromPsi<KaPropertySymbol>(propertyPsi)?.let(::KaBasePropertyGetterSymbolPointer)
-            ?: KaFe10NeverRestoringSymbolPointer()
+        KaPsiBasedSymbolPointer.createForSymbolFromPsi<KaPropertySymbol>(propertyPsi)?.let {
+            KaBasePropertyGetterSymbolPointer(it, WeakReference(this))
+        } ?: KaFe10NeverRestoringSymbolPointer()
     }
 
     override fun equals(other: Any?): Boolean = isEqualTo(other)

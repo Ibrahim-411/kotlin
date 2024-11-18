@@ -12,12 +12,14 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaValueParameterSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaPsiBasedSymbolPointer
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
+import java.lang.ref.WeakReference
 
 internal class KaFe10PsiDefaultSetterParameterSymbolPointer(
     private val propertySymbolPointer: KaPsiBasedSymbolPointer<KaPropertySetterSymbol>,
+    override var cachedSymbol: WeakReference<KaValueParameterSymbol>?,
 ) : KaSymbolPointer<KaValueParameterSymbol>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): KaValueParameterSymbol? {
+    override fun restoreIfNotCached(analysisSession: KaSession): KaValueParameterSymbol? {
         val property = with(analysisSession) { propertySymbolPointer.restoreSymbol() }
         return property?.parameter
     }

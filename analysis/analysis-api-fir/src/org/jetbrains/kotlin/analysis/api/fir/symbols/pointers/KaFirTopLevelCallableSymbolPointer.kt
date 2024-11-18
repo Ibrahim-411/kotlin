@@ -20,7 +20,7 @@ internal abstract class KaTopLevelCallableSymbolPointer<S : KaCallableSymbol>(
     private val callableId: CallableId
 ) : KaSymbolPointer<S>() {
     @KaImplementationDetail
-    final override fun restoreSymbol(analysisSession: KaSession): S? {
+    final override fun restoreIfNotCached(analysisSession: KaSession): S? {
         require(analysisSession is KaFirSession)
         val candidates = analysisSession.getCallableSymbols(callableId)
         if (candidates.isEmpty()) return null

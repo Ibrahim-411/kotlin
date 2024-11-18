@@ -34,6 +34,7 @@ import org.jetbrains.kotlin.name.ClassId
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.kotlin.psi.psiUtil.isExpectDeclaration
+import java.lang.ref.WeakReference
 
 internal class KaFirTypeAliasSymbol private constructor(
     override val backingPsi: KtTypeAlias?,
@@ -101,7 +102,11 @@ internal class KaFirTypeAliasSymbol private constructor(
             KaSymbolLocation.LOCAL ->
                 throw KaCannotCreateSymbolPointerForLocalLibraryDeclarationException(classId?.asString() ?: name.asString())
 
-            KaSymbolLocation.CLASS, KaSymbolLocation.TOP_LEVEL -> KaFirClassLikeSymbolPointer(classId!!, KaTypeAliasSymbol::class)
+            KaSymbolLocation.CLASS, KaSymbolLocation.TOP_LEVEL -> KaFirClassLikeSymbolPointer(
+                classId!!,
+                KaTypeAliasSymbol::class,
+                WeakReference(this)
+            )
             else -> throw KaUnsupportedSymbolLocation(this::class, symbolKind)
         }
     }

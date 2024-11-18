@@ -9,6 +9,7 @@ import org.jetbrains.kotlin.analysis.api.KaImplementationDetail
 import org.jetbrains.kotlin.analysis.api.KaSession
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.utils.relfection.renderAsDataClassToString
+import java.lang.ref.WeakReference
 
 /**
  * [KaSymbol] is valid only during read action it was created in
@@ -32,12 +33,28 @@ public abstract class KaSymbolPointer<out S : KaSymbol> {
      * Consider using [org.jetbrains.kotlin.analysis.api.KaSession.restoreSymbol]
      */
     @KaImplementationDetail
-    public abstract fun restoreSymbol(analysisSession: KaSession): S?
+    public fun restoreSymbol(analysisSession: KaSession): S? {
+        val cached = cachedSymbol?.get()
+        val lifetimeToken = cached?.token
+        if (lifetimeToken?.isValid() == true && lifetimeToken.isAccessible()) {
+            return cached
+        } else {
+            cachedSymbol = null
+        }
+
+        return restoreIfNotCached(analysisSession)?.also {
+            cachedSymbol = WeakReference(it)
+        }
+    }
+
+    protected abstract fun restoreIfNotCached(analysisSession: KaSession): S?
 
     /**
      * @return **true** if [other] pointer can be restored to the same symbol. The operation is symmetric and transitive.
      */
     public open fun pointsToTheSameSymbolAs(other: KaSymbolPointer<KaSymbol>): Boolean = this === other
+
+    protected abstract var cachedSymbol: WeakReference<@UnsafeVariance S>?
 
     override fun toString(): String = renderAsDataClassToString()
 }
@@ -45,7 +62,8 @@ public abstract class KaSymbolPointer<out S : KaSymbol> {
 public inline fun <S : KaSymbol> symbolPointer(crossinline getSymbol: (KaSession) -> S?): KaSymbolPointer<S> =
     object : KaSymbolPointer<S>() {
         @KaImplementationDetail
-        override fun restoreSymbol(analysisSession: KaSession): S? = getSymbol(analysisSession)
+        override fun restoreIfNotCached(analysisSession: KaSession): S? = getSymbol(analysisSession)
+        override var cachedSymbol: WeakReference<S>? = null
     }
 
 public inline fun <T : KaSymbol, R : KaSymbol> symbolPointerDelegator(
@@ -53,8 +71,10 @@ public inline fun <T : KaSymbol, R : KaSymbol> symbolPointerDelegator(
     crossinline transformer: KaSession.(T) -> R?,
 ): KaSymbolPointer<R> = object : KaSymbolPointer<R>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): R? = with(analysisSession) {
+    override fun restoreIfNotCached(analysisSession: KaSession): R? = with(analysisSession) {
         val symbol = pointer.restoreSymbol() ?: return null
         transformer(this, symbol)
     }
+
+    override var cachedSymbol: WeakReference<R>? = null
 }

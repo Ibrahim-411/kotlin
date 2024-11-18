@@ -13,10 +13,14 @@ import org.jetbrains.kotlin.analysis.api.symbols.KaPackageSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.KaSymbol
 import org.jetbrains.kotlin.analysis.api.symbols.pointers.KaSymbolPointer
 import org.jetbrains.kotlin.name.FqName
+import java.lang.ref.WeakReference
 
-internal class KaFe10PackageSymbolPointer(private val packageName: FqName) : KaSymbolPointer<KaPackageSymbol>() {
+internal class KaFe10PackageSymbolPointer(
+    private val packageName: FqName,
+    override var cachedSymbol: WeakReference<KaPackageSymbol>?
+) : KaSymbolPointer<KaPackageSymbol>() {
     @KaImplementationDetail
-    override fun restoreSymbol(analysisSession: KaSession): KaPackageSymbol {
+    override fun restoreIfNotCached(analysisSession: KaSession): KaPackageSymbol {
         check(analysisSession is KaFe10Session)
         return KaFe10PackageSymbol(packageName, analysisSession.analysisContext)
     }

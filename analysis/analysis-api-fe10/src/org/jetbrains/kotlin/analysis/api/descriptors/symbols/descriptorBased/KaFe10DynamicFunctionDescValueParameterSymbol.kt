@@ -24,6 +24,7 @@ import org.jetbrains.kotlin.descriptors.Visibilities
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.types.createDynamicType
+import java.lang.ref.WeakReference
 
 internal class KaFe10DynamicFunctionDescValueParameterSymbol(
     val owner: KaFe10DescNamedFunctionSymbol,
@@ -68,16 +69,19 @@ internal class KaFe10DynamicFunctionDescValueParameterSymbol(
         get() = withValidityAssertion { createDynamicType(analysisContext.builtIns).toKtType(analysisContext) }
 
     override fun createPointer(): KaSymbolPointer<KaValueParameterSymbol> = withValidityAssertion {
-        Pointer(owner.createPointer())
+        Pointer(owner.createPointer(), WeakReference(this))
     }
 
     override fun equals(other: Any?): Boolean = other is KaFe10DynamicFunctionDescValueParameterSymbol && other.owner == this.owner
     override fun hashCode(): Int = owner.hashCode()
 
 
-    private class Pointer(val ownerPointer: KaSymbolPointer<KaNamedFunctionSymbol>) : KaSymbolPointer<KaValueParameterSymbol>() {
+    private class Pointer(
+        val ownerPointer: KaSymbolPointer<KaNamedFunctionSymbol>,
+        override var cachedSymbol: WeakReference<KaValueParameterSymbol>?
+    ) : KaSymbolPointer<KaValueParameterSymbol>() {
         @KaImplementationDetail
-        override fun restoreSymbol(analysisSession: KaSession): KaValueParameterSymbol? {
+        override fun restoreIfNotCached(analysisSession: KaSession): KaValueParameterSymbol? {
             val owner = ownerPointer.restoreSymbol(analysisSession) as? KaFe10DescNamedFunctionSymbol ?: return null
             return KaFe10DynamicFunctionDescValueParameterSymbol(owner)
         }
