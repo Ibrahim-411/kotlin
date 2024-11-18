@@ -11,6 +11,7 @@ import org.jetbrains.kotlin.cli.common.CommonCompilerPerformanceManager
 import org.jetbrains.kotlin.cli.common.config.ContentRoot
 import org.jetbrains.kotlin.cli.common.messages.MessageCollector
 import org.jetbrains.kotlin.config.keys.generator.model.KeysContainer
+import org.jetbrains.kotlin.utils.KotlinPaths
 import java.io.File
 
 @Suppress("unused")
@@ -51,4 +52,8 @@ object CLIConfigurationKeysContainer : KeysContainer("org.jetbrains.kotlin.cli.c
     val FLEXIBLE_PHASE_CONFIG by key<PhaseConfigurationService>("flexible phase configuration")
 
     val PATH_TO_KOTLIN_COMPILER_JAR by key<File>("jar of Kotlin compiler in Kotlin plugin", comment = "used in FIR IDE uast tests")
+
+    val VERSION by key<Boolean>("Print compiler version")
+    val SCRIPT_MODE by key<Boolean>("Compile kotlin script")
+    val KOTLIN_PATHS by key<KotlinPaths>("Kotlin paths")
 }
