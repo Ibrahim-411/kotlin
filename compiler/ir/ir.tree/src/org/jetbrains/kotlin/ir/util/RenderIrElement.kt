@@ -480,10 +480,16 @@ open class RenderIrElementVisitor(private val options: DumpIrTreeOptions = DumpI
 
     override fun visitBoundFunctionReference(expression: IrBoundFunctionReference, data: Nothing?): String =
         "BOUND_FUNCTION_REFERENCE type=${expression.type.render()} origin=${expression.origin} " +
-                "reflectionTarget=${expression.reflectionTargetSymbol?.renderReference()}"
+                renderFlagsList(
+                    "unit_conversion".takeIf { expression.hasUnitConversion },
+                    "suspend_conversion".takeIf { expression.hasSuspendConversion },
+                    "vararg_conversion".takeIf { expression.hasVarargConversion },
+                    "restricted_suspension".takeIf { expression.isRestrictedSuspension },
+                ) + "reflectionTarget='${expression.reflectionTargetSymbol?.renderReference()}'"
 
     override fun visitBoundPropertyReference(expression: IrBoundPropertyReference, data: Nothing?): String =
-        "BOUND_PROPERTY_REFERENCE type=${expression.type.render()} origin=${expression.origin}"
+        "BOUND_PROPERTY_REFERENCE type=${expression.type.render()} origin=${expression.origin} " +
+                "reflectionTarget='${expression.reflectionTargetSymbol?.renderReference()}'"
 
     override fun visitRawFunctionReference(expression: IrRawFunctionReference, data: Nothing?): String =
         "RAW_FUNCTION_REFERENCE '${expression.symbol.renderReference()}' type=${expression.type.render()}"
