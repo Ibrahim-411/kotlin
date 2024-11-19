@@ -296,6 +296,8 @@ class ComposerLambdaMemoization(
     private var composableSingletonsClass: IrClass? = null
     private var currentFile: IrFile? = null
 
+    private val usedSingletonLambdaNames = hashSetOf<String>()
+
     private var inlineLambdaInfo = ComposeInlineLambdaLocator(context)
 
     private val rememberFunctions =
@@ -383,6 +385,7 @@ class ComposerLambdaMemoization(
             try {
                 currentFile = declaration
                 composableSingletonsClass = null
+                usedSingletonLambdaNames.clear()
                 val file = super.visitFile(declaration)
                 // if there were no constants found in the entire file, then we don't need to
                 // create this class at all
@@ -762,10 +765,26 @@ class ComposerLambdaMemoization(
             }
             return irGetComposableSingleton(
                 lambdaExpression = wrapped,
-                lambdaType = expression.type
+                lambdaType = expression.type,
+                lambdaName = createSingletonLambdaName(functionExpression)
             )
         } else {
             return wrapped
+        }
+    }
+
+    private fun createSingletonLambdaName(expression: IrFunctionExpression): String {
+        val name = "lambda$${expression.function.sourceKey()}"
+        if (usedSingletonLambdaNames.add(name)) {
+            return name
+        }
+
+        var manglingNumber = 0
+        while (true) {
+            val mangledName = "$name$${manglingNumber++}"
+            if (usedSingletonLambdaNames.add(mangledName)) {
+                return mangledName
+            }
         }
     }
 
@@ -775,10 +794,11 @@ class ComposerLambdaMemoization(
 
     private fun irGetComposableSingleton(
         lambdaExpression: IrExpression,
-        lambdaType: IrType
+        lambdaType: IrType,
+        lambdaName: String,
     ): IrExpression {
         val clazz = getOrCreateComposableSingletonsClass()
-        val lambdaName = "lambda-${clazz.declarations.size}"
+
         val lambdaProp = clazz.addProperty {
             name = Name.identifier(lambdaName)
             visibility = DescriptorVisibilities.INTERNAL
@@ -809,6 +829,7 @@ class ComposerLambdaMemoization(
                 }
             }
         }
+
         return irCall(
             lambdaProp.getter!!.symbol,
             dispatchReceiver = IrGetObjectValueImpl(
