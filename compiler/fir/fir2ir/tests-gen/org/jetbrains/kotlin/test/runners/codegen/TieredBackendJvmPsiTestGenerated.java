@@ -5494,6 +5494,17 @@ public class TieredBackendJvmPsiTestGenerated extends AbstractTieredBackendJvmPs
     }
 
     @Nested
+    @TestMetadata("compiler/testData/diagnostics/tests/expressions")
+    @TestDataPath("$PROJECT_ROOT")
+    public class Expressions {
+      @Test
+      @TestMetadata("UnusedExpressionByLocation.kt")
+      public void testUnusedExpressionByLocation() {
+        runTest("compiler/testData/diagnostics/tests/expressions/UnusedExpressionByLocation.kt");
+      }
+    }
+
+    @Nested
     @TestMetadata("compiler/testData/diagnostics/tests/extensions")
     @TestDataPath("$PROJECT_ROOT")
     public class Extensions {

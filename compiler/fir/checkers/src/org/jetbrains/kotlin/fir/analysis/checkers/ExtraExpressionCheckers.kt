@@ -14,6 +14,11 @@ object ExtraExpressionCheckers : ExpressionCheckers() {
             ArrayEqualityCanBeReplacedWithEquals,
         )
 
+    override val blockCheckers: Set<FirBlockChecker>
+        get() = setOf(
+            FirUnusedExpressionChecker,
+        )
+
     override val qualifiedAccessExpressionCheckers: Set<FirQualifiedAccessExpressionChecker>
         get() = setOf(
             RedundantCallOfConversionMethod,
