@@ -188,6 +188,14 @@ fun Project.configureDefaultPublishing(
                     }
                 }
             }
+
+            maven("https://repo.sellmair.io") {
+                name = "sellmair"
+                credentials {
+                    username = providers.gradleProperty("repo.sellmair.user").orNull
+                    password = providers.gradleProperty("repo.sellmair.password").orNull
+                }
+            }
         }
     }
 
