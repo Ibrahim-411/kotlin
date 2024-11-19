@@ -61,7 +61,7 @@ class DurableFunctionKeyCodegenTests(useFir: Boolean) : AbstractCodegenSignature
     ) { bytecode ->
         bytecode.assertKeyMetaClass(1)
         bytecode.assertFunctionKeyMetaClassAnnotationCount(1)
-        bytecode.assertFunctionKeyMetaAnnotationCount(3)
+        bytecode.assertFunctionKeyMetaAnnotationCount(4)
     }
 
     private fun String.assertKeyMetaClass(expected: Int) {

@@ -1094,6 +1094,23 @@ class ComposableFunctionBodyTransformer(
         // code itself has the start/end call.
         scope.metrics.recordGroup()
 
+        val keyMetaAnnotation = getTopLevelClassOrNull(ComposeClassIds.FunctionKeyMeta)
+
+        val metaAnnotation = IrConstructorCallImpl(
+            UNDEFINED_OFFSET,
+            UNDEFINED_OFFSET,
+            keyMetaAnnotation!!.defaultType,
+            keyMetaAnnotation.constructors.single(),
+            typeArgumentsCount = 0,
+            constructorTypeArgumentsCount = 0,
+        ).apply {
+            putValueArgument(0, irFunctionSourceKey())
+            putValueArgument(1, irConst(declaration.startOffset))
+            putValueArgument(2, irConst(declaration.endOffset))
+        }
+
+        declaration.annotations += metaAnnotation
+
         return declaration
     }
 
