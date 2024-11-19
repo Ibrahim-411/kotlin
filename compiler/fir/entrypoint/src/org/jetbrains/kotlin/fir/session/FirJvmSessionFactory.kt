@@ -196,17 +196,17 @@ object FirJvmSessionFactory : FirAbstractSessionFactory<FirJvmSessionFactory.Lib
         session: FirSession,
         kotlinScopeProvider: FirKotlinScopeProvider,
     ): FirSymbolProvider? {
-        return runIf(session.languageVersionSettings.getFlag(AnalysisFlags.stdlibCompilation) && !session.moduleData.isCommon) {
+        return runIf(
+            session.languageVersionSettings.getFlag(AnalysisFlags.stdlibCompilation) &&
+                    !session.moduleData.isCommon
+                    && session.moduleData.dependsOnDependencies.isEmpty()
+        ) {
             val kotlinClassFinder = projectEnvironment.getKotlinClassFinder(projectEnvironment.getSearchScopeForProjectLibraries())
-            if (session.moduleData.dependsOnDependencies.isNotEmpty()) {
-                null
-            } else {
-                FirJvmClasspathBuiltinSymbolProvider(
-                    session,
-                    session.moduleData,
-                    kotlinScopeProvider
-                ) { kotlinClassFinder.findBuiltInsData(it) }
-            }
+            FirJvmClasspathBuiltinSymbolProvider(
+                session,
+                session.moduleData,
+                kotlinScopeProvider
+            ) { kotlinClassFinder.findBuiltInsData(it) }
         }
     }
 
