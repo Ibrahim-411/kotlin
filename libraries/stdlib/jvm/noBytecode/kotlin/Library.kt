@@ -4,7 +4,7 @@
  */
 
 @file:kotlin.internal.BuiltinWithoutBytecode
-@file:Suppress("NON_MEMBER_FUNCTION_NO_BODY")
+@file:Suppress("NON_MEMBER_FUNCTION_NO_BODY", "REIFIED_TYPE_PARAMETER_NO_INLINE")
 
 package kotlin
 
@@ -25,7 +25,6 @@ public actual operator fun String?.plus(other: Any?): String
  *
  * @throws RuntimeException if the specified [size] is negative.
  */
-@Suppress("REIFIED_TYPE_PARAMETER_NO_INLINE")
 public actual fun <reified T> arrayOfNulls(size: Int): Array<T?>
 
 /**

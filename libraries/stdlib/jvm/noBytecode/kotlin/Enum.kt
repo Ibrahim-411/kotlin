@@ -4,6 +4,7 @@
  */
 
 @file:kotlin.internal.BuiltinWithoutBytecode
+@file:Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
 
 package kotlin
 
@@ -12,7 +13,6 @@ package kotlin
  * See the [Kotlin language documentation](https://kotlinlang.org/docs/reference/enum-classes.html) for more
  * information on enum classes.
  */
-@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY")
 public actual abstract class Enum<E : Enum<E>> actual constructor(name: String, ordinal: Int): Comparable<E> {
     public actual companion object {}
 
@@ -20,14 +20,12 @@ public actual abstract class Enum<E : Enum<E>> actual constructor(name: String, 
      * Returns the name of this enum constant, exactly as declared in its enum declaration.
      */
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
     public actual final val name: String
 
     /**
      * Returns the ordinal of this enumeration constant (its position in its enum declaration, where the initial constant
      * is assigned an ordinal of zero).
      */
-    @Suppress("MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
     public actual final val ordinal: Int
 
     public actual override final fun compareTo(other: E): Int

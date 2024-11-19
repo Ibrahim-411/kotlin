@@ -4,6 +4,7 @@
  */
 
 @file:kotlin.internal.BuiltinWithoutBytecode
+@file:Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
 
 package kotlin
 
@@ -11,7 +12,6 @@ package kotlin
  * The `String` class represents character strings. All string literals in Kotlin programs, such as `"abc"`, are
  * implemented as instances of this class.
  */
-@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY")
 public actual class String : Comparable<String>, CharSequence {
     public actual companion object {}
     
@@ -22,7 +22,6 @@ public actual class String : Comparable<String>, CharSequence {
     public actual operator fun plus(other: Any?): String
 
     @kotlin.internal.IntrinsicConstEvaluation
-    @Suppress("MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
     public actual override val length: Int
 
     /**

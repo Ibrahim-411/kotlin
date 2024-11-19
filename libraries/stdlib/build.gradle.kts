@@ -429,20 +429,10 @@ kotlin {
 
                 into(jsBuiltinsSrcDir)
 
-// Required to compile native builtins with the rest of runtime
-                val builtInsHeader = """@file:Suppress(
-    "NON_ABSTRACT_FUNCTION_WITH_NO_BODY",
-    "MUST_BE_INITIALIZED_OR_BE_ABSTRACT",
-    "EXTERNAL_TYPE_EXTENDS_NON_EXTERNAL_TYPE",
-    "PRIMARY_CONSTRUCTOR_DELEGATION_CALL_EXPECTED",
-    "WRONG_MODIFIER_TARGET",
-    "UNUSED_PARAMETER"
-)
-"""
                 doLast {
                     unimplementedNativeBuiltIns.forEach { path ->
                         val file = File("$destinationDir/$path")
-                        val sourceCode = builtInsHeader + file.readText()
+                        val sourceCode = file.readText()
                         file.writeText(sourceCode)
                     }
                 }

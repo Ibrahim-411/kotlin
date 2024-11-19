@@ -4,13 +4,13 @@
  */
 
 @file:kotlin.internal.BuiltinWithoutBytecode
+@file:Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY")
 
 package kotlin
 
 /**
  * The root of the Kotlin class hierarchy. Every Kotlin class has [Any] as a superclass.
  */
-@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY")
 public actual open class Any {
     /**
      * Indicates whether some other object is "equal to" this one. Implementations must fulfil the following

@@ -2,8 +2,8 @@
  * Copyright 2010-2024 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
-@file:Suppress("NEWER_VERSION_IN_SINCE_KOTLIN")
 @file:kotlin.internal.BuiltinWithoutBytecode
+@file:Suppress("NEWER_VERSION_IN_SINCE_KOTLIN", "NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
 
 package kotlin.concurrent
 
@@ -13,7 +13,6 @@ package kotlin.concurrent
  * Instances of [AtomicIntArray] are represented by [java.util.concurrent.atomic.AtomicIntegerArray] and provide the the same atomicity guarantees.
  */
 @SinceKotlin("2.2")
-@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
 public class AtomicIntArray {
     private val array: IntArray
 
@@ -123,7 +122,6 @@ public class AtomicIntArray {
  * Instances of [AtomicLongArray] are represented by [java.util.concurrent.atomic.AtomicLongArray] and provide the the same atomicity guarantees.
  */
 @SinceKotlin("2.2")
-@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
 public class AtomicLongArray {
     private val array: LongArray
 
@@ -233,7 +231,6 @@ public class AtomicLongArray {
  * Instances of [AtomicArray] are represented by [java.util.concurrent.atomic.AtomicReferenceArray] and provide the the same atomicity guarantees.
  */
 @SinceKotlin("2.2")
-@Suppress("NON_ABSTRACT_FUNCTION_WITH_NO_BODY", "MUST_BE_INITIALIZED_OR_BE_ABSTRACT")
 public class AtomicArray<T> {
     private val array: Array<T>
 

@@ -357,10 +357,9 @@ class JvmCharGenerator(writer: PrintWriter) : CharGenerator(writer) {
     override fun ClassBuilder.modifyGeneratedClass() {
         appendDoc("On the JVM, non-nullable values of this type are represented as values of the primitive type `char`.")
         expectActual = ExpectActualModifier.Actual
-        suppressNonAbstractFunctionWithoutBody()
     }
 
-    override val fileAnnotations = listOf("kotlin.internal.BuiltinWithoutBytecode")
+    override val fileAnnotations = listOf("kotlin.internal.BuiltinWithoutBytecode", "Suppress(\"NON_ABSTRACT_FUNCTION_WITH_NO_BODY\")")
 }
 
 class JsCharGenerator(writer: PrintWriter) : CharGenerator(writer) {
