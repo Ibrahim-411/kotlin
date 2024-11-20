@@ -1054,6 +1054,7 @@ class ComposableFunctionBodyTransformer(
             keyMetaAnnotation!!.defaultType,
             keyMetaAnnotation.constructors.single(),
             typeArgumentsCount = 0,
+            valueArgumentsCount = 3,
             constructorTypeArgumentsCount = 0,
         ).apply {
             putValueArgument(0, irFunctionSourceKey())
