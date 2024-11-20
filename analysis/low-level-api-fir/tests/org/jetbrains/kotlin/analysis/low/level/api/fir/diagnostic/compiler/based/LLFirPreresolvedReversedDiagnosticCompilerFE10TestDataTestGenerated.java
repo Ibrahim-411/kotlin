@@ -40668,6 +40668,12 @@ public class LLFirPreresolvedReversedDiagnosticCompilerFE10TestDataTestGenerated
         }
 
         @Test
+        @TestMetadata("classMembers.kt")
+        public void testClassMembers() {
+          runTest("compiler/testData/diagnostics/tests/smartCasts/variables/classMembers.kt");
+        }
+
+        @Test
         @TestMetadata("doWhileWithMiddleBreak.kt")
         public void testDoWhileWithMiddleBreak() {
           runTest("compiler/testData/diagnostics/tests/smartCasts/variables/doWhileWithMiddleBreak.kt");
