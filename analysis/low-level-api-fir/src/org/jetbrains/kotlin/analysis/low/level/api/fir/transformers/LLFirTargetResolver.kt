@@ -29,6 +29,7 @@ import org.jetbrains.kotlin.resolve.DataClassResolver
 import org.jetbrains.kotlin.utils.exceptions.checkWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.errorWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.requireWithAttachment
+import org.jetbrains.kotlin.utils.exceptions.rethrowExceptionWithDetails
 
 /**
  * This class represents the resolver for each [FirResolvePhase].
@@ -277,26 +278,33 @@ internal sealed class LLFirTargetResolver(
      * @see doLazyResolveUnderLock
      */
     protected fun performResolve(target: FirElementWithResolveState) {
-        resolveDependencies(target)
+        try {
+            resolveDependencies(target)
 
-        if (doResolveWithoutLock(target)) return
+            if (doResolveWithoutLock(target)) return
 
-        if (requiresJumpingLock) {
-            checkThatResolvedAtLeastToPreviousPhase(target)
-            lockProvider.withJumpingLock(
-                target,
-                resolverPhase,
-                actionUnderLock = {
+            if (requiresJumpingLock) {
+                checkThatResolvedAtLeastToPreviousPhase(target)
+                lockProvider.withJumpingLock(
+                    target,
+                    resolverPhase,
+                    actionUnderLock = {
+                        doLazyResolveUnderLock(target)
+                        updatePhaseForDeclarationInternals(target)
+                    },
+                    actionOnCycle = {
+                        handleCycleInResolution(target)
+                    }
+                )
+            } else {
+                performCustomResolveUnderLock(target) {
                     doLazyResolveUnderLock(target)
-                    updatePhaseForDeclarationInternals(target)
-                },
-                actionOnCycle = {
-                    handleCycleInResolution(target)
                 }
-            )
-        } else {
-            performCustomResolveUnderLock(target) {
-                doLazyResolveUnderLock(target)
+            }
+        } catch (e: Throwable) {
+            rethrowExceptionWithDetails("Cannot resolve a " + target::class.simpleName, e) {
+                withEntry("phase", resolverPhase) { it.name }
+                withFirEntry("target", target)
             }
         }
     }
