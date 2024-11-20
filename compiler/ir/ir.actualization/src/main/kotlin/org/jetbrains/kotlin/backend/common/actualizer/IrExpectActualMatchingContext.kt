@@ -320,8 +320,9 @@ internal abstract class IrExpectActualMatchingContext(
         }
 
     override val FunctionSymbolMarker.valueParameters: List<ValueParameterSymbolMarker>
-        get() = asIr().valueParameters.map { it.symbol }
-
+        get() = asIr().parameters
+            .filter { it.kind == IrParameterKind.Regular || it.kind == IrParameterKind.Context }
+            .map { it.symbol }
     override val ValueParameterSymbolMarker.isVararg: Boolean
         get() = asIr().isVararg
     override val ValueParameterSymbolMarker.isNoinline: Boolean
