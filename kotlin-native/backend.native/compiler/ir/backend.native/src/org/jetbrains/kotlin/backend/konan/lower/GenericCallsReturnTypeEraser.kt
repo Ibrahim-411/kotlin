@@ -23,7 +23,7 @@ import org.jetbrains.kotlin.ir.util.target
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformerVoid
 import org.jetbrains.kotlin.ir.visitors.transformChildrenVoid
 
-/*
+/**
  * FE substitutes types for generic calls, but by the end of the lowerings pipeline, the return types should be
  * replaced with their erasures to make some of the final passes (like Autoboxing and pre-codegen inlining) simpler.
  * The idea here is that by the end of the pipeline all the types are considered erased and a function call is just
