@@ -216,7 +216,7 @@ internal open class ActualizerVisitor(private val symbolRemapper: SymbolRemapper
         // Without it, attempting to call such a constructor in common code will result in either a backend exception or in linkage error.
         // See KT-67488 for details.
         val valueArgumentsCount =
-            if (constructorSymbol.isBound) constructorSymbol.owner.valueParameters.size else expression.valueArgumentsCount
+            if (constructorSymbol.isBound) constructorSymbol.owner.parameters.size else expression.valueArgumentsCount
 
         return IrConstructorCallImpl(
             expression.startOffset,
