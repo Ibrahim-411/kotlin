@@ -170,7 +170,7 @@ internal fun checkContractDescriptionIsResolved(declaration: FirContractDescript
     checkWithAttachment(
         condition = contractDescription is FirResolvedContractDescription ||
                 contractDescription is FirErrorContractDescription,
-        message = { "Expected ${FirResolvedContractDescription::class.simpleName} but ${contractDescription::class.simpleName} found for ${declaration::class.simpleName}" }
+        message = { "Unresolved contract description of type ${contractDescription::class.simpleName} found for ${declaration::class.simpleName}" }
     ) {
         withFirEntry("declaration", declaration)
     }
