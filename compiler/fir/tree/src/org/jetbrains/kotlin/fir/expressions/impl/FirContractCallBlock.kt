@@ -29,6 +29,7 @@ class FirContractCallBlock(var call: FirFunctionCall) : FirBlock() {
 
 
     override var annotations: MutableOrEmptyList<FirAnnotation> = MutableOrEmptyList.empty()
+    var nestedAnnotations: MutableOrEmptyList<FirAnnotation> = MutableOrEmptyList.empty()
 
     @UnresolvedExpressionTypeAccess
     override var coneTypeOrNull: ConeKotlinType? = null
@@ -53,6 +54,7 @@ class FirContractCallBlock(var call: FirFunctionCall) : FirBlock() {
     }
 
     override fun <D> transformOtherChildren(transformer: FirTransformer<D>, data: D): FirBlock {
+        nestedAnnotations.transformInplace(transformer, data)
         return this
     }
 
@@ -64,6 +66,4 @@ class FirContractCallBlock(var call: FirFunctionCall) : FirBlock() {
         annotations.transformInplace(transformer, data)
         return this
     }
-
-
 }

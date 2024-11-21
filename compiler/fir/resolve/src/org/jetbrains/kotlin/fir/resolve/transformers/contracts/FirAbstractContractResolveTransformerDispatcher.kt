@@ -7,6 +7,7 @@ package org.jetbrains.kotlin.fir.resolve.transformers.contracts
 
 import org.jetbrains.kotlin.KtFakeSourceElementKind
 import org.jetbrains.kotlin.fir.FirSession
+import org.jetbrains.kotlin.fir.add
 import org.jetbrains.kotlin.fir.contracts.*
 import org.jetbrains.kotlin.fir.contracts.builder.buildErrorContractDescription
 import org.jetbrains.kotlin.fir.contracts.builder.buildLegacyRawContractDescription
@@ -17,8 +18,6 @@ import org.jetbrains.kotlin.fir.declarations.*
 import org.jetbrains.kotlin.fir.declarations.builder.buildAnonymousFunction
 import org.jetbrains.kotlin.fir.declarations.builder.buildReceiverParameter
 import org.jetbrains.kotlin.fir.declarations.synthetic.FirSyntheticProperty
-import org.jetbrains.kotlin.fir.diagnostics.ConeSimpleDiagnostic
-import org.jetbrains.kotlin.fir.diagnostics.DiagnosticKind
 import org.jetbrains.kotlin.fir.expressions.*
 import org.jetbrains.kotlin.fir.expressions.builder.*
 import org.jetbrains.kotlin.fir.expressions.impl.FirContractCallBlock
@@ -33,8 +32,6 @@ import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirDeclaration
 import org.jetbrains.kotlin.fir.resolve.transformers.body.resolve.FirExpressionsResolveTransformer
 import org.jetbrains.kotlin.fir.symbols.impl.FirAnonymousFunctionSymbol
 import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
-import org.jetbrains.kotlin.fir.toFirResolvedTypeRef
-import org.jetbrains.kotlin.fir.types.ConeErrorType
 import org.jetbrains.kotlin.fir.types.impl.FirImplicitTypeRefImplWithoutSource
 import org.jetbrains.kotlin.fir.visitors.transformSingle
 import org.jetbrains.kotlin.name.Name
@@ -63,24 +60,15 @@ abstract class FirAbstractContractResolveTransformerDispatcher(
 
     private var contractMode = true
     private var insideContractDescription = false
+    private var contractCallBlock: FirContractCallBlock? = null
 
     override fun transformAnnotation(annotation: FirAnnotation, data: ResolutionMode): FirStatement {
+        contractCallBlock?.let { it.nestedAnnotations = it.nestedAnnotations.add(annotation) }
         return annotation
     }
 
     override fun transformAnnotationCall(annotationCall: FirAnnotationCall, data: ResolutionMode): FirStatement {
-        // Annotation calls inside contracts are not allowed and at this point we are also
-        // unable to resolve them. We indicate this by returning a resolved error type.
-        if (insideContractDescription) {
-            val typeDiagnostic = ConeSimpleDiagnostic(
-                "Cannot infer annotation call type during CONTRACTS phase.",
-                DiagnosticKind.AnnotationInContract
-            )
-            val errorType = ConeErrorType(typeDiagnostic)
-
-            annotationCall.replaceAnnotationTypeRef(errorType.toFirResolvedTypeRef(annotationCall.annotationTypeRef.source))
-        }
-
+        contractCallBlock?.let { it.nestedAnnotations = it.nestedAnnotations.add(annotationCall) }
         return annotationCall
     }
 
@@ -167,7 +155,8 @@ abstract class FirAbstractContractResolveTransformerDispatcher(
                 context.storeVariable(valueParameter, session)
             }
 
-            val resolvedContractCall = withContractModeDisabled {
+            val contractCallBlock = if (hasBodyContract) owner.body.statements[0] as? FirContractCallBlock else null
+            val resolvedContractCall = withContractModeDisabled(contractCallBlock) {
                 contractDescription.contractCall
                     .transformSingle(transformer, ResolutionMode.ContextIndependent)
                     .apply { replaceConeTypeOrNull(session.builtinTypes.unitType.coneType) }
@@ -215,11 +204,13 @@ abstract class FirAbstractContractResolveTransformerDispatcher(
             return owner
         }
 
-        private inline fun <T> withContractModeDisabled(block: () -> T): T {
+        private inline fun <T> withContractModeDisabled(callBlock: FirContractCallBlock?, block: () -> T): T {
             try {
+                contractCallBlock = callBlock
                 contractMode = false
                 return block()
             } finally {
+                contractCallBlock = null
                 contractMode = true
             }
         }

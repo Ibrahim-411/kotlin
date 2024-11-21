@@ -316,6 +316,12 @@ value class MutableOrEmptyList<out T>(internal val list: MutableList<@UnsafeVari
     }
 }
 
+fun <T> MutableOrEmptyList<T>.add(element: T): MutableOrEmptyList<T> {
+    if (list == null) return MutableOrEmptyList(mutableListOf(element))
+    list.add(element)
+    return this
+}
+
 fun <T> List<T>.smartPlus(other: List<T>): List<T> = when {
     other.isEmpty() -> this
     this.isEmpty() -> other
