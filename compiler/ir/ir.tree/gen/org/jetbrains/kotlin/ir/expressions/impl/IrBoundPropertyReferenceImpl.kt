@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.ir.declarations.IrAttributeContainer
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrBoundPropertyReference
 import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrReferenceParameterMapping
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.symbols.IrDeclarationWithAccessorsSymbol
 import org.jetbrains.kotlin.ir.types.IrType
@@ -28,6 +29,7 @@ class IrBoundPropertyReferenceImpl internal constructor(
     override var getterFunction: IrSimpleFunction,
     override var setterFunction: IrSimpleFunction?,
     override var origin: IrStatementOrigin?,
+    override var parameterMapping: IrReferenceParameterMapping?,
 ) : IrBoundPropertyReference() {
     override var attributeOwnerId: IrAttributeContainer = this
 

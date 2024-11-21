@@ -323,10 +323,9 @@ fun IrBoundFunctionReferenceImpl(
     reflectionTargetSymbol: IrFunctionSymbol?,
     overriddenFunctionSymbol: IrSimpleFunctionSymbol,
     invokeFunction: IrSimpleFunction,
+    parameterMapping: IrReferenceParameterMapping?,
     origin: IrStatementOrigin? = null,
     hasUnitConversion: Boolean = false,
-    hasSuspendConversion: Boolean = false,
-    hasVarargConversion: Boolean = false,
     isRestrictedSuspension: Boolean = false,
 ) = IrBoundFunctionReferenceImpl(
     constructorIndicator = null,
@@ -338,8 +337,7 @@ fun IrBoundFunctionReferenceImpl(
     invokeFunction = invokeFunction,
     origin = origin,
     hasUnitConversion = hasUnitConversion,
-    hasSuspendConversion = hasSuspendConversion,
-    hasVarargConversion = hasVarargConversion,
+    parameterMapping = parameterMapping,
     isRestrictedSuspension = isRestrictedSuspension,
 )
 
@@ -350,6 +348,7 @@ fun IrBoundPropertyReferenceImpl(
     reflectionTargetSymbol: IrDeclarationWithAccessorsSymbol?,
     getterFunction: IrSimpleFunction,
     setterFunction: IrSimpleFunction?,
+    parameterMapping: IrReferenceParameterMapping?,
     origin: IrStatementOrigin? = null
 ) = IrBoundPropertyReferenceImpl(
     constructorIndicator = null,
@@ -359,6 +358,7 @@ fun IrBoundPropertyReferenceImpl(
     reflectionTargetSymbol = reflectionTargetSymbol,
     getterFunction = getterFunction,
     setterFunction = setterFunction,
+    parameterMapping = parameterMapping,
     origin = origin
 )
 

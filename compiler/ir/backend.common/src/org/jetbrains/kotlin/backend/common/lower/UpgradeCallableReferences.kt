@@ -17,12 +17,14 @@ import org.jetbrains.kotlin.ir.declarations.*
 import org.jetbrains.kotlin.ir.expressions.*
 import org.jetbrains.kotlin.ir.expressions.impl.*
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
+import org.jetbrains.kotlin.ir.symbols.IrValueParameterSymbol
 import org.jetbrains.kotlin.ir.types.*
 import org.jetbrains.kotlin.ir.util.*
 import org.jetbrains.kotlin.ir.visitors.IrElementTransformer
 import org.jetbrains.kotlin.name.Name
 import org.jetbrains.kotlin.name.StandardClassIds
 import org.jetbrains.kotlin.util.OperatorNameConventions
+import org.jetbrains.kotlin.utils.addToStdlib.runUnless
 import org.jetbrains.kotlin.utils.addToStdlib.shouldNotBeCalled
 
 open class UpgradeCallableReferences(
@@ -86,6 +88,7 @@ open class UpgradeCallableReferences(
                 endOffset = expression.endOffset,
                 type = expression.type,
                 reflectionTargetSymbol = null,
+                parameterMapping = null,
                 overriddenFunctionSymbol = selectSAMOverriddenFunction(expression.type),
                 invokeFunction = expression.function,
                 origin = expression.origin,
@@ -117,24 +120,6 @@ open class UpgradeCallableReferences(
                 "<signature-string>" -> expression
                 else -> super.visitCall(expression, data)
             }
-        }
-
-        private fun IrType.arrayDepth(): Int {
-            if (this !is IrSimpleType) return 0
-            return when (classOrNull) {
-                context.ir.symbols.array -> 1 + (arguments[0].typeOrNull?.arrayDepth() ?: 0)
-                in context.ir.symbols.arrays -> 1
-                else -> 0
-            }
-        }
-
-        private fun hasVarargConversion(wrapper: IrSimpleFunction, target: IrSimpleFunction): Boolean {
-            return target.parameters.zip(wrapper.parameters)
-                .takeWhile { (original, _) -> original.defaultValue == null }
-                .any { (original, adapted) ->
-                    // if original is (vararg x: T) than adapted can be either (Array<T> or T). conversion happened only in later case.
-                    original.isVararg && original.type.arrayDepth() == adapted.type.arrayDepth() + 1
-                }
         }
 
         private val blockReferenceOrigins = setOf(
@@ -184,10 +169,9 @@ open class UpgradeCallableReferences(
                 overriddenFunctionSymbol = selectSAMOverriddenFunction(expressionType),
                 invokeFunction = function,
                 origin = origin,
-                hasSuspendConversion = reflectionTarget != null && reflectionTarget.isSuspend == false && function.isSuspend,
                 hasUnitConversion = reflectionTarget != null && !reflectionTarget.owner.returnType.isUnit() && function.returnType.isUnit(),
-                hasVarargConversion = reflectionTarget is IrSimpleFunctionSymbol && hasVarargConversion(function, reflectionTarget.owner),
                 isRestrictedSuspension = isRestrictedSuspension,
+                parameterMapping = if (reflectionTarget != null) reference.getAdaptedMapping(function, reflectionTarget.owner, boundParameters.size) else null,
             ).apply {
                 copyAttributes(reference)
                 boundValues.addAll(reference.arguments.filterNotNull())
@@ -210,6 +194,44 @@ open class UpgradeCallableReferences(
             return super.visitTypeOperator(expression, data)
         }
 
+        private fun IrCallableReference<*>.getAdaptedMapping(wrapper: IrSimpleFunction, original: IrFunction, boundCount: Int): IrReferenceParameterMapping? {
+            // The body of a callable reference adapter contains either only a call, or an IMPLICIT_COERCION_TO_UNIT type operator
+            // applied to a call. That call's target is the original function which we need to get owner/name/signature.
+            val call = when (val statement = wrapper.body?.statements?.singleOrNull()) {
+                is IrTypeOperatorCall -> statement.argument
+                is IrReturn -> statement.value
+                else -> statement
+            } as? IrCall ?: return null
+            if (call.symbol != original.symbol) return null
+            fun IrGetValue.toIndex() = (symbol as? IrValueParameterSymbol)?.owner?.takeIf { it.parent == wrapper }?.indexInParameters
+            return call.arguments.map {
+                when (it) {
+                    null -> IrReferenceParameter.Default()
+                    is IrVararg -> {
+                        val spread = (it.elements.singleOrNull() as? IrSpreadElement)?.expression as? IrGetValue
+                        if (spread != null) {
+                            IrReferenceParameter.Forwarded(spread.toIndex() ?: return null)
+                        } else {
+                            IrReferenceParameter.Vararg(it.elements.mapNotNull { (it as? IrGetValue)?.toIndex() })
+                        }
+                    }
+                    is IrGetValue -> {
+                        val index = it.toIndex() ?: return null
+                        if (index < boundCount) IrReferenceParameter.Bound(index) else IrReferenceParameter.Forwarded(index)
+                    }
+                    else -> return null
+                }
+            }
+        }
+
+        private fun IrCallableReference<*>.getForwardingMapping(): IrReferenceParameterMapping {
+            var unboundIndex = arguments.count { it != null }
+            var boundIndex = 0
+            return arguments.mapIndexed { index, it ->
+                if (it == null) IrReferenceParameter.Forwarded(unboundIndex++) else IrReferenceParameter.Bound(boundIndex++)
+            }
+        }
+
         override fun visitFunctionReference(expression: IrFunctionReference, data: IrDeclarationParent): IrExpression {
             expression.transformChildren(this, data)
             if (!upgradeFunctionReferences) return expression
@@ -218,7 +240,8 @@ open class UpgradeCallableReferences(
                 startOffset = expression.startOffset,
                 endOffset = expression.endOffset,
                 type = expression.type,
-                reflectionTargetSymbol = (expression.reflectionTarget ?: expression.symbol).takeUnless { expression.origin.isLambda },
+                reflectionTargetSymbol = runUnless(expression.origin.isLambda) { expression.reflectionTarget ?: expression.symbol },
+                parameterMapping = runUnless(expression.origin.isLambda) { expression.getForwardingMapping() },
                 overriddenFunctionSymbol = selectSAMOverriddenFunction(expression.type),
                 invokeFunction = expression.wrapFunction(arguments, data, expression.symbol.owner),
                 origin = expression.origin,
@@ -240,6 +263,7 @@ open class UpgradeCallableReferences(
                     endOffset = expression.endOffset,
                     type = expression.type,
                     reflectionTargetSymbol = expression.symbol,
+                    parameterMapping = runUnless(expression.origin.isLambda) { expression.getForwardingMapping() },
                     getterFunction = expression.wrapFunction(arguments, data, getter),
                     setterFunction = expression.setter?.let { expression.wrapFunction(arguments, data, it.owner, isPropertySetter = true) },
                     origin = expression.origin,
@@ -251,6 +275,7 @@ open class UpgradeCallableReferences(
                     endOffset = expression.endOffset,
                     type = expression.type,
                     reflectionTargetSymbol = expression.symbol,
+                    parameterMapping = runUnless(expression.origin.isLambda) { expression.getForwardingMapping() },
                     getterFunction = expression.wrapField(arguments, data, field, isSetter = false),
                     setterFunction = if (expression.type.isKMutableProperty()) expression.wrapField(
                         arguments,
@@ -276,6 +301,7 @@ open class UpgradeCallableReferences(
                 startOffset = expression.startOffset,
                 endOffset = expression.endOffset,
                 type = expression.type,
+                parameterMapping = runUnless(expression.origin.isLambda) { expression.getForwardingMapping() },
                 reflectionTargetSymbol = expression.symbol,
                 getterFunction = expression.wrapFunction(emptyList(), data, expression.getter.owner),
                 setterFunction = expression.setter?.let { expression.wrapFunction(emptyList(), data, it.owner, isPropertySetter = true) },

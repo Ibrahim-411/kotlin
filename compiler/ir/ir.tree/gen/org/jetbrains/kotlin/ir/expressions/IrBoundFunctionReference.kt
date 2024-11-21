@@ -65,10 +65,11 @@ import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
  * [reflectionTargetSymbol] is typically a function for which reference was initially created, and it's null,
  * if it is a lambda, which doesn't need any reflection information. 
  *
- * [hasUnitConversion], [hasSuspendConversion], [hasVarargConversion], [isRestrictedSuspension] flags
- * represents some information about reference, which is useful for generating correct reflection information.
+ * [hasUnitConversion], [parameterMapping], [isRestrictedSuspension] fields
+ * represent some information about how the reference correspond to original function, 
+ * which is useful for generating correct reflection information.
  * While it's technically possible to reconstruct it from function and reflection function signature,
- * it's easier and more robust to store it right away. 
+ * it's easier and more robust to store it. 
  *
  * This allows processing function references by almost all lowerings as normal calls (within invokeFunction),
  * and don't make them special cases. Also, it enables support of several bound values. 
@@ -88,11 +89,9 @@ abstract class IrBoundFunctionReference : IrExpression() {
 
     abstract var hasUnitConversion: Boolean
 
-    abstract var hasSuspendConversion: Boolean
-
-    abstract var hasVarargConversion: Boolean
-
     abstract var isRestrictedSuspension: Boolean
+
+    abstract var parameterMapping: IrReferenceParameterMapping?
 
     override fun <R, D> accept(visitor: IrElementVisitor<R, D>, data: D): R =
         visitor.visitBoundFunctionReference(this, data)

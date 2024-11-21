@@ -226,8 +226,7 @@ internal class FunctionReferenceLowering(val generationState: NativeGenerationSt
                                     referencedFunction = functionReference.invokeFunction,
                                     boundParameters = functionReference.boundValues.size,
                                     isCoercedToUnit = functionReference.hasUnitConversion,
-                                    isSuspendConversion = functionReference.hasSuspendConversion,
-                                    isVarargConversion = functionReference.hasVarargConversion
+                                    isVarargConversion = functionReference.parameterMapping?.any { it is IrReferenceParameter.Vararg } ?: false
                             )
                             putTypeArgument(0, functionReference.invokeFunction.returnType)
                             arguments[0] = irKFunctionDescription(description)
@@ -343,7 +342,6 @@ internal class FunctionReferenceLowering(val generationState: NativeGenerationSt
                 private val referencedFunction: IrFunction,
                 private val boundParameters: Int,
                 private val isCoercedToUnit: Boolean,
-                private val isSuspendConversion: Boolean,
                 private val isVarargConversion: Boolean,
         ) {
             // this value is used only for hashCode and equals, to distinguish different wrappers on same functions
@@ -351,9 +349,8 @@ internal class FunctionReferenceLowering(val generationState: NativeGenerationSt
                 return listOfNotNull(
                         (1 shl 0).takeIf { referencedFunction.isSuspend },
                         (1 shl 1).takeIf { isVarargConversion },
-                        (1 shl 2).takeIf { isSuspendConversion },
-                        (1 shl 3).takeIf { isCoercedToUnit },
-                        (1 shl 4).takeIf { isFunInterfaceConstructorAdapter() }
+                        (1 shl 2).takeIf { isCoercedToUnit },
+                        (1 shl 3).takeIf { isFunInterfaceConstructorAdapter() }
                 ).sum()
             }
 

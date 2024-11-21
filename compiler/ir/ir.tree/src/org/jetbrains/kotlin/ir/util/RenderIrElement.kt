@@ -482,8 +482,6 @@ open class RenderIrElementVisitor(private val options: DumpIrTreeOptions = DumpI
         "BOUND_FUNCTION_REFERENCE type=${expression.type.render()} origin=${expression.origin} " +
                 renderFlagsList(
                     "unit_conversion".takeIf { expression.hasUnitConversion },
-                    "suspend_conversion".takeIf { expression.hasSuspendConversion },
-                    "vararg_conversion".takeIf { expression.hasVarargConversion },
                     "restricted_suspension".takeIf { expression.isRestrictedSuspension },
                 ) + "reflectionTarget='${expression.reflectionTargetSymbol?.renderReference()}'"
 

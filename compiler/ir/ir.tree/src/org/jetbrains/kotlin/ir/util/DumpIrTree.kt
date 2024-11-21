@@ -357,10 +357,26 @@ class DumpIrTreeVisitor(
         }
     }
 
+    private fun IrReferenceParameterMapping.dump(prefix: String) {
+        printer.println(buildString {
+            append(prefix)
+            append(": ")
+            this@dump.joinTo(this, prefix = "[", postfix = "]") {
+                when (it) {
+                    is IrReferenceParameter.Bound -> "Bound(${it.index})"
+                    is IrReferenceParameter.Vararg -> "Vararg(${it.indices})"
+                    is IrReferenceParameter.Forwarded -> "Forwarded(${it.index})"
+                    is IrReferenceParameter.Default -> "Default"
+                }
+            }
+        })
+    }
+
     override fun visitBoundFunctionReference(expression: IrBoundFunctionReference, data: String) {
         expression.dumpLabeledElementWith(data) {
             val names = expression.invokeFunction.getValueParameterNamesForDebug(expression.boundValues.size)
             expression.overriddenFunctionSymbol.dumpInternal("overriddenFunctionSymbol")
+            expression.parameterMapping?.dump("parameterMapping")
             expression.boundValues.forEachIndexed { index, value ->
                 value.accept(this, names[index])
             }
@@ -374,6 +390,7 @@ class DumpIrTreeVisitor(
             expression.boundValues.forEachIndexed { index, value ->
                 value.accept(this, names[index])
             }
+            expression.parameterMapping?.dump("parameterMapping")
             expression.getterFunction.accept(this, "getter")
             expression.setterFunction?.accept(this, "setter")
         }

@@ -104,6 +104,7 @@ internal class TestProcessor(private val generationState: NativeGenerationState)
                 overriddenFunctionSymbol = UpgradeCallableReferences.selectSAMOverriddenFunction(referenceType),
                 invokeFunction = wrapper,
                 origin = IrStatementOrigin.LAMBDA,
+                parameterMapping = null,
         )
     }
 

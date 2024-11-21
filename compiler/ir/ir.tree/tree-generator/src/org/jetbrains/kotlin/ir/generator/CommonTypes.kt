@@ -60,6 +60,8 @@ val emptySymbolRemapperType = ClassRef<PositionTypeParameterRef>(TypeKind.Class,
 val irImplementationDetailType = type(tree, "IrImplementationDetail", TypeKind.Class)
 val irElementConstructorIndicatorType = type(util, "IrElementConstructorIndicator", TypeKind.Class)
 
+val irReferenceParameterMapping = type(exprs, "IrReferenceParameterMapping", TypeKind.Class)
+
 val irSymbolBaseType = type(symbolsImpl, "IrSymbolBase", TypeKind.Class)
 val irSymbolWithSignatureType = type(symbolsImpl, "IrSymbolWithSignature", TypeKind.Class)
 

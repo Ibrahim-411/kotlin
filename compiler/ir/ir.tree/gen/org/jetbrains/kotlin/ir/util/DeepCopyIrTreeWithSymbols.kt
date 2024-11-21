@@ -602,9 +602,8 @@ open class DeepCopyIrTreeWithSymbols(
             invokeFunction = expression.invokeFunction.transform(),
             origin = expression.origin,
             hasUnitConversion = expression.hasUnitConversion,
-            hasSuspendConversion = expression.hasSuspendConversion,
-            hasVarargConversion = expression.hasVarargConversion,
             isRestrictedSuspension = expression.isRestrictedSuspension,
+            parameterMapping = expression.parameterMapping,
         ).apply {
             expression.boundValues.mapTo(boundValues) { it.transform() }
             processAttributes(expression)
@@ -620,6 +619,7 @@ open class DeepCopyIrTreeWithSymbols(
             getterFunction = expression.getterFunction.transform(),
             setterFunction = expression.setterFunction?.transform(),
             origin = expression.origin,
+            parameterMapping = expression.parameterMapping,
         ).apply {
             expression.boundValues.mapTo(boundValues) { it.transform() }
             processAttributes(expression)

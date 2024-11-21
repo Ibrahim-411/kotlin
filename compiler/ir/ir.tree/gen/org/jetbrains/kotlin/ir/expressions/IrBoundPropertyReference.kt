@@ -28,6 +28,7 @@ import org.jetbrains.kotlin.ir.visitors.IrElementVisitor
  *   * There is no [IrBoundFunctionReference.overriddenFunctionSymbol] as property reference can't implement a fun interface/be sam converted
  *   * There is no [IrBoundFunctionReference.invokeFunction], but there is [getterFunction] with similar semantics instead
  *   * There is nullable [setterFunction] with similar semantics in case of mutable property
+ *   * [parameterMapping] corresponds to getter, as value argument of setter can only be forwarded.   
  *
  * Generated from: [org.jetbrains.kotlin.ir.generator.IrTree.boundPropertyReference]
  */
@@ -41,6 +42,8 @@ abstract class IrBoundPropertyReference : IrExpression() {
     abstract var setterFunction: IrSimpleFunction?
 
     abstract var origin: IrStatementOrigin?
+
+    abstract var parameterMapping: IrReferenceParameterMapping?
 
     override fun <R, D> accept(visitor: IrElementVisitor<R, D>, data: D): R =
         visitor.visitBoundPropertyReference(this, data)

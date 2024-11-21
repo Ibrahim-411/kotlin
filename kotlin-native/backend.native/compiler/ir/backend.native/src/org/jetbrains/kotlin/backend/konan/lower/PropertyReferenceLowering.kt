@@ -85,7 +85,8 @@ internal class PropertyReferenceLowering(val generationState: NativeGenerationSt
                                 reflectionTargetSymbol = originalPropertySymbol.owner.getter!!.symbol,
                                 overriddenFunctionSymbol = UpgradeCallableReferences.selectSAMOverriddenFunction(getterType),
                                 invokeFunction = expression.getterFunction,
-                                origin = expression.origin
+                                origin = expression.origin,
+                                parameterMapping = expression.parameterMapping
                         ).apply {
                             boundValues += captures.map { irGet(it) }
                         }
@@ -98,7 +99,8 @@ internal class PropertyReferenceLowering(val generationState: NativeGenerationSt
                                     reflectionTargetSymbol = originalPropertySymbol.owner.setter!!.symbol,
                                     invokeFunction = setterFunction,
                                     overriddenFunctionSymbol = UpgradeCallableReferences.selectSAMOverriddenFunction(setterType),
-                                    origin = expression.origin
+                                    origin = expression.origin,
+                                    parameterMapping = expression.parameterMapping?.let { it + IrReferenceParameter.Forwarded(setterFunction.parameters.lastIndex) }
                             )
                             reference.boundValues += captures.map { irGet(it) }
                             arguments[2] = reference

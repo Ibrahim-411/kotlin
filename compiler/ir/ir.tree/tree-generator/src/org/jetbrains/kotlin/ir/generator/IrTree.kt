@@ -830,9 +830,8 @@ object IrTree : AbstractTreeBuilder() {
         +field("invokeFunction", simpleFunction)
         +field("origin", statementOriginType, nullable = true)
         +field("hasUnitConversion", boolean)
-        +field("hasSuspendConversion", boolean)
-        +field("hasVarargConversion", boolean)
         +field("isRestrictedSuspension", boolean)
+        +field("parameterMapping", irReferenceParameterMapping, nullable = true)
 
         kDoc = """
             This node is intended to unify way of handling function reference-like objects in IR.
@@ -884,10 +883,11 @@ object IrTree : AbstractTreeBuilder() {
             [reflectionTargetSymbol] is typically a function for which reference was initially created, and it's null,
             if it is a lambda, which doesn't need any reflection information. 
             
-            [hasUnitConversion], [hasSuspendConversion], [hasVarargConversion], [isRestrictedSuspension] flags
-            represents some information about reference, which is useful for generating correct reflection information.
+            [hasUnitConversion], [parameterMapping], [isRestrictedSuspension] fields
+            represent some information about how the reference correspond to original function, 
+            which is useful for generating correct reflection information.
             While it's technically possible to reconstruct it from function and reflection function signature,
-            it's easier and more robust to store it right away. 
+            it's easier and more robust to store it. 
             
             This allows processing function references by almost all lowerings as normal calls (within invokeFunction),
             and don't make them special cases. Also, it enables support of several bound values. 
@@ -901,6 +901,7 @@ object IrTree : AbstractTreeBuilder() {
         +field("getterFunction", simpleFunction)
         +field("setterFunction", simpleFunction, nullable = true)
         +field("origin", statementOriginType, nullable = true)
+        +field("parameterMapping", irReferenceParameterMapping, nullable = true)
 
         kDoc = """
             This node is intended to unify way of handling property reference-like objects in IR.
@@ -916,6 +917,7 @@ object IrTree : AbstractTreeBuilder() {
               * There is no [IrBoundFunctionReference.overriddenFunctionSymbol] as property reference can't implement a fun interface/be sam converted
               * There is no [IrBoundFunctionReference.invokeFunction], but there is [getterFunction] with similar semantics instead
               * There is nullable [setterFunction] with similar semantics in case of mutable property
+              * [parameterMapping] corresponds to getter, as value argument of setter can only be forwarded.   
         """.trimIndent()
     }
 

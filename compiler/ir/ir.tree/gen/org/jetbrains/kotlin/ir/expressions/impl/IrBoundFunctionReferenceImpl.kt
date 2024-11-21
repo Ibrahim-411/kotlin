@@ -14,6 +14,7 @@ import org.jetbrains.kotlin.ir.declarations.IrAttributeContainer
 import org.jetbrains.kotlin.ir.declarations.IrSimpleFunction
 import org.jetbrains.kotlin.ir.expressions.IrBoundFunctionReference
 import org.jetbrains.kotlin.ir.expressions.IrExpression
+import org.jetbrains.kotlin.ir.expressions.IrReferenceParameterMapping
 import org.jetbrains.kotlin.ir.expressions.IrStatementOrigin
 import org.jetbrains.kotlin.ir.symbols.IrFunctionSymbol
 import org.jetbrains.kotlin.ir.symbols.IrSimpleFunctionSymbol
@@ -30,9 +31,8 @@ class IrBoundFunctionReferenceImpl internal constructor(
     override var invokeFunction: IrSimpleFunction,
     override var origin: IrStatementOrigin?,
     override var hasUnitConversion: Boolean,
-    override var hasSuspendConversion: Boolean,
-    override var hasVarargConversion: Boolean,
     override var isRestrictedSuspension: Boolean,
+    override var parameterMapping: IrReferenceParameterMapping?,
 ) : IrBoundFunctionReference() {
     override var attributeOwnerId: IrAttributeContainer = this
 
