@@ -786,38 +786,69 @@ object FirFakeOverrideGenerator {
          *
          * Notice that there is no loop in the upper bound of the fake override's type parameter `B_`
          * because it refers to the `B` from the unsubstituted `bar`.
-         * To achieve this, the order of substitution must be 2, then 1.
+         * To achieve this, the order of substitution must be own type parameters, then class parameters.
          * If it was reversed, in the example above we would substitute the upper bound of `B_ : A` with `{ A -> B -> B_ }`
          * which would produce `B_ : B_`.
          *
-         * The second scenario is substituted constructors, typically called through a typealias:
+         * The second scenario is substituted constructors, called through a typealias or an inner class of a generic outer:
          * ```kt
-         * class Foo<A, B : A> {
-         *     // <A, B : A> constructor(): Foo<A, B> implicitly created
+         * public class Outer<T> {
+         *     public class Inner<E> {
+         *         public <F extends E, G extends T> Inner(E x, java.util.List<F> y, G z) {}
+         *     }
          * }
-         * typealias TA<C, D> = Foo<C, D>
+         *
+         * Outer<Int>().Inner("", listOf<String>(), 1)
          * ```
          *
          * Constructors of generic classes are generic as well,
-         * however their type parameters are represented as [FirConstructedClassTypeParameterRef].
+         * however the type parameters from the outer class are represented as [FirConstructedClassTypeParameterRef].
+         * In the case of Java, they can also have their own type parameters.
          *
          * The substituted constructor should have the following signature:
          * ```kt
-         * <A_, B_ : C> constructor(): Foo<C, D>
+         * <E_, F_ : E_, G_ : Int> constructor(x: E_, y: List<F_>, z: G_): Foo<C, D>
          * ```
-         * To achieve this, we mustn't substitute the upper bound of `B_ : A` with 2 + 1 (`{A -> A_, B -> B_} + {A -> C, B -> D}`)
-         * because it would produce `B_ : A_` but rather only with 1 (`{A -> C, B -> D}`).
+         * To achieve this, we substitute with `{F -> F_ | G -> G_} then {T -> kotlin/Int} then {E -> E_}`.
+         * We apply own type parameters, then class parameters from outer types, then own class type parameters.
          *
-         * To achieve this, we filter out [FirConstructedClassTypeParameterRef]s from substitutor 1.
+         * Applying own type parameters first but own class type parameters last is necessary for the following scenario:
+         *
+         * ```kt
+         * class TColl<T, C : Collection<T>>
+         * typealias TC<T1, T2> = TColl<T1, T2>
+         * ```
+         *
+         * The substitution is `{T -> T1 | C -> T2} then {T -> T_ | C -> C_}`.
+         * The type parameter types are affected by both the class substitution and the substitution from original to copied declaration,
+         * but the substitution of the class takes precedence.
+         * The result is:
+         *
+         * ```kt
+         * <T_, C_ : Collection<T1> constructor(): TColl<T1, T2>
+         * ```
          */
-        val substitutionMapForNewParameters = original.typeParameters
+        val (ownTypeParameters, constructedClassTypeParameters) = original.typeParameters
             .zip(newTypeParameters)
-            .filterNot { it.first is FirConstructedClassTypeParameterRef }
-            .associate { (originalTypeParameter, new) ->
-                Pair(originalTypeParameter.symbol, ConeTypeParameterTypeImpl(new.symbol.toLookupTag(), isMarkedNullable = false))
-            }
+            .partition { it.first !is FirConstructedClassTypeParameterRef }
 
-        val chainedSubstitutor = ChainedSubstitutor(substitutorByMap(substitutionMapForNewParameters, useSiteSession), substitutor)
+        fun substitutorFrom(
+            before: List<Pair<FirTypeParameterRef, FirTypeParameterBuilder>>,
+            useSiteSession: FirSession,
+        ): ConeSubstitutor = substitutorByMap(
+            before.associate { (originalTypeParameter, new) ->
+                Pair(originalTypeParameter.symbol, ConeTypeParameterTypeImpl(new.symbol.toLookupTag(), isMarkedNullable = false))
+            },
+            useSiteSession
+        )
+
+        val chainedSubstitutor = ChainedSubstitutor(
+            substitutorFrom(ownTypeParameters, useSiteSession),
+            ChainedSubstitutor(
+                substitutor,
+                substitutorFrom(constructedClassTypeParameters, useSiteSession)
+            )
+        )
 
         var wereChangesInTypeParameters = forceTypeParametersRecreation
         for ((newTypeParameter, originalTypeParameter) in newTypeParameters.zip(original.typeParameters)) {
