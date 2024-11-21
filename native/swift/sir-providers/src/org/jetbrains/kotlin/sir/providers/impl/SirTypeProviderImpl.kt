@@ -95,7 +95,7 @@ public class SirTypeProviderImpl(
                         else -> {
                             val classSymbol = kaType.symbol
                             if (classSymbol.sirVisibility(ktAnalysisSession) == SirVisibility.PUBLIC) {
-                                SirNominalType(classSymbol.sirDeclaration() as SirNamedDeclaration)
+                                SirNominalType(classSymbol.sirDeclaration().first() as SirNamedDeclaration)
                             } else {
                                 null
                             }

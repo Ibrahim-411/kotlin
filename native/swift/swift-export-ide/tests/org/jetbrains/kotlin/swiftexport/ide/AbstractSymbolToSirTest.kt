@@ -31,6 +31,10 @@ abstract class AbstractSymbolToSirTest : AbstractAnalysisApiBasedTest() {
     }
 }
 
+private fun List<SirDeclaration>.print(into: SirModule): String = fold("") { acc, el ->
+    acc + el.print(into)
+}
+
 private fun SirDeclaration.print(into: SirModule): String = SirAsSwiftSourcesPrinter.print(
     module = into.also {
         val parent = parent as? SirMutableDeclarationContainer
