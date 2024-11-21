@@ -136,8 +136,7 @@ class IrVerifier(
             }
         }
 
-        val declaredValueParameters =
-            declaration.valueParameters.drop(declaration.contextReceiverParametersCount).map { it.descriptor }
+        val declaredValueParameters = declaration.parameters.filter { it.kind == IrParameterKind.Regular }.map { it.descriptor }
         val actualValueParameters = functionDescriptor.valueParameters
         if (declaredValueParameters.size != actualValueParameters.size) {
             error("$functionDescriptor: Value parameters mismatch: $declaredValueParameters != $actualValueParameters")
