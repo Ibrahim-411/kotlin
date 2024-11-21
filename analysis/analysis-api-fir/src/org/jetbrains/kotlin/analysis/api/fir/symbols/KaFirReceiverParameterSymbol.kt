@@ -10,6 +10,7 @@ import org.jetbrains.kotlin.analysis.api.KaExperimentalApi
 import org.jetbrains.kotlin.analysis.api.annotations.KaAnnotationList
 import org.jetbrains.kotlin.analysis.api.fir.KaFirSession
 import org.jetbrains.kotlin.analysis.api.fir.annotations.KaFirAnnotationListForReceiverParameter
+import org.jetbrains.kotlin.analysis.api.fir.findPsi
 import org.jetbrains.kotlin.analysis.api.fir.hasAnnotation
 import org.jetbrains.kotlin.analysis.api.fir.utils.firSymbol
 import org.jetbrains.kotlin.analysis.api.impl.base.annotations.KaBaseEmptyAnnotationList
@@ -24,19 +25,21 @@ import org.jetbrains.kotlin.analysis.api.types.KaType
 import org.jetbrains.kotlin.descriptors.Visibility
 import org.jetbrains.kotlin.descriptors.annotations.AnnotationUseSiteTarget
 import org.jetbrains.kotlin.fir.declarations.impl.FirResolvedDeclarationStatusImpl
-import org.jetbrains.kotlin.fir.psi
 import org.jetbrains.kotlin.fir.symbols.impl.FirCallableSymbol
+import org.jetbrains.kotlin.fir.symbols.impl.FirReceiverParameterSymbol
 import org.jetbrains.kotlin.fir.utils.exceptions.withFirEntry
+import org.jetbrains.kotlin.fir.utils.exceptions.withFirSymbolEntry
 import org.jetbrains.kotlin.psi.KtCallableDeclaration
+import org.jetbrains.kotlin.psi.KtTypeReference
 import org.jetbrains.kotlin.utils.exceptions.errorWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.requireWithAttachment
 import org.jetbrains.kotlin.utils.exceptions.withPsiEntry
 
 internal class KaFirReceiverParameterSymbol private constructor(
     val owningBackingPsi: KtCallableDeclaration?,
-    val analysisSession: KaFirSession,
+    override val analysisSession: KaFirSession,
     val owningKaSymbol: KaCallableSymbol,
-) : KaReceiverParameterSymbol() {
+) : KaReceiverParameterSymbol(), KaFirKtBasedSymbol<KtTypeReference, FirReceiverParameterSymbol> {
     val owningFirSymbol: FirCallableSymbol<*>
         get() = owningKaSymbol.firSymbol
 
@@ -49,13 +52,23 @@ internal class KaFirReceiverParameterSymbol private constructor(
         }
     }
 
+    override val firSymbol: FirReceiverParameterSymbol
+        get() = owningFirSymbol.receiverParameter?.symbol ?: errorWithAttachment("Receiver parameter is not found") {
+            withFirSymbolEntry("callableSymbol", owningFirSymbol)
+        }
+
     override val token: KaLifetimeToken
         get() = analysisSession.token
 
     override val psi: PsiElement?
         get() = withValidityAssertion {
-            owningBackingPsi?.receiverTypeReference ?: owningFirSymbol.fir.receiverParameter?.typeRef?.psi
+            backingPsi ?: firSymbol.findPsi()
         }
+
+    override val backingPsi: KtTypeReference? = owningBackingPsi?.receiverTypeReference
+
+    override val lazyFirSymbol: Lazy<FirReceiverParameterSymbol>
+        get() = throw UnsupportedOperationException()
 
     override val returnType: KaType
         get() = withValidityAssertion {
@@ -82,7 +95,7 @@ internal class KaFirReceiverParameterSymbol private constructor(
 
     override val annotations: KaAnnotationList
         get() = withValidityAssertion {
-            if (owningBackingPsi?.receiverTypeReference?.hasAnnotation(AnnotationUseSiteTarget.RECEIVER) == false)
+            if (backingPsi?.hasAnnotation(AnnotationUseSiteTarget.RECEIVER) == false)
                 KaBaseEmptyAnnotationList(token)
             else
                 KaFirAnnotationListForReceiverParameter.create(owningFirSymbol, builder = analysisSession.firSymbolBuilder)
