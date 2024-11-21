@@ -215,8 +215,8 @@ internal open class ActualizerVisitor(private val symbolRemapper: SymbolRemapper
         // This is a hack to allow actualizing annotation constructors without parameters with constructors with default arguments.
         // Without it, attempting to call such a constructor in common code will result in either a backend exception or in linkage error.
         // See KT-67488 for details.
-        val valueArgumentsCount =
-            if (constructorSymbol.isBound) constructorSymbol.owner.parameters.size else expression.valueArgumentsCount
+        val argumentsCount =
+            if (constructorSymbol.isBound) constructorSymbol.owner.parameters.size else expression.arguments.size
 
         return IrConstructorCallImpl(
             expression.startOffset,
