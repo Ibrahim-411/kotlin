@@ -45,7 +45,9 @@ internal class SirInitFromKtSymbol(
 
     override val isConvenience: Boolean = false
 
-    override val isOverride: Boolean get() = computeIsOverride()
+    override val isOverride: Boolean get() = overrideStatus == true
+
+    private val overrideStatus: Boolean? by lazy { computeIsOverride() }
 
     override var parent: SirDeclarationParent
         get() = withSessions {
@@ -53,7 +55,9 @@ internal class SirInitFromKtSymbol(
         }
         set(_) = Unit
 
-    override val attributes: List<SirAttribute> by lazy { this.translatedAttributes }
+    override val attributes: List<SirAttribute> by lazy {
+        this.translatedAttributes + listOfNotNull(SirAttribute.NonOverride.takeIf { overrideStatus == false })
+    }
 
     override val errorType: SirType get() = if (ktSymbol.throwsAnnotation != null) SirType.any else SirType.never
 

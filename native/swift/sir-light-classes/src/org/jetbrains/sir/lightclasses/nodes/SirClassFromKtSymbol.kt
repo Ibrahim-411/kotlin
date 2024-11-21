@@ -186,9 +186,14 @@ internal class SirObjectSyntheticInit(ktSymbol: KaNamedClassSymbol) : SirInit() 
     override val documentation: String? = null
     override val isRequired: Boolean = false
     override val isConvenience: Boolean = false
-    override val isOverride: Boolean get() = computeIsOverride()
+    override val isOverride: Boolean get() = overrideStatus == true
+    private val overrideStatus: Boolean? by lazy { computeIsOverride() }
     override lateinit var parent: SirDeclarationParent
-    override val attributes: MutableList<SirAttribute> = mutableListOf()
+    override val attributes: List<SirAttribute> by lazy {
+        listOfNotNull(
+            SirAttribute.NonOverride.takeIf { overrideStatus == false }
+        )
+    }
     override val errorType: SirType get() = SirType.never
     override var body: SirFunctionBody? = null
 }
