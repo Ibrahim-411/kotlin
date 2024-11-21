@@ -124,8 +124,7 @@ class IrVerifier(
         }
 
         val expectedContextReceivers = functionDescriptor.contextReceiverParameters
-        val actualContextReceivers =
-            declaration.valueParameters.take(declaration.contextReceiverParametersCount).map { it.descriptor }
+        val actualContextReceivers = declaration.parameters.filter { it.kind == IrParameterKind.Context }.map { it.descriptor }
         if (expectedContextReceivers.size != actualContextReceivers.size) {
             error("$functionDescriptor: Context receivers mismatch: $expectedContextReceivers != $actualContextReceivers")
         } else {
