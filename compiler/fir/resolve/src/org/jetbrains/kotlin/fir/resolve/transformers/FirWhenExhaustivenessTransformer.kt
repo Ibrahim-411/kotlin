@@ -25,6 +25,7 @@ import org.jetbrains.kotlin.fir.resolve.dfa.TypeStatement
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.ControlFlowGraph
 import org.jetbrains.kotlin.fir.resolve.dfa.cfg.WhenSyntheticElseBranchNode
 import org.jetbrains.kotlin.fir.resolve.dfa.controlFlowGraph
+import org.jetbrains.kotlin.fir.resolve.dfa.isVacuousIntersection
 import org.jetbrains.kotlin.fir.resolve.fullyExpandedType
 import org.jetbrains.kotlin.fir.resolve.getSuperClassSymbolOrAny
 import org.jetbrains.kotlin.fir.resolve.providers.symbolProvider
@@ -227,7 +228,7 @@ class FirWhenExhaustivenessTransformer(private val bodyResolveComponents: BodyRe
         var status: ExhaustivenessStatus = ExhaustivenessStatus.NotExhaustive.NO_ELSE_BRANCH
 
         val unwrappedIntersectionTypes = approximatedType.unwrapTypeParameterAndIntersectionTypes(session)
-        if (isVacuousIntersection(unwrappedIntersectionTypes)) {
+        if (unwrappedIntersectionTypes.isVacuousIntersection(session)) {
             return ExhaustivenessStatus.ProperlyExhaustive
         }
 
@@ -272,20 +273,6 @@ class FirWhenExhaustivenessTransformer(private val bodyResolveComponents: BodyRe
             ExhaustivenessStatus.NotExhaustive(whenMissingCases)
         }
     }
-
-    fun isVacuousIntersection(types: Collection<ConeKotlinType>): Boolean {
-        val session = bodyResolveComponents.session
-        val finalTypes = types.mapNotNull { type ->
-            if (type.isMarkedNullable) return@mapNotNull null
-            if (type !is ConeClassLikeType) return@mapNotNull null
-            type.toRegularClassSymbol(session)?.takeIf { it.isConsideredFinal }
-        }
-        // there are two different final classes at the same time
-        return finalTypes.any { a -> finalTypes.any { b -> a != b } }
-    }
-
-    val FirRegularClassSymbol.isConsideredFinal: Boolean
-        get() = classKind == ClassKind.ENUM_ENTRY || (isFinal && classKind != ClassKind.ENUM_CLASS)
 }
 
 private sealed class WhenExhaustivenessChecker {

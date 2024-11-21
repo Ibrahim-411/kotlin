@@ -25879,6 +25879,12 @@ public class TieredBackendJvmPsiTestGenerated extends AbstractTieredBackendJvmPs
           @TestDataPath("$PROJECT_ROOT")
           public class ReturnsImplies {
             @Test
+            @TestMetadata("negativeTypes.kt")
+            public void testNegativeTypes() {
+              runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/contracts/fromSource/bad/returnsImplies/negativeTypes.kt");
+            }
+
+            @Test
             @TestMetadata("notNull.kt")
             public void testNotNull() {
               runTest("compiler/fir/analysis-tests/testData/resolveWithStdlib/contracts/fromSource/bad/returnsImplies/notNull.kt");
