@@ -116,7 +116,9 @@ class IrVerifier(
         }
 
         val expectedExtensionReceiver = functionDescriptor.extensionReceiverParameter
-        val actualExtensionReceiver = declaration.extensionReceiverParameter?.descriptor
+        val actualExtensionReceiver = declaration.parameters
+            .firstOrNull { it.kind == IrParameterKind.ExtensionReceiver }
+            ?.descriptor
         require(expectedExtensionReceiver == actualExtensionReceiver) {
             "$functionDescriptor: Extension receiver parameter mismatch: " +
                     "expected $expectedExtensionReceiver, actual $actualExtensionReceiver"
