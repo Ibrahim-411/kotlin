@@ -82,7 +82,7 @@ abstract class GradleNodeModulesCache : AbstractNodeModulesCache() {
             cacheDir: Provider<Directory>,
             nameDisambiguate: (String) -> String,
         ) = registerIfAbsentImpl(project, rootProjectDir, cacheDir, nameDisambiguate).also { serviceProvider ->
-            SingleActionPerProject.run(project, UsesGradleNodeModulesCache::class.java.name) {
+            SingleActionPerProject.run(project, nameDisambiguate(UsesGradleNodeModulesCache::class.java.name)) {
                 project.tasks.withType<UsesGradleNodeModulesCache>().configureEach { task ->
                     task.usesService(serviceProvider)
                 }

@@ -195,7 +195,7 @@ abstract class KotlinNpmResolutionManager : BuildService<KotlinNpmResolutionMana
             packagesDir: Provider<Directory>,
             nameDisambiguate: (String) -> String,
         ) = registerIfAbsentImpl(project, resolution, gradleNodeModulesProvider, packagesDir, nameDisambiguate).also { serviceProvider ->
-            SingleActionPerProject.run(project, UsesKotlinNpmResolutionManager::class.java.name) {
+            SingleActionPerProject.run(project, nameDisambiguate(UsesKotlinNpmResolutionManager::class.java.name)) {
                 project.tasks.withType<UsesKotlinNpmResolutionManager>().configureEach { task ->
                     task.usesService(serviceProvider)
                     task.usesService(gradleNodeModulesProvider)

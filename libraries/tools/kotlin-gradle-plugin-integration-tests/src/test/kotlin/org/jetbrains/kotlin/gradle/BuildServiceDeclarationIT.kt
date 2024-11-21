@@ -35,7 +35,6 @@ class BuildServiceDeclarationIT : KGPBaseTest() {
     @DisplayName("Build services are registered for Kotlin/JS browser projects")
     @GradleTest
     @JsGradlePluginTests
-    @GradleTestVersions(minVersion = TestVersions.Gradle.G_8_1)
     fun testJsBrowserProject(gradleVersion: GradleVersion) {
         project("kotlin-js-browser-project", gradleVersion) {
             enableStableConfigurationCachePreview()
@@ -48,7 +47,6 @@ class BuildServiceDeclarationIT : KGPBaseTest() {
     @DisplayName("Build services are registered for Kotlin/JS nodejs projects")
     @GradleTest
     @JsGradlePluginTests
-    @GradleTestVersions(minVersion = TestVersions.Gradle.G_8_1)
     fun testJsNodeJsProject(gradleVersion: GradleVersion) {
         project("kotlin-js-nodejs-project", gradleVersion) {
             enableStableConfigurationCachePreview()
@@ -61,7 +59,6 @@ class BuildServiceDeclarationIT : KGPBaseTest() {
     @DisplayName("Build services are registered for Kotlin/MPP projects")
     @GradleTest
     @MppGradlePluginTests
-    @GradleTestVersions(minVersion = TestVersions.Gradle.G_8_1)
     fun testMppProject(gradleVersion: GradleVersion) {
         project("new-mpp-lib-with-tests", gradleVersion) {
             enableStableConfigurationCachePreview()
