@@ -761,24 +761,76 @@ object FirFakeOverrideGenerator {
             }
         }
 
-        val substitutionMapForNewParameters = original.typeParameters.zip(newTypeParameters).associate { (originalTypeParameter, new) ->
-            Pair(originalTypeParameter.symbol, ConeTypeParameterTypeImpl(new.symbol.toLookupTag(), isMarkedNullable = false))
-        }
+        /**
+         * Our final substitutor will serve two functions:
+         *
+         * 1. Substitute class type parameters according to the provided [substitutor].
+         * 2. Substitute references to the declaration's own type parameters with copies declared in the substitution override
+         *    (e.g., in upper bounds of type parameters, receiver, parameter and return types).
+         *
+         * There are two scenarios to consider:
+         *
+         * Regular function:
+         * ```kt
+         * class Foo<A> {
+         *     fun <B : A> bar(foo: Foo<B>) {}
+         * }
+         * ```
+         * substituted with `{A -> B}`
+         *
+         * In this scenario, we want to produce
+         *
+         * ```kt
+         *     fun <B_ : B> bar(foo: Foo<B_>) {}
+         * ```
+         *
+         * Notice that there is no loop in the upper bound of the fake override's type parameter `B_`
+         * because it refers to the `B` from the unsubstituted `bar`.
+         * To achieve this, the order of substitution must be 2, then 1.
+         * If it was reversed, in the example above we would substitute the upper bound of `B_ : A` with `{ A -> B -> B_ }`
+         * which would produce `B_ : B_`.
+         *
+         * The second scenario is substituted constructors, typically called through a typealias:
+         * ```kt
+         * class Foo<A, B : A> {
+         *     // <A, B : A> constructor(): Foo<A, B> implicitly created
+         * }
+         * typealias TA<C, D> = Foo<C, D>
+         * ```
+         *
+         * Constructors of generic classes are generic as well,
+         * however their type parameters are represented as [FirConstructedClassTypeParameterRef].
+         *
+         * The substituted constructor should have the following signature:
+         * ```kt
+         * <A_, B_ : C> constructor(): Foo<C, D>
+         * ```
+         * To achieve this, we mustn't substitute the upper bound of `B_ : A` with 2 + 1 (`{A -> A_, B -> B_} + {A -> C, B -> D}`)
+         * because it would produce `B_ : A_` but rather only with 1 (`{A -> C, B -> D}`).
+         *
+         * To achieve this, we filter out [FirConstructedClassTypeParameterRef]s from substitutor 1.
+         */
+        val substitutionMapForNewParameters = original.typeParameters
+            .zip(newTypeParameters)
+            .filterNot { it.first is FirConstructedClassTypeParameterRef }
+            .associate { (originalTypeParameter, new) ->
+                Pair(originalTypeParameter.symbol, ConeTypeParameterTypeImpl(new.symbol.toLookupTag(), isMarkedNullable = false))
+            }
 
-        val originalToNewTypeParameterSubstitutor = substitutorByMap(substitutionMapForNewParameters, useSiteSession)
+        val chainedSubstitutor = ChainedSubstitutor(substitutorByMap(substitutionMapForNewParameters, useSiteSession), substitutor)
 
         var wereChangesInTypeParameters = forceTypeParametersRecreation
         for ((newTypeParameter, originalTypeParameter) in newTypeParameters.zip(original.typeParameters)) {
             for (boundTypeRef in originalTypeParameter.symbol.resolvedBounds) {
                 val typeForBound = boundTypeRef.coneType
-                val substitutedBound = substitutor.substituteOrNull(typeForBound)
+                val substitutedBound = chainedSubstitutor.substituteOrNull(typeForBound)
                 if (substitutedBound != null) {
                     wereChangesInTypeParameters = true
                 }
                 newTypeParameter.bounds +=
                     buildResolvedTypeRef {
                         source = boundTypeRef.source
-                        coneType = originalToNewTypeParameterSubstitutor.substituteOrSelf(substitutedBound ?: typeForBound)
+                        coneType = substitutedBound ?: typeForBound
                     }
             }
         }
@@ -786,7 +838,7 @@ object FirFakeOverrideGenerator {
         if (!wereChangesInTypeParameters) return Pair(original.typeParameters, substitutor)
         return Pair(
             newTypeParameters.map(FirTypeParameterBuilder::build),
-            ChainedSubstitutor(substitutor, originalToNewTypeParameterSubstitutor)
+            chainedSubstitutor
         )
     }
 
